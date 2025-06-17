@@ -77,7 +77,7 @@ const Experience = () => {
     {
       title: "Junior Developer",
       company: "NSUPS",
-      location: "Voluntary",
+      location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
       achievements: [
@@ -132,49 +132,61 @@ const Experience = () => {
                         },
                       }}
                     >
-                      {/* Work Icon and Title - always together */}
-                      <Box
+                      {/* Work Icon for larger screens only */}
+                      <WorkIcon
+                        color="primary"
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
+                          mr: 1,
+                          display: {
+                            xs: "none", // Hide on mobile
+                            sm: "block", // Show on larger screens
+                          },
+                        }}
+                      />
+
+                      {/* Job Title - first on mobile, middle on larger screens */}
+                      <Typography
+                        variant="responsiveHeader"
+                        component="h2"
+                        sx={{
+                          fontWeight: "bold",
                           flex: {
                             xs: "none", // Don't flex on mobile
                             sm: 1, // Take available space on larger screens
                           },
                           order: {
                             xs: 1, // First on mobile
-                            sm: 1, // First on larger screens too
+                            sm: 2, // Middle on larger screens
                           },
+                          textAlign: {
+                            xs: "left", // Left align on mobile
+                            sm: "center", // Center align on larger screens
+                          },
+                        }}
+                      >
+                        {exp.title}
+                      </Typography>
+
+                      {/* Work Icon and Company Name for mobile only */}
+                      <Box
+                        sx={{
+                          display: {
+                            xs: "flex", // Show on mobile
+                            sm: "none", // Hide on larger screens
+                          },
+                          alignItems: "center",
+                          order: 2, // Second on mobile (under job title)
                         }}
                       >
                         <WorkIcon color="primary" sx={{ mr: 1 }} />
                         <Typography
-                          variant="responsiveHeader"
-                          component="h2"
-                          sx={{ fontWeight: "bold" }}
+                          variant="h5"
+                          color="primary"
+                          sx={{ fontWeight: 600 }}
                         >
-                          {exp.title}
+                          {exp.company}
                         </Typography>
                       </Box>
-
-                      {/* Company Name */}
-                      <Typography
-                        variant="h5"
-                        color="primary"
-                        sx={{
-                          fontWeight: 600,
-                          order: {
-                            xs: 2, // Second on mobile
-                            sm: 2, // Hidden/moved below on larger screens
-                          },
-                          display: {
-                            xs: "block", // Show on mobile
-                            sm: "none", // Hide on larger screens (we'll show it below)
-                          },
-                        }}
-                      >
-                        {exp.company}
-                      </Typography>
 
                       {/* Full-time Chip */}
                       <Chip
@@ -205,7 +217,7 @@ const Experience = () => {
                         mb: 2,
                         fontWeight: 600,
                         display: {
-                          xs: "none", // Hide on mobile (already shown above)
+                          xs: "none", // Hide on mobile (already shown above with icon)
                           sm: "block", // Show on larger screens
                         },
                       }}

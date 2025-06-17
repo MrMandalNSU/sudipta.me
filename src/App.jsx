@@ -1,7 +1,7 @@
 import "./App.css";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Navbar from "./contexts/Navbar";
-import Intro from "./contexts/Intro";
+import Navbar from "./components/Navbar";
+import Intro from "./components/Intro";
 
 function App() {
   return (

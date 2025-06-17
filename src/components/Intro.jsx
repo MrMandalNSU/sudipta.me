@@ -52,6 +52,8 @@ const Intro = () => {
         // minHeight: "calc(100vh - 64px)",
         display: "flex",
         alignItems: "center",
+        px: 2,
+        py: 2,
       }}
     >
       <Container maxWidth="lg">

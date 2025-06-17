@@ -26,6 +26,13 @@ const Navbar = () => {
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -61,6 +68,7 @@ const Navbar = () => {
       <AppBar component="nav" position="sticky" sx={{ width: "100%" }}>
         <Toolbar>
           <Button
+            onClick={scrollToTop}
             sx={{
               textTransform: "none", // Prevent text from being capitalized
               fontSize: "1.25rem", // Adjust text size

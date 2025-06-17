@@ -147,7 +147,7 @@ const Experience = ({ id }) => {
 
                       {/* Job Title - first on mobile, middle on larger screens */}
                       <Typography
-                        variant="responsiveHeader"
+                        variant="responsiveTitle"
                         component="h2"
                         sx={{
                           fontWeight: "bold",
@@ -290,7 +290,7 @@ const Experience = ({ id }) => {
                   {/* Technologies Section */}
                   <Box>
                     <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                      Technologies & Tools
+                      Tech & Tools
                     </Typography>
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                       {exp.technologies.map((tech, techIndex) => (

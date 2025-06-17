@@ -59,7 +59,6 @@ export const getDesignTokens = (mode) => ({
     h6: {
       fontWeight: 500,
     },
-
     responsiveHeader: {
       fontSize: "1.8rem",
       fontWeight: "bold",
@@ -73,6 +72,28 @@ export const getDesignTokens = (mode) => ({
       },
       "@media (min-width:1200px)": {
         fontSize: "3rem",
+      },
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&:focus": {
+            outline: "none",
+            boxShadow: "none",
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:focus": {
+            outline: "none",
+            boxShadow: "none",
+          },
+        },
       },
     },
   },

@@ -108,6 +108,10 @@ const Intro = () => {
                   color="primary"
                   size="large"
                   sx={{ minWidth: 200 }}
+                  component="a"
+                  href="https://github.com/MrMandalNSU?tab=repositories"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   View My Work
                 </Button>
@@ -116,6 +120,10 @@ const Intro = () => {
                   color="primary"
                   size="large"
                   sx={{ minWidth: 200 }}
+                  component="a"
+                  href="mailto:mr.mandal16@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Contact Me
                 </Button>
@@ -147,19 +155,54 @@ const Intro = () => {
                   mt: 3,
                 }}
               >
-                <IconButton color="primary" sx={{ fontSize: 40 }}>
+                <IconButton
+                  color="primary"
+                  sx={{ fontSize: 40 }}
+                  component="a"
+                  href="https://www.facebook.com/sudipta.dipta2/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Facebook />
                 </IconButton>
-                <IconButton color="primary" sx={{ fontSize: 40 }}>
+                <IconButton
+                  color="primary"
+                  sx={{ fontSize: 40 }}
+                  component="a"
+                  href="https://www.instagram.com/mr_mandal/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Instagram />
                 </IconButton>
-                <IconButton color="primary" sx={{ fontSize: 40 }}>
+                <IconButton
+                  color="primary"
+                  sx={{ fontSize: 40 }}
+                  component="a"
+                  href="https://x.com/mr_mandal_16/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Twitter />
                 </IconButton>
-                <IconButton color="primary" sx={{ fontSize: 40 }}>
+                <IconButton
+                  color="primary"
+                  sx={{ fontSize: 40 }}
+                  component="a"
+                  href="https://www.linkedin.com/in/mrmandal/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <LinkedIn />
                 </IconButton>
-                <IconButton color="primary" sx={{ fontSize: 40 }}>
+                <IconButton
+                  color="primary"
+                  sx={{ fontSize: 40 }}
+                  component="a"
+                  href="https://github.com/MrMandalNSU/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <GitHub />
                 </IconButton>
               </Box>

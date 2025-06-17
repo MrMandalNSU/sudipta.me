@@ -117,20 +117,66 @@ const Experience = () => {
                     <Box
                       sx={{
                         display: "flex",
-                        alignItems: "center",
+                        alignItems: {
+                          xs: "flex-start", // Align to start on mobile
+                          sm: "center", // Center on larger screens
+                        },
+                        flexDirection: {
+                          xs: "column", // Stack vertically on mobile
+                          sm: "row", // Horizontal on larger screens
+                        },
                         mb: 2,
-                        flexWrap: "wrap",
-                        gap: 1,
+                        gap: {
+                          xs: 1.5, // Larger gap for vertical stacking
+                          sm: 1, // Smaller gap for horizontal
+                        },
                       }}
                     >
-                      <WorkIcon color="primary" sx={{ mr: 1 }} />
-                      <Typography
-                        variant="h4"
-                        component="h2"
-                        sx={{ fontWeight: "bold", flex: 1 }}
+                      {/* Work Icon and Title - always together */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          flex: {
+                            xs: "none", // Don't flex on mobile
+                            sm: 1, // Take available space on larger screens
+                          },
+                          order: {
+                            xs: 1, // First on mobile
+                            sm: 1, // First on larger screens too
+                          },
+                        }}
                       >
-                        {exp.title}
+                        <WorkIcon color="primary" sx={{ mr: 1 }} />
+                        <Typography
+                          variant="responsiveHeader"
+                          component="h2"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          {exp.title}
+                        </Typography>
+                      </Box>
+
+                      {/* Company Name */}
+                      <Typography
+                        variant="h5"
+                        color="primary"
+                        sx={{
+                          fontWeight: 600,
+                          order: {
+                            xs: 2, // Second on mobile
+                            sm: 2, // Hidden/moved below on larger screens
+                          },
+                          display: {
+                            xs: "block", // Show on mobile
+                            sm: "none", // Hide on larger screens (we'll show it below)
+                          },
+                        }}
+                      >
+                        {exp.company}
                       </Typography>
+
+                      {/* Full-time Chip */}
                       <Chip
                         label={exp.type}
                         color={
@@ -138,17 +184,36 @@ const Experience = () => {
                         }
                         variant="outlined"
                         size="medium"
+                        sx={{
+                          order: {
+                            xs: 3, // Third on mobile
+                            sm: 3, // Last on larger screens
+                          },
+                          alignSelf: {
+                            xs: "flex-start", // Align left on mobile
+                            sm: "center", // Center on larger screens
+                          },
+                        }}
                       />
                     </Box>
 
+                    {/* Company name for larger screens - shown separately */}
                     <Typography
                       variant="h5"
                       color="primary"
-                      sx={{ mb: 2, fontWeight: 600 }}
+                      sx={{
+                        mb: 2,
+                        fontWeight: 600,
+                        display: {
+                          xs: "none", // Hide on mobile (already shown above)
+                          sm: "block", // Show on larger screens
+                        },
+                      }}
                     >
                       {exp.company}
                     </Typography>
 
+                    {/* Location and Duration - unchanged */}
                     <Box
                       sx={{
                         display: "flex",

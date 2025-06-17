@@ -74,7 +74,11 @@ const Intro = () => {
                 order: { xs: 2, md: 1 },
               }}
             >
-              <Typography variant="h2" component="h1" gutterBottom>
+              <Typography
+                variant="responsiveHeader"
+                component="h1"
+                gutterBottom
+              >
                 Hi, I'm Sudipta Mandal
               </Typography>
 

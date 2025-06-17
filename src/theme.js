@@ -59,6 +59,22 @@ export const getDesignTokens = (mode) => ({
     h6: {
       fontWeight: 500,
     },
+
+    responsiveHeader: {
+      fontSize: "1.8rem",
+      fontWeight: "bold",
+      wordBreak: "break-word",
+      hyphens: "auto",
+      "@media (min-width:600px)": {
+        fontSize: "2.2rem",
+      },
+      "@media (min-width:900px)": {
+        fontSize: "2.5rem",
+      },
+      "@media (min-width:1200px)": {
+        fontSize: "3rem",
+      },
+    },
   },
 });
 

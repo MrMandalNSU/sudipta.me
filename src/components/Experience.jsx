@@ -102,22 +102,7 @@ const Experience = () => {
         <OuterPaper elevation={3}>
           {/* Header Section */}
           <Box sx={{ mb: 4, textAlign: "center" }}>
-            <Typography
-              variant="h2"
-              component="h1"
-              gutterBottom
-              sx={{
-                fontSize: {
-                  xs: "1.8rem", // Small screens
-                  sm: "2.2rem", // Small-medium screens
-                  md: "2.5rem", // Medium screens
-                  lg: "3rem", // Large screens
-                },
-                fontWeight: "bold",
-                wordBreak: "break-word", // Prevents overflow
-                hyphens: "auto", // Adds hyphenation if needed
-              }}
-            >
+            <Typography variant="responsiveHeader" component="h1" gutterBottom>
               Professional Experience
             </Typography>
           </Box>

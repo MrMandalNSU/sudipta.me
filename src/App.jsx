@@ -8,8 +8,8 @@ function App() {
   return (
     <ThemeProvider>
       <Navbar />
-      <Intro />
-      <Experience />
+      <Intro id="intro" />
+      <Experience id="experience" />
     </ThemeProvider>
   );
 }

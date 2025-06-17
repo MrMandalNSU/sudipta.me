@@ -37,7 +37,7 @@ const ExperienceCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Experience = () => {
+const Experience = ({ id }) => {
   const experiences = [
     {
       title: "Software Engineer (L2)",
@@ -90,6 +90,7 @@ const Experience = () => {
 
   return (
     <Box
+      id={id}
       sx={{
         mt: 0,
         display: "flex",

@@ -44,9 +44,10 @@ const ProfileImage = styled("img")(({ theme }) => ({
   boxShadow: theme.shadows[5],
 }));
 
-const Intro = () => {
+const Intro = ({ id }) => {
   return (
     <Box
+      id={id}
       sx={{
         mt: 10,
         // minHeight: "calc(100vh - 64px)",

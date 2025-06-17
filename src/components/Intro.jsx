@@ -48,12 +48,11 @@ const Intro = () => {
   return (
     <Box
       sx={{
-        mt: 6,
+        mt: 10,
         // minHeight: "calc(100vh - 64px)",
         display: "flex",
         alignItems: "center",
         px: 2,
-        py: 4,
       }}
     >
       <Container maxWidth="lg">

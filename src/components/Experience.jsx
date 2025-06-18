@@ -13,6 +13,7 @@ import {
   ListItemText,
   Paper,
   Avatar,
+  Link,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
@@ -55,7 +56,8 @@ const Experience = ({ id }) => {
     {
       title: "Software Engineer (L2)",
       company: "Eucaps AB",
-      companyLogo: "/eucaps_logo.png", // Replace with actual logo URL
+      companyLogo: "/eucaps_logo.png",
+      companyUrl: "https://eucaps.com/",
       location: "Sweden Based, Remote",
       duration: "Dec 2021 - Present",
       type: "Full-time",
@@ -91,7 +93,8 @@ const Experience = ({ id }) => {
     {
       title: "Junior Developer",
       company: "NSUPS",
-      companyLogo: "/nsups_logo.png", // Replace with actual logo URL
+      companyLogo: "/nsups_logo.png",
+      companyUrl: "https://nsups.vercel.app/",
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
@@ -201,13 +204,26 @@ const Experience = ({ id }) => {
                         >
                           <BusinessIcon />
                         </CompanyLogo>
-                        <Typography
-                          variant="responsiveTitle"
-                          color="primary"
-                          //   sx={{ fontWeight: 600 }}
+                        <Link
+                          href={exp.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="hover"
+                          sx={{ textDecoration: "none" }}
                         >
-                          {exp.company}
-                        </Typography>
+                          <Typography
+                            variant="h5"
+                            color="primary"
+                            sx={{
+                              fontWeight: 600,
+                              "&:hover": {
+                                textDecoration: "underline",
+                              },
+                            }}
+                          >
+                            {exp.company}
+                          </Typography>
+                        </Link>
                       </Box>
 
                       {/* Employment Type Chip */}
@@ -249,13 +265,26 @@ const Experience = ({ id }) => {
                       >
                         <BusinessIcon />
                       </CompanyLogo>
-                      <Typography
-                        variant="h5"
-                        color="primary"
-                        sx={{ fontWeight: 600 }}
+                      <Link
+                        href={exp.companyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                        sx={{ textDecoration: "none" }}
                       >
-                        {exp.company}
-                      </Typography>
+                        <Typography
+                          variant="h5"
+                          color="primary"
+                          sx={{
+                            fontWeight: 600,
+                            "&:hover": {
+                              textDecoration: "underline",
+                            },
+                          }}
+                        >
+                          {exp.company}
+                        </Typography>
+                      </Link>
                     </Box>
 
                     {/* Location and Duration */}

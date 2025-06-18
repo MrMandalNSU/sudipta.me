@@ -18,13 +18,52 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useTheme } from "../contexts/ThemeContext";
 
-const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
+const navItems = ["Intro", "About", "Skills", "Projects", "Contact"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { mode, toggleColorMode } = useTheme();
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  const handleNavClick = (item) => {
+    switch (item) {
+      case "Intro":
+        scrollToSection("intro");
+        break;
+      case "About":
+        scrollToSection("about");
+        break;
+      case "Skills":
+        scrollToSection("experience");
+        break;
+      case "Projects":
+        scrollToSection("projects");
+        break;
+      case "Contact":
+        scrollToSection("contact");
+        break;
+      default:
+        break;
+    }
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -38,7 +77,7 @@ const Navbar = () => {
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <Button fullWidth>
+            <Button fullWidth onClick={() => handleNavClick(item)}>
               <ListItemText primary={item} />
             </Button>
           </ListItem>
@@ -61,6 +100,7 @@ const Navbar = () => {
       <AppBar component="nav" position="sticky" sx={{ width: "100%" }}>
         <Toolbar>
           <Button
+            onClick={scrollToTop}
             sx={{
               textTransform: "none", // Prevent text from being capitalized
               fontSize: "1.25rem", // Adjust text size
@@ -81,7 +121,11 @@ const Navbar = () => {
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
+              <Button
+                key={item}
+                sx={{ color: "#fff" }}
+                onClick={() => handleNavClick(item)}
+              >
                 {item}
               </Button>
             ))}

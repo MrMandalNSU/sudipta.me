@@ -12,12 +12,14 @@ import {
   ListItem,
   ListItemText,
   Paper,
+  Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
   Work as WorkIcon,
   LocationOn as LocationIcon,
   CalendarToday as CalendarIcon,
+  Business as BusinessIcon,
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
@@ -37,11 +39,23 @@ const ExperienceCard = styled(Box)(({ theme }) => ({
   },
 }));
 
+const CompanyLogo = styled(Avatar)(({ theme }) => ({
+  width: 40,
+  height: 40,
+  //   backgroundColor: theme.palette.primary.main,
+  marginRight: theme.spacing(1.5),
+  "& .MuiAvatar-img": {
+    objectFit: "contain",
+    padding: theme.spacing(0.5),
+  },
+}));
+
 const Experience = ({ id }) => {
   const experiences = [
     {
       title: "Software Engineer (L2)",
       company: "Eucaps AB",
+      companyLogo: "/eucaps_logo.png", // Replace with actual logo URL
       location: "Sweden Based, Remote",
       duration: "Dec 2021 - Present",
       type: "Full-time",
@@ -77,6 +91,7 @@ const Experience = ({ id }) => {
     {
       title: "Junior Developer",
       company: "NSUPS",
+      companyLogo: "/nsups_logo.png", // Replace with actual logo URL
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
@@ -119,17 +134,17 @@ const Experience = ({ id }) => {
                       sx={{
                         display: "flex",
                         alignItems: {
-                          xs: "flex-start", // Align to start on mobile
-                          sm: "center", // Center on larger screens
+                          xs: "flex-start",
+                          sm: "center",
                         },
                         flexDirection: {
-                          xs: "column", // Stack vertically on mobile
-                          sm: "row", // Horizontal on larger screens
+                          xs: "column",
+                          sm: "row",
                         },
                         mb: 2,
                         gap: {
-                          xs: 1.5, // Larger gap for vertical stacking
-                          sm: 1, // Smaller gap for horizontal
+                          xs: 1.5,
+                          sm: 1,
                         },
                       }}
                     >
@@ -139,29 +154,29 @@ const Experience = ({ id }) => {
                         sx={{
                           mr: 1,
                           display: {
-                            xs: "none", // Hide on mobile
-                            sm: "block", // Show on larger screens
+                            xs: "none",
+                            sm: "block",
                           },
                         }}
                       />
 
-                      {/* Job Title - first on mobile, middle on larger screens */}
+                      {/* Job Title */}
                       <Typography
                         variant="responsiveTitle"
                         component="h2"
                         sx={{
                           fontWeight: "bold",
                           flex: {
-                            xs: "none", // Don't flex on mobile
-                            sm: 1, // Take available space on larger screens
+                            xs: "none",
+                            sm: 1,
                           },
                           order: {
-                            xs: 1, // First on mobile
-                            sm: 2, // Middle on larger screens
+                            xs: 1,
+                            sm: 2,
                           },
                           textAlign: {
-                            xs: "left", // Left align on mobile
-                            sm: "center", // Center align on larger screens
+                            xs: "left",
+                            sm: "center",
                           },
                         }}
                       >
@@ -172,24 +187,30 @@ const Experience = ({ id }) => {
                       <Box
                         sx={{
                           display: {
-                            xs: "flex", // Show on mobile
-                            sm: "none", // Hide on larger screens
+                            xs: "flex",
+                            sm: "none",
                           },
                           alignItems: "center",
-                          order: 2, // Second on mobile (under job title)
+                          order: 2,
                         }}
                       >
-                        <WorkIcon color="primary" sx={{ mr: 1 }} />
+                        <CompanyLogo
+                          src={exp.companyLogo}
+                          alt={`${exp.company} logo`}
+                          sx={{ mr: 1 }}
+                        >
+                          <BusinessIcon />
+                        </CompanyLogo>
                         <Typography
-                          variant="h5"
+                          variant="responsiveTitle"
                           color="primary"
-                          sx={{ fontWeight: 600 }}
+                          //   sx={{ fontWeight: 600 }}
                         >
                           {exp.company}
                         </Typography>
                       </Box>
 
-                      {/* Full-time Chip */}
+                      {/* Employment Type Chip */}
                       <Chip
                         label={exp.type}
                         color={
@@ -199,34 +220,45 @@ const Experience = ({ id }) => {
                         size="medium"
                         sx={{
                           order: {
-                            xs: 3, // Third on mobile
-                            sm: 3, // Last on larger screens
+                            xs: 3,
+                            sm: 3,
                           },
                           alignSelf: {
-                            xs: "flex-start", // Align left on mobile
-                            sm: "center", // Center on larger screens
+                            xs: "flex-start",
+                            sm: "center",
                           },
                         }}
                       />
                     </Box>
 
-                    {/* Company name for larger screens - shown separately */}
-                    <Typography
-                      variant="h5"
-                      color="primary"
+                    {/* Company name with logo for larger screens */}
+                    <Box
                       sx={{
-                        mb: 2,
-                        fontWeight: 600,
                         display: {
-                          xs: "none", // Hide on mobile (already shown above with icon)
-                          sm: "block", // Show on larger screens
+                          xs: "none",
+                          sm: "flex",
                         },
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mb: 2,
                       }}
                     >
-                      {exp.company}
-                    </Typography>
+                      <CompanyLogo
+                        src={exp.companyLogo}
+                        alt={`${exp.company} logo`}
+                      >
+                        <BusinessIcon />
+                      </CompanyLogo>
+                      <Typography
+                        variant="h5"
+                        color="primary"
+                        sx={{ fontWeight: 600 }}
+                      >
+                        {exp.company}
+                      </Typography>
+                    </Box>
 
-                    {/* Location and Duration - unchanged */}
+                    {/* Location and Duration */}
                     <Box
                       sx={{
                         display: "flex",

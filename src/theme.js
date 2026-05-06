@@ -5,89 +5,96 @@ export const getDesignTokens = (mode) => ({
     mode,
     ...(mode === "light"
       ? {
-          // Light mode (blue + white)
+          // Light mode (indigo + slate)
           primary: {
-            main: "#1976d2",
+            main: "#4F46E5",
           },
           secondary: {
-            main: "#2196f3",
+            main: "#06B6D4",
           },
           background: {
-            default: "#ffffff",
-            paper: "#f5f5f5",
+            default: "transparent",
+            paper: "rgba(255, 255, 255, 0.6)",
           },
           text: {
-            primary: "#333333",
-            secondary: "#555555",
+            primary: "#0F172A",
+            secondary: "#475569",
           },
         }
       : {
-          // Dark mode (red + black)
+          // Dark mode (indigo + slate)
           primary: {
-            main: "#f44336",
+            main: "#818CF8",
           },
           secondary: {
-            main: "#ff5252",
+            main: "#22D3EE",
           },
           background: {
-            default: "#121212",
-            paper: "#1e1e1e",
+            default: "transparent",
+            paper: "rgba(15, 23, 42, 0.6)",
           },
           text: {
-            primary: "#ffffff",
-            secondary: "#cccccc",
+            primary: "#F8FAFC",
+            secondary: "#94A3B8",
           },
         }),
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontWeight: 700,
+      fontWeight: 800,
+      letterSpacing: "-0.02em",
     },
     h2: {
-      fontWeight: 600,
+      fontWeight: 700,
+      letterSpacing: "-0.01em",
     },
     h3: {
-      fontWeight: 600,
+      fontWeight: 700,
     },
     h4: {
-      fontWeight: 500,
+      fontWeight: 600,
     },
     h5: {
-      fontWeight: 500,
+      fontWeight: 600,
     },
     h6: {
-      fontWeight: 500,
+      fontWeight: 600,
     },
     responsiveHeader: {
-      fontSize: "1.8rem",
-      fontWeight: "bold",
-      wordBreak: "break-word",
-      hyphens: "auto",
+      fontSize: "2rem",
+      fontWeight: 800,
+      letterSpacing: "-0.02em",
+      background: mode === "light" 
+        ? "linear-gradient(45deg, #1E1B4B, #2563EB)" 
+        : "linear-gradient(45deg, #818CF8, #22D3EE)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
       "@media (min-width:600px)": {
-        fontSize: "2.2rem",
-      },
-      "@media (min-width:900px)": {
         fontSize: "2.5rem",
       },
-      "@media (min-width:1200px)": {
+      "@media (min-width:900px)": {
         fontSize: "3rem",
+      },
+      "@media (min-width:1200px)": {
+        fontSize: "3.5rem",
       },
     },
 
     responsiveTitle: {
       fontSize: "1.5rem",
-      fontWeight: "bold",
+      fontWeight: 700,
+      letterSpacing: "-0.01em",
       wordBreak: "break-word",
       hyphens: "auto",
       "@media (min-width:600px)": {
-        fontSize: "2rem",
+        fontSize: "1.8rem",
       },
       "@media (min-width:900px)": {
-        fontSize: "2.2rem",
+        fontSize: "2rem",
       },
       "@media (min-width:1200px)": {
-        fontSize: "2.5rem",
+        fontSize: "2.2rem",
       },
     },
   },
@@ -95,9 +102,17 @@ export const getDesignTokens = (mode) => ({
     MuiButton: {
       styleOverrides: {
         root: {
+          borderRadius: 8,
+          textTransform: "none",
+          fontWeight: 600,
+          transition: "all 0.2s ease-in-out",
           "&:focus": {
             outline: "none",
             boxShadow: "none",
+          },
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)",
           },
         },
       },
@@ -105,10 +120,23 @@ export const getDesignTokens = (mode) => ({
     MuiIconButton: {
       styleOverrides: {
         root: {
+          transition: "all 0.2s ease-in-out",
           "&:focus": {
             outline: "none",
             boxShadow: "none",
           },
+          "&:hover": {
+            transform: "translateY(-2px) scale(1.05)",
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
         },
       },
     },

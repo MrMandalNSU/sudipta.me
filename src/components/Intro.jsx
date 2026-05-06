@@ -19,15 +19,16 @@ const PROFILE_PHOTO = "./sudipta_dp.png";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
-  borderRadius: theme.spacing(2),
-  boxShadow: theme.shadows[4],
+  borderRadius: theme.spacing(3),
+  background: theme.palette.mode === "light" 
+    ? "rgba(255, 255, 255, 0.4)" 
+    : "rgba(15, 23, 42, 0.4)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
 
 const TextBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3),
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.spacing(1),
-  boxShadow: theme.shadows[2],
+  padding: theme.spacing(4),
+  backgroundColor: "transparent",
   flex: 1, // Ensures equal width with the image container
   display: "flex",
   flexDirection: "column",
@@ -37,11 +38,16 @@ const TextBox = styled(Box)(({ theme }) => ({
 const ProfileImage = styled("img")(({ theme }) => ({
   width: "100%",
   height: "auto",
-  maxHeight: 300,
-  maxWidth: 300,
+  maxHeight: 320,
+  maxWidth: 320,
   objectFit: "cover",
-  borderRadius: theme.spacing(2),
-  boxShadow: theme.shadows[5],
+  borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+  boxShadow: "0 8px 32px rgba(79, 70, 229, 0.3)",
+  animation: "float 6s ease-in-out infinite",
+  transition: "all 0.5s ease-in-out",
+  "&:hover": {
+    borderRadius: "70% 30% 30% 70% / 70% 70% 30% 30%",
+  }
 }));
 
 const Intro = ({ id }) => {
@@ -49,8 +55,8 @@ const Intro = ({ id }) => {
     <Box
       id={id}
       sx={{
-        mt: 10,
-        // minHeight: "calc(100vh - 64px)",
+        mt: 16,
+        pb: 4,
         display: "flex",
         alignItems: "center",
         px: 2,
@@ -82,16 +88,10 @@ const Intro = ({ id }) => {
                 Hi, I'm Sudipta Mandal
               </Typography>
 
-              <Typography variant="body1">
-                A software engineer with more than three years of industrial
-                experience. <br />
-                I like to be adequate, organized, dedicated and self-driven
-                person. Interested in to explore new things while sticking
-                around my comfort zone. Love programming and problem-solving.
-                Like to lead while being efficient at teamwork. Former
-                competitive programming contestant, current problem setter and
-                judge of NSU Problem Solvers (NSUPS). <br />
-                Currently working as Software Engineer (Level 2) at Eucaps AB
+              <Typography variant="body1" sx={{ color: "text.primary", fontSize: "1.1rem", lineHeight: 1.7, mb: 1 }}>
+                A dedicated Software Engineer with over three years of experience building scalable, high-performance web applications and backend systems. Currently serving as a Software Engineer III at Cargo Stream, I specialize in modern cloud architectures, complex data parsing, and full-stack development.
+                <br /><br />
+                With a strong foundation in competitive programming, I thrive on tackling algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
               </Typography>
 
               <Box

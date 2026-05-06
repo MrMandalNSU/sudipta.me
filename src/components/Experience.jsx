@@ -25,18 +25,24 @@ import {
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
-  borderRadius: theme.spacing(2),
-  boxShadow: theme.shadows[4],
+  borderRadius: theme.spacing(3),
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.4)"
+    : "rgba(15, 23, 42, 0.4)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
 
 const ExperienceCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: theme.shadows[3],
-  transition: "all 0.3s ease",
+  backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
+  backdropFilter: "blur(12px)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
+  transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
   "&:hover": {
-    transform: "translateY(-4px)",
-    boxShadow: theme.shadows[8],
+    transform: "translateY(-8px) scale(1.02)",
+    boxShadow: "0 12px 24px rgba(79, 70, 229, 0.2)",
+    border: `1px solid ${theme.palette.primary.main}`,
   },
 }));
 
@@ -54,12 +60,40 @@ const CompanyLogo = styled(Avatar)(({ theme }) => ({
 const Experience = ({ id }) => {
   const experiences = [
     {
-      title: "Software Engineer (L2)",
+      title: "Software Engineer III",
+      company: "Cargo Stream",
+      companyLogo: "/cargo_stream_logo.png",
+      companyUrl: "https://cargostream.co/",
+      location: "Vilnius, Lithuania · Remote",
+      duration: "Nov 2025 - Present",
+      type: "Full-time",
+      achievements: [
+        "Developing a dynamic document-processing system that parses diverse logistics and invoice PDFs from multiple partners.",
+        "Building a flexible, layout-aware PDF parser capable of handling inconsistent invoice structures across different companies.",
+        "Extracting tabular and irregular data using custom logic, fallback rules, and pattern-matching techniques.",
+        "Transforming raw PDF output into structured JSON and CSV formats for automated downstream workflows.",
+        "Ensuring data accuracy by implementing normalization pipelines and format-agnostic extraction strategies.",
+        "Working closely with CTO to optimize data ingestion flows and improve document-processing performance.",
+        "Enhancing scalability and robustness of the parsing module to support increasing document volumes.",
+      ],
+      technologies: [
+        "Laravel",
+        "PHP",
+        "Pattern Recognition",
+        "Data Normalization",
+        "Text Analysis",
+        "PDF-to-text tools",
+        "Docker",
+        "Git",
+      ],
+    },
+    {
+      title: "Software Engineer II",
       company: "Eucaps AB",
       companyLogo: "/eucaps_logo.png",
       companyUrl: "https://eucaps.com/",
-      location: "Sweden Based, Remote",
-      duration: "Dec 2021 - Present",
+      location: "Stockholm, Sweden · Remote",
+      duration: "Dec 2021 - Oct 2025",
       type: "Full-time",
       achievements: [
         "Worked in technologies including Node JS, Laravel, Express JS, React JS, Next JS, AWS Amplify, Lambda, AWS S3 Bucket, Apollo Server, Apollo Client, GraphQL, MySQL, DynamoDB, PostgreSQL, REST API, Docker.",
@@ -121,7 +155,7 @@ const Experience = ({ id }) => {
         <OuterPaper elevation={3}>
           {/* Header Section */}
           <Box sx={{ mb: 4, textAlign: "center" }}>
-            <Typography variant="responsiveHeader" component="h1" gutterBottom>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary" }} gutterBottom>
               Professional Experience
             </Typography>
           </Box>
@@ -130,247 +164,76 @@ const Experience = ({ id }) => {
           <Stack spacing={3}>
             {experiences.map((exp, index) => (
               <ExperienceCard key={index} elevation={3}>
-                <CardContent sx={{ p: 3 }}>
-                  {/* Header Section */}
-                  <Box sx={{ mb: 3 }}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: {
-                          xs: "flex-start",
-                          sm: "center",
-                        },
-                        flexDirection: {
-                          xs: "column",
-                          sm: "row",
-                        },
-                        mb: 2,
-                        gap: {
-                          xs: 1.5,
-                          sm: 1,
-                        },
-                      }}
-                    >
-                      {/* Work Icon for larger screens only */}
-                      <WorkIcon
-                        color="primary"
-                        sx={{
-                          mr: 1,
-                          display: {
-                            xs: "none",
-                            sm: "block",
-                          },
-                        }}
-                      />
-
-                      {/* Job Title */}
-                      <Typography
-                        variant="responsiveTitle"
-                        component="h2"
-                        sx={{
-                          fontWeight: "bold",
-                          flex: {
-                            xs: "none",
-                            sm: 1,
-                          },
-                          order: {
-                            xs: 1,
-                            sm: 2,
-                          },
-                          textAlign: {
-                            xs: "left",
-                            sm: "center",
-                          },
-                        }}
-                      >
-                        {exp.title}
-                      </Typography>
-
-                      {/* Work Icon and Company Name for mobile only */}
-                      <Box
-                        sx={{
-                          display: {
-                            xs: "flex",
-                            sm: "none",
-                          },
-                          alignItems: "center",
-                          order: 2,
-                        }}
-                      >
-                        <CompanyLogo
-                          src={exp.companyLogo}
-                          alt={`${exp.company} logo`}
-                          sx={{ mr: 1 }}
-                        >
-                          <BusinessIcon />
-                        </CompanyLogo>
-                        <Link
-                          href={exp.companyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          underline="hover"
-                          sx={{ textDecoration: "none" }}
-                        >
-                          <Typography
-                            variant="h5"
-                            color="primary"
-                            sx={{
-                              fontWeight: 600,
-                              "&:hover": {
-                                textDecoration: "underline",
-                              },
-                            }}
-                          >
-                            {exp.company}
+                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      justifyContent: "space-between",
+                      alignItems: { xs: "flex-start", sm: "center" },
+                      mb: 2,
+                      gap: 2,
+                    }}
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                      <CompanyLogo src={exp.companyLogo} alt={`${exp.company} logo`}>
+                        <BusinessIcon />
+                      </CompanyLogo>
+                      <Box>
+                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                          {exp.title}
+                        </Typography>
+                        <Link href={exp.companyUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                            {exp.company} • {exp.type}
                           </Typography>
                         </Link>
                       </Box>
-
-                      {/* Employment Type Chip */}
-                      <Chip
-                        label={exp.type}
-                        color={
-                          exp.type === "Full-time" ? "primary" : "secondary"
-                        }
-                        variant="outlined"
-                        size="medium"
-                        sx={{
-                          order: {
-                            xs: 3,
-                            sm: 3,
-                          },
-                          alignSelf: {
-                            xs: "flex-start",
-                            sm: "center",
-                          },
-                        }}
-                      />
                     </Box>
-
-                    {/* Company name with logo for larger screens */}
-                    <Box
-                      sx={{
-                        display: {
-                          xs: "none",
-                          sm: "flex",
-                        },
-                        alignItems: "center",
-                        justifyContent: "center",
-                        mb: 2,
-                      }}
-                    >
-                      <CompanyLogo
-                        src={exp.companyLogo}
-                        alt={`${exp.company} logo`}
-                      >
-                        <BusinessIcon />
-                      </CompanyLogo>
-                      <Link
-                        href={exp.companyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        underline="hover"
-                        sx={{ textDecoration: "none" }}
-                      >
-                        <Typography
-                          variant="h5"
-                          color="primary"
-                          sx={{
-                            fontWeight: 600,
-                            "&:hover": {
-                              textDecoration: "underline",
-                            },
-                          }}
-                        >
-                          {exp.company}
-                        </Typography>
-                      </Link>
-                    </Box>
-
-                    {/* Location and Duration */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 3,
-                        flexWrap: "wrap",
-                        mb: 2,
-                      }}
-                    >
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-                      >
-                        <LocationIcon fontSize="small" color="action" />
-                        <Typography variant="body1" color="text.secondary">
-                          {exp.location}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-                      >
-                        <CalendarIcon fontSize="small" color="action" />
-                        <Typography variant="body1" color="text.secondary">
-                          {exp.duration}
-                        </Typography>
-                      </Box>
+                    <Box sx={{ textAlign: { xs: "left", sm: "right" } }}>
+                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
+                        <CalendarIcon sx={{ fontSize: 14 }} /> {exp.duration}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, mt: 0.5 }}>
+                        <LocationIcon sx={{ fontSize: 14 }} /> {exp.location}
+                      </Typography>
                     </Box>
                   </Box>
 
-                  <Divider sx={{ mb: 3 }} />
+                  <Divider sx={{ mb: 2, borderColor: "rgba(255,255,255,0.1)" }} />
 
-                  {/* Achievements Section */}
-                  <Box sx={{ mb: 3 }}>
-                    <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                      Key Achievements
-                    </Typography>
-                    <List sx={{ pl: 0 }}>
+                  <Box sx={{ mb: 2 }}>
+                    <List sx={{ p: 0 }}>
                       {exp.achievements.map((achievement, achIndex) => (
-                        <ListItem key={achIndex} sx={{ pl: 0, pb: 1 }}>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                variant="body1"
-                                sx={{
-                                  "&::before": {
-                                    content: '"●"',
-                                    color: "primary.main",
-                                    fontWeight: "bold",
-                                    mr: 1,
-                                  },
-                                }}
-                              >
-                                {achievement}
-                              </Typography>
-                            }
-                          />
+                        <ListItem key={achIndex} sx={{ p: 0, pb: 1, alignItems: "flex-start" }}>
+                          <Typography variant="body2" sx={{ color: "primary.main", mr: 1, mt: 0.25 }}>
+                            ✦
+                          </Typography>
+                          <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
+                            {achievement}
+                          </Typography>
                         </ListItem>
                       ))}
                     </List>
                   </Box>
 
-                  {/* Technologies Section */}
-                  <Box>
-                    <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                      Tech & Tools
-                    </Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                      {exp.technologies.map((tech, techIndex) => (
-                        <Chip
-                          key={techIndex}
-                          label={tech}
-                          variant="outlined"
-                          size="medium"
-                          sx={{
-                            borderRadius: 2,
-                            "&:hover": {
-                              backgroundColor: "primary.main",
-                              color: "primary.contrastText",
-                              borderColor: "primary.main",
-                            },
-                          }}
-                        />
-                      ))}
-                    </Box>
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 2 }}>
+                    {exp.technologies.map((tech, techIndex) => (
+                      <Chip
+                        key={techIndex}
+                        label={tech}
+                        size="small"
+                        sx={{
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                          borderRadius: 1,
+                          backgroundColor: "rgba(79, 70, 229, 0.1)",
+                          color: "primary.main",
+                          border: "none",
+                          "&:hover": { backgroundColor: "rgba(79, 70, 229, 0.2)" }
+                        }}
+                      />
+                    ))}
                   </Box>
                 </CardContent>
               </ExperienceCard>

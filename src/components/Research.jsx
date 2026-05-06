@@ -137,9 +137,9 @@ const Research = ({ id }) => {
                         </Link>
                       </Box>
                     </Box>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, textAlign: { xs: "left", sm: "right" } }}>
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, alignItems: { xs: "flex-start", sm: "flex-end" }, textAlign: { xs: "left", sm: "right" } }}>
                       {research.researchLink && (
-                        <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none">
+                        <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ mb: 0.5 }}>
                           <Chip 
                             icon={<LanguageIcon fontSize="small" />} 
                             label="View Research" 

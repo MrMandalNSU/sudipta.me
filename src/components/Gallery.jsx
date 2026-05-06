@@ -131,7 +131,7 @@ const Gallery = ({ id }) => {
   // Auto-slide every 3 seconds
   useEffect(() => {
     if (images.length === 0) return;
-    const interval = setInterval(handleNext, 3000);
+    const interval = setInterval(handleNext, 5000);
     return () => clearInterval(interval);
   }, [images.length]); // depends on images.length so it only starts after mounting
 

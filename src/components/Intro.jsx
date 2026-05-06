@@ -88,16 +88,10 @@ const Intro = ({ id }) => {
                 Hi, I'm Sudipta Mandal
               </Typography>
 
-              <Typography variant="body1">
-                A software engineer with more than three years of industrial
-                experience. <br />
-                I like to be adequate, organized, dedicated and self-driven
-                person. Interested in to explore new things while sticking
-                around my comfort zone. Love programming and problem-solving.
-                Like to lead while being efficient at teamwork. Former
-                competitive programming contestant, current problem setter and
-                judge of NSU Problem Solvers (NSUPS). <br />
-                Currently working as Software Engineer III at Cargo Stream
+              <Typography variant="body1" sx={{ color: "text.primary", fontSize: "1.1rem", lineHeight: 1.7, mb: 1 }}>
+                A dedicated Software Engineer with over three years of experience building scalable, high-performance web applications and backend systems. Currently serving as a Software Engineer III at Cargo Stream, I specialize in modern cloud architectures, complex data parsing, and full-stack development.
+                <br /><br />
+                With a strong foundation in competitive programming, I thrive on tackling algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
               </Typography>
 
               <Box

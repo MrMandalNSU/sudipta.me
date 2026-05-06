@@ -65,9 +65,9 @@ export const getDesignTokens = (mode) => ({
       fontSize: "2rem",
       fontWeight: 800,
       letterSpacing: "-0.02em",
-      wordBreak: "break-word",
-      hyphens: "auto",
-      background: "linear-gradient(45deg, #4F46E5, #06B6D4)",
+      background: mode === "light" 
+        ? "linear-gradient(45deg, #1E1B4B, #2563EB)" 
+        : "linear-gradient(45deg, #818CF8, #22D3EE)",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
       "@media (min-width:600px)": {

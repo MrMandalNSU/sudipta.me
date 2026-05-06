@@ -7,6 +7,7 @@ import Research from "./components/Research";
 
 import Projects from "./components/Projects";
 import CompetitiveProgramming from "./components/CompetitiveProgramming";
+import Gallery from "./components/Gallery";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Research id="research" />
       <Projects id="projects" />
       <CompetitiveProgramming id="cp" />
+      <Gallery id="gallery" />
     </ThemeProvider>
   );
 }

@@ -23,7 +23,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 
-const navItems = ["Intro", "Experience", "Projects", "CP"];
+const navItems = ["Intro", "Experience", "Projects", "CP", "Gallery"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,6 +68,9 @@ const Navbar = () => {
         break;
       case "CP":
         scrollToSection("cp");
+        break;
+      case "Gallery":
+        scrollToSection("gallery");
         break;
       default:
         break;

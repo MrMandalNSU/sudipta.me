@@ -3,25 +3,21 @@ import {
   Box,
   Container,
   Typography,
-  Card,
   CardContent,
   Chip,
   Stack,
   Divider,
   List,
   ListItem,
-  ListItemText,
   Paper,
   Avatar,
   Link,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
-  School as SchoolIcon,
-  LocationOn as LocationIcon,
-  CalendarToday as CalendarIcon,
-  Business as BusinessIcon,
+  Code as CodeIcon,
   Language as LanguageIcon,
+  GitHub as GitHubIcon,
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
@@ -33,7 +29,7 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
 
-const ResearchCard = styled(Box)(({ theme }) => ({
+const ProjectCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
   backdropFilter: "blur(12px)",
@@ -47,42 +43,33 @@ const ResearchCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-const InstitutionLogo = styled(Avatar)(({ theme }) => ({
+const ProjectIconBox = styled(Avatar)(({ theme }) => ({
   width: 40,
   height: 40,
   marginRight: theme.spacing(1.5),
-  "& .MuiAvatar-img": {
-    objectFit: "contain",
-    padding: theme.spacing(0.5),
-  },
+  backgroundColor: "rgba(79, 70, 229, 0.1)",
+  color: theme.palette.primary.main,
 }));
 
-const Research = ({ id }) => {
-  const researches = [
+const Projects = ({ id }) => {
+  const projects = [
     {
-      title: "Social Media Opinion Mining Based on Bangla Public Posts",
-      institution: "North South University (NSU)",
-      institutionLogo: "/sudipta.svg",
-      institutionUrl: "https://www.northsouth.edu/",
-      researchLink: "https://ieeexplore.ieee.org/document/9689860",
-      location: "Dhaka, Bangladesh",
-      duration: "2021",
-      type: "Research",
-      focus: "Sentiment analysis of Bangla text from Facebook public posts",
+      title: "Text Analyzer",
+      type: "Web App",
+      liveLink: "https://text-analyzer-sudipta.vercel.app/",
+      githubLink: "https://github.com/MrMandalNSU/text-analyzer",
       achievements: [
-        "Conducted sentiment analysis on Bangla text using state-of-the-art ML techniques",
-        "Created a dataset of 11K Bangla comments using semi-automatic crawler from Facebook",
-        "Applied TF-IDF vectors, uni-bi-tri-gram analysis, and confusion matrix evaluation",
-        "Implemented traditional ML algorithms for text classification and sentiment detection",
+        "Developed an online platform to analyze text data with auto-generated reports. Implemented CRUD for text, with each browser acting as a unique user. Ensured fast, lightweight analysis. Adopted by 10+ active users.",
+        "Built an interactive UI, optimized analysis, and deployed using Node, Express, TS, React, Vite, MUI, and TDD.",
       ],
       technologies: [
-        "Python",
-        "Google Colab",
-        "Machine Learning",
-        "TF-IDF",
-        "Natural Language Processing",
-        "LaTeX",
-        "Data Mining",
+        "Node",
+        "Express",
+        "TypeScript",
+        "React",
+        "Vite",
+        "Material UI",
+        "TDD"
       ],
     },
   ];
@@ -103,14 +90,14 @@ const Research = ({ id }) => {
           {/* Header Section */}
           <Box sx={{ mb: 4, textAlign: "center" }}>
             <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary" }} gutterBottom>
-              Research Experience
+              Projects
             </Typography>
           </Box>
 
-          {/* Research Cards */}
+          {/* Project Cards */}
           <Stack spacing={3}>
-            {researches.map((research, index) => (
-              <ResearchCard key={index} elevation={3}>
+            {projects.map((project, index) => (
+              <ProjectCard key={index} elevation={3}>
                 <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
                   <Box
                     sx={{
@@ -123,37 +110,39 @@ const Research = ({ id }) => {
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <InstitutionLogo src={research.institutionLogo} alt={`${research.institution} logo`}>
-                        <BusinessIcon />
-                      </InstitutionLogo>
+                      <ProjectIconBox>
+                        <CodeIcon />
+                      </ProjectIconBox>
                       <Box>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                          {research.title}
+                          {project.title}
                         </Typography>
-                        <Link href={research.institutionUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                            {research.institution} • {research.type}
-                          </Typography>
-                        </Link>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                          {project.type}
+                        </Typography>
                       </Box>
                     </Box>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, textAlign: { xs: "left", sm: "right" } }}>
-                      {research.researchLink && (
-                        <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none">
+                    <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
+                      {project.liveLink && (
+                        <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none">
                           <Chip 
                             icon={<LanguageIcon fontSize="small" />} 
-                            label="View Research" 
+                            label="Live Link" 
                             size="small"
                             sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
                           />
                         </Link>
                       )}
-                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, width: "100%" }}>
-                        <CalendarIcon sx={{ fontSize: 14 }} /> {research.duration}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, width: "100%" }}>
-                        <LocationIcon sx={{ fontSize: 14 }} /> {research.location}
-                      </Typography>
+                      {project.githubLink && (
+                        <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" underline="none">
+                          <Chip 
+                            icon={<GitHubIcon fontSize="small" />} 
+                            label="GitHub" 
+                            size="small"
+                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(255, 255, 255, 0.1)", color: "text.primary", border: "1px solid rgba(255, 255, 255, 0.2)", "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.2)" } }}
+                          />
+                        </Link>
+                      )}
                     </Box>
                   </Box>
 
@@ -161,17 +150,7 @@ const Research = ({ id }) => {
 
                   <Box sx={{ mb: 2 }}>
                     <List sx={{ p: 0 }}>
-                      {research.focus && (
-                        <ListItem sx={{ p: 0, pb: 1, alignItems: "flex-start" }}>
-                          <Typography variant="body2" sx={{ color: "primary.main", mr: 1, mt: 0.25 }}>
-                            ✦
-                          </Typography>
-                          <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
-                            <strong>Focus:</strong> {research.focus}
-                          </Typography>
-                        </ListItem>
-                      )}
-                      {research.achievements.map((achievement, achIndex) => (
+                      {project.achievements.map((achievement, achIndex) => (
                         <ListItem key={achIndex} sx={{ p: 0, pb: 1, alignItems: "flex-start" }}>
                           <Typography variant="body2" sx={{ color: "primary.main", mr: 1, mt: 0.25 }}>
                             ✦
@@ -185,7 +164,7 @@ const Research = ({ id }) => {
                   </Box>
 
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 2 }}>
-                    {research.technologies.map((tech, techIndex) => (
+                    {project.technologies.map((tech, techIndex) => (
                       <Chip
                         key={techIndex}
                         label={tech}
@@ -203,7 +182,7 @@ const Research = ({ id }) => {
                     ))}
                   </Box>
                 </CardContent>
-              </ResearchCard>
+              </ProjectCard>
             ))}
           </Stack>
         </OuterPaper>
@@ -212,4 +191,4 @@ const Research = ({ id }) => {
   );
 };
 
-export default Research;
+export default Projects;

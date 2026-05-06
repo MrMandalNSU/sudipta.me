@@ -23,7 +23,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 
-const navItems = ["Intro", "About", "Skills", "Projects", "Contact"];
+const navItems = ["Intro", "Experience", "Projects", "CP"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,9 +43,14 @@ const Navbar = () => {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({
+      // Calculate offset to account for the fixed navbar
+      const navbarHeight = 100; // Adjust this value based on your navbar's height + margin
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
         behavior: "smooth",
-        block: "start",
       });
     }
   };
@@ -55,17 +60,14 @@ const Navbar = () => {
       case "Intro":
         scrollToSection("intro");
         break;
-      case "About":
-        scrollToSection("about");
-        break;
-      case "Skills":
+      case "Experience":
         scrollToSection("experience");
         break;
       case "Projects":
         scrollToSection("projects");
         break;
-      case "Contact":
-        scrollToSection("contact");
+      case "CP":
+        scrollToSection("cp");
         break;
       default:
         break;
@@ -133,15 +135,27 @@ const Navbar = () => {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "100%", md: "100%", lg: "70%" },
+        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%" },
         transform: "translateX(-50%)",
         position: "fixed",
-        top: 0,
+        top: { xs: 0, sm: 16 },
         left: "50%",
         zIndex: 1100,
       }}
     >
-      <AppBar component="nav" position="sticky" sx={{ width: "100%" }}>
+      <AppBar
+        component="nav"
+        position="static"
+        sx={{
+          width: "100%",
+          borderRadius: { xs: 0, sm: 4 },
+          background: mode === "light" ? "rgba(255, 255, 255, 0.7)" : "rgba(15, 23, 42, 0.7)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          color: "text.primary",
+        }}
+      >
         <Toolbar>
           <Button
             onClick={scrollToTop}
@@ -167,14 +181,14 @@ const Navbar = () => {
             {navItems.map((item) => (
               <Button
                 key={item}
-                sx={{ color: "#fff" }}
+                sx={{ color: "inherit", mx: 0.5 }}
                 onClick={() => handleNavClick(item)}
               >
                 {item}
               </Button>
             ))}
             <Button
-              sx={{ color: "#fff" }}
+              sx={{ color: "inherit", ml: 1 }}
               onClick={handleResumeMenuOpen}
               endIcon={<DescriptionIcon />}
             >

@@ -5,6 +5,9 @@ import Intro from "./components/Intro";
 import Experience from "./components/Experience";
 import Research from "./components/Research";
 
+import Projects from "./components/Projects";
+import CompetitiveProgramming from "./components/CompetitiveProgramming";
+
 function App() {
   return (
     <ThemeProvider>
@@ -12,6 +15,8 @@ function App() {
       <Intro id="intro" />
       <Experience id="experience" />
       <Research id="research" />
+      <Projects id="projects" />
+      <CompetitiveProgramming id="cp" />
     </ThemeProvider>
   );
 }

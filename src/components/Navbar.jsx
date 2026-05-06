@@ -12,16 +12,23 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme as useMuiTheme,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import DescriptionIcon from "@mui/icons-material/Description";
 import { useTheme } from "../contexts/ThemeContext";
+import ResumeModal from "./ResumeModal";
 
 const navItems = ["Intro", "About", "Skills", "Projects", "Contact"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
+  const [resumeMenuAnchor, setResumeMenuAnchor] = useState(null);
   const { mode, toggleColorMode } = useTheme();
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
@@ -69,6 +76,33 @@ const Navbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleResumeMenuOpen = (event) => {
+    setResumeMenuAnchor(event.currentTarget);
+  };
+
+  const handleResumeMenuClose = () => {
+    setResumeMenuAnchor(null);
+  };
+
+  const handleViewResume = () => {
+    setResumeModalOpen(true);
+    handleResumeMenuClose();
+  };
+
+  const handleDownloadResume = () => {
+    const link = document.createElement("a");
+    link.href = "/Resume_Sudipta_Mandal.pdf";
+    link.download = "Resume_Sudipta_Mandal.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    handleResumeMenuClose();
+  };
+
+  const handleCloseResumeModal = () => {
+    setResumeModalOpen(false);
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -82,6 +116,16 @@ const Navbar = () => {
             </Button>
           </ListItem>
         ))}
+        <ListItem disablePadding>
+          <Button fullWidth onClick={handleViewResume}>
+            <ListItemText primary="View Resume" />
+          </Button>
+        </ListItem>
+        <ListItem disablePadding>
+          <Button fullWidth onClick={handleDownloadResume}>
+            <ListItemText primary="Download Resume" />
+          </Button>
+        </ListItem>
       </List>
     </Box>
   );
@@ -129,6 +173,27 @@ const Navbar = () => {
                 {item}
               </Button>
             ))}
+            <Button
+              sx={{ color: "#fff" }}
+              onClick={handleResumeMenuOpen}
+              endIcon={<DescriptionIcon />}
+            >
+              Resume
+            </Button>
+            <Menu
+              anchorEl={resumeMenuAnchor}
+              open={Boolean(resumeMenuAnchor)}
+              onClose={handleResumeMenuClose}
+            >
+              <MenuItem onClick={handleViewResume}>
+                <DescriptionIcon sx={{ mr: 1 }} />
+                View Resume
+              </MenuItem>
+              <MenuItem onClick={handleDownloadResume}>
+                <GetAppIcon sx={{ mr: 1 }} />
+                Download PDF
+              </MenuItem>
+            </Menu>
           </Box>
           <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: 1 }}>
             {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -160,6 +225,9 @@ const Navbar = () => {
       >
         {drawer}
       </Drawer>
+
+      {/* Resume Modal */}
+      <ResumeModal open={resumeModalOpen} onClose={handleCloseResumeModal} />
     </Box>
   );
 };

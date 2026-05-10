@@ -118,7 +118,7 @@ const CompetitiveProgramming = ({ id }) => {
                       <CPIconBox>
                         {item.icon}
                       </CPIconBox>
-                      <Box>
+                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {item.title}
                         </Typography>

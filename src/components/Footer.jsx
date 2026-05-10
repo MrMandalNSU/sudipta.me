@@ -110,7 +110,7 @@ const Footer = () => {
 
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Sudipta Mandal. All rights reserved. Built with React & Material-UI.
+            © {new Date().getFullYear()} Sudipta Mandal. Built with React, Vite, Material-UI & Coffee ☕.
           </Typography>
         </Box>
       </Container>

@@ -179,7 +179,7 @@ const Experience = ({ id }) => {
                       <CompanyLogo src={exp.companyLogo} alt={`${exp.company} logo`}>
                         <BusinessIcon />
                       </CompanyLogo>
-                      <Box>
+                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {exp.title}
                         </Typography>

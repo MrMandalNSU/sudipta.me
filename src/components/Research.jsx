@@ -126,7 +126,7 @@ const Research = ({ id }) => {
                       <InstitutionLogo src={research.institutionLogo} alt={`${research.institution} logo`}>
                         <BusinessIcon />
                       </InstitutionLogo>
-                      <Box>
+                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {research.title}
                         </Typography>

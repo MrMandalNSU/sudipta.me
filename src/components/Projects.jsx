@@ -72,6 +72,43 @@ const Projects = ({ id }) => {
         "TDD"
       ],
     },
+    {
+      title: "Product Pouch",
+      type: "Full-Stack Web App",
+      liveLink: "",
+      githubLink: "https://github.com/MrMandalNSU/ProductPouch",
+      achievements: [
+        "Developed a comprehensive full-stack interactive platform featuring complete product buy, sell, and rental functionalities.",
+        "Built a robust backend using Node.js, Apollo Express, Prisma ORM, and PostgreSQL to handle complex database relations and user data.",
+        "Designed a responsive and modern frontend utilizing React, Next.js, and Mantine UI, fully integrated with GraphQL queries and mutations.",
+      ],
+      technologies: [
+        "React",
+        "Next.js",
+        "GraphQL",
+        "Node.js",
+        "Prisma",
+        "PostgreSQL",
+        "Mantine UI"
+      ],
+    },
+    {
+      title: "DSE SME Data Scraper",
+      type: "Automation Script",
+      liveLink: "",
+      githubLink: "https://github.com/MrMandalNSU/dse-sme-data-scraper",
+      achievements: [
+        "Engineered an automated Node.js script tailored to reliably scrape daily SME company data from the Dhaka Stock Exchange (DSE).",
+        "Implemented data transformation logic to parse raw HTML tables and seamlessly export the extracted financial records into structured CSV files for downstream analysis.",
+      ],
+      technologies: [
+        "Node.js",
+        "JavaScript",
+        "Web Scraping",
+        "Data Parsing",
+        "CSV Export"
+      ],
+    },
   ];
 
   return (
@@ -113,7 +150,7 @@ const Projects = ({ id }) => {
                       <ProjectIconBox>
                         <CodeIcon />
                       </ProjectIconBox>
-                      <Box>
+                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {project.title}
                         </Typography>

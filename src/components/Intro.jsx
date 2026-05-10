@@ -161,7 +161,7 @@ const Intro = ({ id }) => {
                   mt: 3,
                 }}
               >
-                <IconButton
+                {/* <IconButton
                   color="primary"
                   sx={{ fontSize: 40 }}
                   component="a"
@@ -190,7 +190,7 @@ const Intro = ({ id }) => {
                   rel="noopener noreferrer"
                 >
                   <Twitter />
-                </IconButton>
+                </IconButton> */}
                 <IconButton
                   color="primary"
                   sx={{ fontSize: 40 }}

@@ -20,19 +20,20 @@ const PROFILE_PHOTO = "./sudipta_dp.png";
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
-  background: theme.palette.mode === "light" 
-    ? "rgba(255, 255, 255, 0.4)" 
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
 
-const TextBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  backgroundColor: "transparent",
-  flex: 1, // Ensures equal width with the image container
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+const IntroCard = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
+  backdropFilter: "blur(12px)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
+  borderRadius: theme.spacing(3),
+  position: "relative",
+  zIndex: 1,
 }));
 
 const ProfileImage = styled("img")(({ theme }) => ({
@@ -65,19 +66,21 @@ const Intro = ({ id }) => {
       <Container maxWidth="lg">
         <OuterPaper elevation={3}>
           {/* Main Layout Box */}
-          <Box
+          <IntroCard
             sx={{
               display: "flex",
               flexDirection: { xs: "column", md: "row" }, // Stack on mobile, row on desktop
               alignItems: "center",
-              gap: 4,
+              justifyContent: "space-between",
+              p: { xs: 3, md: 5 },
             }}
           >
             {/* Text First on Mobile, Left on Desktop */}
-            <TextBox
+            <Box
               sx={{
                 flex: 2, // making the text box wider than image
                 order: { xs: 2, md: 1 },
+                pr: { md: 4 }, // Standard space between text and photo
               }}
             >
               <Typography
@@ -88,10 +91,9 @@ const Intro = ({ id }) => {
                 Hi, I'm Sudipta Mandal
               </Typography>
 
-              <Typography variant="body1" sx={{ color: "text.primary", fontSize: "1.1rem", lineHeight: 1.7, mb: 1 }}>
-                A dedicated Software Engineer with over three years of experience building scalable, high-performance web applications and backend systems. Currently serving as a Software Engineer III at Cargo Stream, I specialize in modern cloud architectures, complex data parsing, and full-stack development.
-                <br /><br />
-                With a strong foundation in competitive programming, I thrive on tackling algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
+              <Typography variant="body1" sx={{ color: "text.primary", fontSize: "1rem", lineHeight: 1.7, mb: 1 }}>
+                A dedicated Software Engineer with five years of industrial experience in building scalable, high-performance web applications and backend systems. Currently serving as a <b>Software Engineer III at Cargo Stream</b>, I specialize in modern cloud architectures, complex data parsing, and backend development.
+                With a strong foundation in competitive programming, I thrive on solving algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
               </Typography>
 
               <Box
@@ -129,7 +131,7 @@ const Intro = ({ id }) => {
                   Contact Me
                 </Button>
               </Box>
-            </TextBox>
+            </Box>
 
             {/* Image First on Mobile, Right on Desktop */}
             <Box
@@ -137,10 +139,13 @@ const Intro = ({ id }) => {
                 flex: 1,
                 flexDirection: "column",
                 display: "flex",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 alignItems: "center",
-                alignSelf: "flex-start",
                 order: { xs: 1, md: 2 },
+                zIndex: 2,
+                position: "relative",
+                mt: { xs: -8, md: -10 }, // Photo pops out of the top of the card
+                mb: { xs: 4, md: 0 },
               }}
             >
               <ProfileImage src={PROFILE_PHOTO} alt="Profile" />
@@ -208,7 +213,7 @@ const Intro = ({ id }) => {
                 </IconButton>
               </Box>
             </Box>
-          </Box>
+          </IntroCard>
         </OuterPaper>
       </Container>
     </Box>

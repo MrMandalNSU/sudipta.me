@@ -27,8 +27,8 @@ import {
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
-  background: theme.palette.mode === "light" 
-    ? "rgba(255, 255, 255, 0.4)" 
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
@@ -62,7 +62,7 @@ const Research = ({ id }) => {
     {
       title: "Social Media Opinion Mining Based on Bangla Public Posts",
       institution: "North South University (NSU)",
-      institutionLogo: "/sudipta.svg",
+      institutionLogo: "/research_logo.png",
       institutionUrl: "https://www.northsouth.edu/",
       researchLink: "https://ieeexplore.ieee.org/document/9689860",
       location: "Dhaka, Bangladesh",
@@ -140,9 +140,9 @@ const Research = ({ id }) => {
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, alignItems: { xs: "flex-start", sm: "flex-end" }, textAlign: { xs: "left", sm: "right" } }}>
                       {research.researchLink && (
                         <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ mb: 0.5 }}>
-                          <Chip 
-                            icon={<LanguageIcon fontSize="small" />} 
-                            label="View Research" 
+                          <Chip
+                            icon={<LanguageIcon fontSize="small" />}
+                            label="View Research"
                             size="small"
                             sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
                           />

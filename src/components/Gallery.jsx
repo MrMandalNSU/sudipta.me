@@ -40,10 +40,26 @@ const CarouselContainer = styled(Box)(({ theme }) => ({
 const CarouselImage = styled("img")({
   width: "100%",
   height: "100%",
-  objectFit: "cover", // change to "contain" if you don't want images to be cropped
+  objectFit: "contain", // changed from "cover" to avoid cropping
   display: "block",
   transition: "opacity 0.5s ease-in-out",
+  position: "relative",
+  zIndex: 1,
 });
+
+const BlurredBackground = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: "-10%",
+  left: "-10%",
+  width: "120%",
+  height: "120%",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  filter: "blur(20px)",
+  opacity: theme.palette.mode === "light" ? 0.6 : 0.4,
+  zIndex: 0,
+  transition: "background-image 0.5s ease-in-out",
+}));
 
 const CaptionOverlay = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -56,6 +72,7 @@ const CaptionOverlay = styled(Box)(({ theme }) => ({
     ? "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)"
     : "linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0) 100%)",
   textAlign: "center",
+  zIndex: 2,
 }));
 
 const NavButton = styled(IconButton)(({ theme }) => ({
@@ -128,12 +145,12 @@ const Gallery = ({ id }) => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
-  // Auto-slide every 3 seconds
+  // Auto-slide every 7 seconds
   useEffect(() => {
     if (images.length === 0) return;
-    const interval = setInterval(handleNext, 5000);
+    const interval = setInterval(handleNext, 7000);
     return () => clearInterval(interval);
-  }, [images.length]); // depends on images.length so it only starts after mounting
+  }, [images.length, currentIndex]); // depends on currentIndex so it resets on manual navigation
 
   if (images.length === 0) return null;
 
@@ -157,6 +174,9 @@ const Gallery = ({ id }) => {
           </Box>
 
           <CarouselContainer>
+            <BlurredBackground 
+              style={{ backgroundImage: `url(${images[currentIndex].img})` }} 
+            />
             <CarouselImage
               key={currentIndex} // forces re-render/animation on index change
               src={images[currentIndex].img}

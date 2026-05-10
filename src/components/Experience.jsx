@@ -128,7 +128,7 @@ const Experience = ({ id }) => {
       title: "Junior Developer",
       company: "NSUPS",
       companyLogo: "/nsups_logo.png",
-      companyUrl: "https://nsups.vercel.app/",
+      companyUrl: "https://nsups.org/",
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",

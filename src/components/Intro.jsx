@@ -91,7 +91,7 @@ const Intro = ({ id }) => {
                 Hi, I'm Sudipta Mandal
               </Typography>
 
-              <Typography variant="body1" sx={{ color: "text.primary", fontSize: "1rem", lineHeight: 1.7, mb: 1 }}>
+              <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.7, mb: 1 }}>
                 A dedicated Software Engineer with five years of industrial experience in building scalable, high-performance web applications and backend systems. Currently serving as a <b>Software Engineer III at Cargo Stream</b>, I specialize in modern cloud architectures, complex data parsing, and backend development.
                 With a strong foundation in competitive programming, I thrive on solving algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
               </Typography>

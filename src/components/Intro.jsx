@@ -39,8 +39,8 @@ const IntroCard = styled(Box)(({ theme }) => ({
 const ProfileImage = styled("img")(({ theme }) => ({
   width: "100%",
   height: "auto",
-  maxHeight: 320,
-  maxWidth: 320,
+  maxHeight: 275,
+  maxWidth: 275,
   objectFit: "cover",
   borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
   boxShadow: "0 8px 32px rgba(79, 70, 229, 0.3)",

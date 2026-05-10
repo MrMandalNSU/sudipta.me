@@ -166,13 +166,6 @@ const Navbar = () => {
               textTransform: "none", // Prevent text from being capitalized
               fontSize: "1.25rem", // Adjust text size
               color: "inherit", // Inherit the color from the theme
-              backgroundColor: "transparent", // Transparent background
-              boxShadow: "none", // Remove default button shadow
-              "&:hover": {
-                transform: "translateY(-3px)", // Lift the button a bit
-                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Add glow effect
-                backgroundColor: "rgba(255, 255, 255, 0.08)", // Optional: add subtle background change on hover
-              },
               display: { xs: "none", sm: "block" }, // Only display on larger screens
               mr: "auto", // Keep it left-aligned
             }}

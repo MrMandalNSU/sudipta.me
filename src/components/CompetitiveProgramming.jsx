@@ -23,8 +23,8 @@ import {
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
-  background: theme.palette.mode === "light" 
-    ? "rgba(255, 255, 255, 0.4)" 
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
 }));
@@ -57,7 +57,7 @@ const CompetitiveProgramming = ({ id }) => {
       title: "ACM ICPC Dhaka Regional (2019-2020)",
       description: "Ranked 97th among 190 teams (top 50%). Team: NSU_0011",
       links: [
-        { label: "Standings", url: "https://algo.codemarshal.org/contests/icpc-dhaka-19-onsite-main/standings" },
+        { label: "Standings", url: "https://icpc.global/regionals/finder/Dhaka-2020/standings" },
         { label: "ICPC ID", url: "https://icpc.global/ICPCID/E393DOSH1183" }
       ],
       icon: <TrophyIcon />
@@ -127,17 +127,17 @@ const CompetitiveProgramming = ({ id }) => {
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, textAlign: { xs: "left", sm: "right" } }}>
                       {item.links.map((link, linkIdx) => (
                         <Link key={linkIdx} href={link.url} target="_blank" rel="noopener noreferrer" underline="none">
-                          <Chip 
-                            icon={<OpenInNewIcon fontSize="small" />} 
-                            label={link.label} 
+                          <Chip
+                            icon={<OpenInNewIcon fontSize="small" />}
+                            label={link.label}
                             size="small"
-                            sx={{ 
-                              cursor: "pointer", 
-                              fontWeight: 600, 
-                              backgroundColor: "rgba(245, 158, 11, 0.1)", 
-                              color: "#d97706", 
-                              border: "1px solid rgba(245, 158, 11, 0.3)", 
-                              "&:hover": { backgroundColor: "rgba(245, 158, 11, 0.2)" } 
+                            sx={{
+                              cursor: "pointer",
+                              fontWeight: 600,
+                              backgroundColor: "rgba(245, 158, 11, 0.1)",
+                              color: "#d97706",
+                              border: "1px solid rgba(245, 158, 11, 0.3)",
+                              "&:hover": { backgroundColor: "rgba(245, 158, 11, 0.2)" }
                             }}
                           />
                         </Link>

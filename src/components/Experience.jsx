@@ -112,6 +112,8 @@ const Experience = ({ id }) => {
         "WebSocket",
         "OAuth",
         "SMTP",
+        "Database Design",
+        "System Architecture",
         "Workflow Automation",
         "Agentic AI",
         "Context Engineering"
@@ -163,10 +165,13 @@ const Experience = ({ id }) => {
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
       achievements: [
-        "Implemented an automatic crawler to fetch data from different online judges to track the users' solve count frequency.",
-        "Created backend for a system managing the participants of NSUPS Bootcamp.",
+        "Implemented an automated crawler system to fetch and process data from multiple online judges for tracking users’ solve counts and submission activity.",
+        "Developed and maintained backend services for the NSUPS Bootcamp participant management system using RESTful APIs and relational database design.",
+        "Built CRUD operations, entity relationships, and data validation workflows for participant, batch, and activity management.",
+        "Designed optimized database schemas and query structures to improve data consistency and backend maintainability.",
+        "Collaborated with team members to develop scalable backend features and support internal university programming events.",
       ],
-      technologies: ["Web Crawling", "Backend Development", "Data Management"],
+      technologies: ["Web Crawling", "Backend Development", "Data Management", "RestAPI", "Data Validation"],
     },
   ];
 

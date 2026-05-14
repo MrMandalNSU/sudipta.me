@@ -109,11 +109,13 @@ const Experience = ({ id }) => {
         "PostgreSQL",
         "Neon DB",
         "Redis",
+        "Railway",
         "WebSocket",
         "OAuth",
         "SMTP",
         "Database Design",
         "System Architecture",
+        "CI/CD",
         "Workflow Automation",
         "Agentic AI",
         "Context Engineering"

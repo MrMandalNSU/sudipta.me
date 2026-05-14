@@ -137,28 +137,30 @@ const Research = ({ id }) => {
                       <InstitutionLogo src={research.institutionLogo} alt={`${research.institution} logo`}>
                         <BusinessIcon />
                       </InstitutionLogo>
-                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", gap: 0.5 }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {research.title}
                         </Typography>
-                        <Link href={research.institutionUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                            {research.institution} • {research.type}
-                          </Typography>
-                        </Link>
+                        <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
+                          <Link href={research.institutionUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                              {research.institution} • {research.type}
+                            </Typography>
+                          </Link>
+                          {research.researchLink && (
+                            <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none">
+                              <Chip
+                                icon={<LanguageIcon fontSize="small" />}
+                                label="View Research"
+                                size="small"
+                                sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
+                              />
+                            </Link>
+                          )}
+                        </Box>
                       </Box>
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, alignItems: { xs: "flex-start", sm: "flex-end" }, textAlign: { xs: "left", sm: "right" } }}>
-                      {research.researchLink && (
-                        <Link href={research.researchLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ mb: 0.5 }}>
-                          <Chip
-                            icon={<LanguageIcon fontSize="small" />}
-                            label="View Research"
-                            size="small"
-                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
-                          />
-                        </Link>
-                      )}
                       <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, width: "100%" }}>
                         <CalendarIcon sx={{ fontSize: 14 }} /> {research.duration}
                       </Typography>

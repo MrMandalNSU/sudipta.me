@@ -146,12 +146,12 @@ const Gallery = ({ id }) => {
     { img: "/gallery/annual_tour_eucaps_2024.jpg", title: "Eucaps AB Annual Tour 2024" },
     { img: "/gallery/bootcamp_intro_2020.jpg", title: "NSUPS Bootcamp Intro Session 2020" },
     { img: "/gallery/convocation_2023.jpg", title: "NSU Convocation Ceremony 2023" },
-    { img: "/gallery/full_team_intra_2023.JPG", title: "Organizing Team at Intra NSU Programming Contest 2023" },
+    { img: "/gallery/full_team_intra_2023.JPG", title: "Organizing Team, Intra NSU Programming Contest 2023" },
     { img: "/gallery/icpc_team_2019.jpg", title: "ACM ICPC Regional Team (NSU_0011) 2019" },
-    { img: "/gallery/intra_nsu_2018.png", title: "Placement at Intra NSU Programming Contest 2018" },
+    { img: "/gallery/intra_nsu_2018.png", title: "Placement, Intra NSU Programming Contest 2018" },
     { img: "/gallery/intra_nsu_2019.jpg", title: "Intra NSU Programming Contest 2019" },
     { img: "/gallery/intra_nsu_jr_contest_2024.jpg", title: "Intra NSU Junior Programming Contest 2024" },
-    { img: "/gallery/judge_pannel_intra_2023.JPG", title: "Serving on the Judge Panel - Intra NSU Programming Contest 2023" },
+    { img: "/gallery/judge_pannel_intra_2023.JPG", title: "Judge Panel, Intra NSU Programming Contest 2023" },
     { img: "/gallery/team_lunch_eucaps_2022.png", title: "Eucaps AB Team Lunch 2022" },
   ];
 
@@ -245,6 +245,8 @@ const Gallery = ({ id }) => {
                 sx={{
                   fontWeight: 700,
                   color: "text.primary",
+                  fontSize: { xs: "0.75rem", sm: "1.25rem" },
+                  lineHeight: { xs: 1.2, sm: 1.6 },
                 }}
               >
                 {images[currentIndex].title}

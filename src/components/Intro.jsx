@@ -7,6 +7,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import TechCarousel from "./TechCarousel";
 import {
   Facebook,
   Twitter,
@@ -24,6 +25,12 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
     ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+  [theme.breakpoints.down("sm")]: {
+    padding: 0,
+    borderRadius: 0,
+    background: "transparent",
+    boxShadow: "none",
+  },
 }));
 
 const IntroCard = styled(Box)(({ theme }) => ({
@@ -34,6 +41,11 @@ const IntroCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(3),
   position: "relative",
   zIndex: 1,
+  [theme.breakpoints.down("sm")]: {
+    borderRadius: 0,
+    borderLeft: "none",
+    borderRight: "none",
+  },
 }));
 
 const ProfileImage = styled("img")(({ theme }) => ({
@@ -60,10 +72,10 @@ const Intro = ({ id }) => {
         pb: 4,
         display: "flex",
         alignItems: "center",
-        px: 2,
+        px: { xs: 0, sm: 2 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
           {/* Main Layout Box */}
           <IntroCard
@@ -91,7 +103,7 @@ const Intro = ({ id }) => {
                 Hi, I'm Sudipta Mandal
               </Typography>
 
-              <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.7, mb: 1 }}>
+              <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.7, mb: 1, textAlign: "justify" }}>
                 A dedicated Software Engineer with five years of industrial experience in building scalable, high-performance web applications and backend systems. Currently serving as a <b>Software Engineer III at Cargo Stream</b>, I specialize in modern cloud architectures, complex data parsing, and backend development.
                 With a strong foundation in competitive programming, I thrive on solving algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
               </Typography>
@@ -214,6 +226,7 @@ const Intro = ({ id }) => {
               </Box>
             </Box>
           </IntroCard>
+          <TechCarousel />
         </OuterPaper>
       </Container>
     </Box>

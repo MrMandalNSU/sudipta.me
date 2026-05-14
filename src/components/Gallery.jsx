@@ -20,6 +20,12 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
     ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+  [theme.breakpoints.down("sm")]: {
+    padding: 0,
+    borderRadius: 0,
+    background: "transparent",
+    boxShadow: "none",
+  },
 }));
 
 const CarouselContainer = styled(Box)(({ theme }) => ({
@@ -34,6 +40,9 @@ const CarouselContainer = styled(Box)(({ theme }) => ({
   border: "1px solid rgba(255, 255, 255, 0.1)",
   [theme.breakpoints.down("sm")]: {
     height: 350,
+    borderRadius: 0,
+    borderLeft: "none",
+    borderRight: "none",
   },
 }));
 
@@ -161,14 +170,14 @@ const Gallery = ({ id }) => {
         mt: 0,
         display: "flex",
         alignItems: "center",
-        px: 2,
+        px: { xs: 0, sm: 2 },
         py: 4,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
-          <Box sx={{ mb: 4, textAlign: "center" }}>
-            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary" }} gutterBottom>
+          <Box sx={{ mb: 4, pt: { xs: 4, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary", fontSize: { xs: "1.75rem", sm: "2.125rem" } }} gutterBottom>
               Moments & Achievements
             </Typography>
           </Box>

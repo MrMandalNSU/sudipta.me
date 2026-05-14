@@ -27,6 +27,12 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
     ? "rgba(255, 255, 255, 0.4)" 
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+  [theme.breakpoints.down("sm")]: {
+    padding: 0,
+    borderRadius: 0,
+    background: "transparent",
+    boxShadow: "none",
+  },
 }));
 
 const ProjectCard = styled(Box)(({ theme }) => ({
@@ -40,6 +46,11 @@ const ProjectCard = styled(Box)(({ theme }) => ({
     transform: "translateY(-8px) scale(1.02)",
     boxShadow: "0 12px 24px rgba(79, 70, 229, 0.2)",
     border: `1px solid ${theme.palette.primary.main}`,
+  },
+  [theme.breakpoints.down("sm")]: {
+    borderRadius: 0,
+    borderLeft: "none",
+    borderRight: "none",
   },
 }));
 
@@ -118,15 +129,15 @@ const Projects = ({ id }) => {
         mt: 0,
         display: "flex",
         alignItems: "center",
-        px: 2,
+        px: { xs: 0, sm: 2 },
         py: 4,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
           {/* Header Section */}
-          <Box sx={{ mb: 4, textAlign: "center" }}>
-            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary" }} gutterBottom>
+          <Box sx={{ mb: 4, pt: { xs: 4, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary", fontSize: { xs: "1.75rem", sm: "2.125rem" } }} gutterBottom>
               Projects
             </Typography>
           </Box>

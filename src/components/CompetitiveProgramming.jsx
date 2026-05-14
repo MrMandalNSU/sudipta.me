@@ -63,8 +63,14 @@ const CompetitiveProgramming = ({ id }) => {
       icon: <TrophyIcon />
     },
     {
-      title: "NCPC, MIST & Intra NSU Programming Contest 2018",
-      description: "Ranked 10th among 46 individuals in Intra NSU Contest.",
+      title: "NCPC, MIST 2019",
+      description: "Ranked top 100 in national level programming contest. Team: NSU_LongLiveBatman",
+      links: [],
+      icon: <MedalIcon />
+    },
+    {
+      title: "Intra NSU Programming Contest 2018",
+      description: "Ranked 10th among 46 individuals in Intra NSU Contest during junior year",
       links: [
         { label: "Standings", url: "https://toph.co/c/inpc-summer-2018/standings" }
       ],
@@ -77,7 +83,17 @@ const CompetitiveProgramming = ({ id }) => {
         { label: "Codeforces Profile", url: "https://codeforces.com/profile/Mr_Mandal" }
       ],
       icon: <CodeIcon />
-    }
+    },
+    {
+      title: "Programming Mentor, Problem Setter & Judge",
+      description: "Organized, Judged, Setted problems for multiple contests organized by NSU & NSUPS. Conducted and mentored multiple bootcamp sessions for juniors",
+      links: [
+        { label: "INPC 2023", url: "https://lightoj.com/contest/inpc-231" },
+        { label: "INJPC 2024", url: "https://lightoj.com/contest/injpc-2024" },
+        { label: "News Article", url: "https://ece.northsouth.edu/intra-nsu-programming-contest-2023/" }
+      ],
+      icon: <CodeIcon />
+    },
   ];
 
   return (

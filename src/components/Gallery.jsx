@@ -214,12 +214,12 @@ const Gallery = ({ id }) => {
         display: "flex",
         alignItems: "center",
         px: { xs: 0, sm: 2 },
-        py: 4,
+        py: { xs: 0, sm: 4 },
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
-          <Box sx={{ mb: 4, pt: { xs: 4, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
+          <Box sx={{ mb: { xs: 2, sm: 4 }, pt: { xs: 2, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
             <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary", fontSize: { xs: "1.75rem", sm: "2.125rem" } }} gutterBottom>
               Moments & Achievements
             </Typography>
@@ -230,8 +230,8 @@ const Gallery = ({ id }) => {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <BlurredBackground 
-              style={{ backgroundImage: `url(${images[currentIndex].img})` }} 
+            <BlurredBackground
+              style={{ backgroundImage: `url(${images[currentIndex].img})` }}
             />
             <CarouselImage
               key={currentIndex} // forces re-render/animation on index change

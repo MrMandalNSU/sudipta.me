@@ -69,7 +69,7 @@ const Intro = ({ id }) => {
       id={id}
       sx={{
         mt: 16,
-        pb: 4,
+        pb: { xs: 0, sm: 4 },
         display: "flex",
         alignItems: "center",
         px: { xs: 0, sm: 2 },

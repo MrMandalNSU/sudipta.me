@@ -23,8 +23,8 @@ import {
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
-  background: theme.palette.mode === "light" 
-    ? "rgba(255, 255, 255, 0.4)" 
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.4)"
     : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
   [theme.breakpoints.down("sm")]: {
@@ -130,13 +130,13 @@ const Projects = ({ id }) => {
         display: "flex",
         alignItems: "center",
         px: { xs: 0, sm: 2 },
-        py: 4,
+        py: { xs: 0, sm: 4 },
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
           {/* Header Section */}
-          <Box sx={{ mb: 4, pt: { xs: 4, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
+          <Box sx={{ mb: { xs: 2, sm: 4 }, pt: { xs: 2, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
             <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary", fontSize: { xs: "1.75rem", sm: "2.125rem" } }} gutterBottom>
               Projects
             </Typography>
@@ -173,9 +173,9 @@ const Projects = ({ id }) => {
                     <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
                       {project.liveLink && (
                         <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none">
-                          <Chip 
-                            icon={<LanguageIcon fontSize="small" />} 
-                            label="Live Link" 
+                          <Chip
+                            icon={<LanguageIcon fontSize="small" />}
+                            label="Live Link"
                             size="small"
                             sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
                           />
@@ -183,9 +183,9 @@ const Projects = ({ id }) => {
                       )}
                       {project.githubLink && (
                         <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" underline="none">
-                          <Chip 
-                            icon={<GitHubIcon fontSize="small" />} 
-                            label="GitHub" 
+                          <Chip
+                            icon={<GitHubIcon fontSize="small" />}
+                            label="GitHub"
                             size="small"
                             sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(255, 255, 255, 0.1)", color: "text.primary", border: "1px solid rgba(255, 255, 255, 0.2)", "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.2)" } }}
                           />

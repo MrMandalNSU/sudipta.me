@@ -37,6 +37,9 @@ const CarouselContainer = styled(Box)(({ theme }) => ({
   boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
   backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
   backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
+  WebkitBackfaceVisibility: "hidden",
+  backfaceVisibility: "hidden",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   [theme.breakpoints.down("sm")]: {
     height: 350,
@@ -90,6 +93,9 @@ const NavButton = styled(IconButton)(({ theme }) => ({
   transform: "translateY(-50%)",
   backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.7)" : "rgba(15, 23, 42, 0.7)",
   backdropFilter: "blur(4px)",
+  WebkitBackdropFilter: "blur(4px)",
+  WebkitBackfaceVisibility: "hidden",
+  backfaceVisibility: "hidden",
   color: theme.palette.primary.main,
   "&:hover": {
     backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(15, 23, 42, 0.9)",
@@ -103,6 +109,9 @@ const NavButton = styled(IconButton)(({ theme }) => ({
     height: 32,
     backgroundColor: "transparent", // remove background to look cleaner at bottom
     backdropFilter: "none",
+  WebkitBackdropFilter: "none",
+  WebkitBackfaceVisibility: "hidden",
+  backfaceVisibility: "hidden",
     "& svg": {
       fontSize: "1.2rem",
     },

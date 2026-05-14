@@ -43,15 +43,33 @@ body {
   /* Default to dark mode gradient for initial load, MUI theme will handle text colors */
   background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
   background-size: 400% 400%;
-  animation: gradient-animation 15s ease infinite;
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background: linear-gradient(-45deg, #f8fafc, #e0e7ff, #c7d2fe, #f8fafc);
-    background-size: 400% 400%;
-    animation: gradient-animation 15s ease infinite;
-  }
+html[data-theme='light'] ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.5);
+}
+html[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: rgba(79, 70, 229, 0.4);
+  border-radius: 10px;
+}
+html[data-theme='light'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 70, 229, 0.7);
+}
+
+html[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+html[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: rgba(129, 140, 248, 0.4);
+  border-radius: 10px;
+}
+html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(129, 140, 248, 0.7);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
 a {

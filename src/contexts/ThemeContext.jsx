@@ -33,6 +33,7 @@ export const ThemeProvider = ({ children }) => {
   // Save to localStorage when mode changes
   useEffect(() => {
     localStorage.setItem("theme-mode", mode);
+    document.documentElement.setAttribute('data-theme', mode);
   }, [mode]);
 
   // Listen for system changes only if no saved preference exists

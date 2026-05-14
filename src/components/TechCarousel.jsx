@@ -74,7 +74,7 @@ const TechItem = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   color:
     theme.palette.mode === "light"
-      ? theme.palette.primary.main
+      ? "#334155" // Dark slate color for better readability on light mode
       : theme.palette.primary.light,
   textTransform: "uppercase",
   letterSpacing: "2px",

@@ -99,6 +99,17 @@ export const getDesignTokens = (mode) => ({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background: mode === "light" 
+            ? "linear-gradient(-45deg, #fdfbf7, #f4ecd8, #e8dfd8, #fdfbf7)" 
+            : "linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a)",
+          backgroundSize: "400% 400%",
+          animation: "gradient-animation 15s ease infinite",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

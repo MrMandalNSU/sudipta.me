@@ -16,7 +16,7 @@ const technologies = [
   "AWS Amplify",
   "DynamoDB",
   "Pattern Recognition",
-  "Context Programming",
+  "Context Engineering",
   "Analytical Thinking",
   "JavaScript",
   "TypeScript",
@@ -43,6 +43,11 @@ const CarouselWrapper = styled(Box)(({ theme }) => ({
     ? "inset 0 2px 15px rgba(0,0,0,0.03), 0 4px 15px rgba(0,0,0,0.02)"
     : "inset 0 2px 15px rgba(0,0,0,0.3), 0 4px 15px rgba(0,0,0,0.1)",
   border: "1px solid rgba(255, 255, 255, 0.08)",
+  [theme.breakpoints.down("sm")]: {
+    borderRadius: 0,
+    borderLeft: "none",
+    borderRight: "none",
+  },
 }));
 
 const MaskContainer = styled(Box)({

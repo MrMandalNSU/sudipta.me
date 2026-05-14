@@ -18,14 +18,16 @@ import {
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   margin: theme.spacing(8, "auto", 4, "auto"),
-  padding: theme.spacing(4),
+  padding: theme.spacing(2), // Reduce padding on mobile
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     width: "90%",
+    padding: theme.spacing(3),
     borderRadius: theme.spacing(4),
   },
   [theme.breakpoints.up("md")]: {
     width: "80%",
+    padding: theme.spacing(4),
   },
   [theme.breakpoints.up("lg")]: {
     width: "70%",
@@ -59,54 +61,48 @@ const Footer = () => {
 
   return (
     <FooterContainer component="footer">
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 1, sm: 3 } }}>
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: "row", // Always keep it as a row
             justifyContent: "space-between",
             alignItems: "center",
-            gap: 3,
+            gap: 2,
           }}
         >
-          <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-              Sudipta Mandal
-            </Typography>
+          {/* Left Side: Name, Icons, Subtitle */}
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0.5 }}>
+            <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1 }}>
+                Sudipta Mandal
+              </Typography>
+              <Box sx={{ display: "flex", gap: 0.5 }}>
+                <IconButton size="small" color="primary" component="a" href="https://www.linkedin.com/in/mrmandal/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
+                  <LinkedIn fontSize="small" />
+                </IconButton>
+                <IconButton size="small" color="primary" component="a" href="https://github.com/MrMandalNSU/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
+                  <GitHub fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
             <Typography variant="body2" color="text.secondary">
               Software Engineer III @ Cargo Stream
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton color="primary" component="a" href="https://www.linkedin.com/in/mrmandal/" target="_blank" rel="noopener noreferrer">
-              <LinkedIn />
-            </IconButton>
-            <IconButton color="primary" component="a" href="https://github.com/MrMandalNSU/" target="_blank" rel="noopener noreferrer">
-              <GitHub />
-            </IconButton>
-            <IconButton color="primary" component="a" href="https://www.facebook.com/sudipta.dipta2/" target="_blank" rel="noopener noreferrer">
-              <Facebook />
-            </IconButton>
-            <IconButton color="primary" component="a" href="https://www.instagram.com/mr_mandal/" target="_blank" rel="noopener noreferrer">
-              <Instagram />
-            </IconButton>
-            <IconButton color="primary" component="a" href="https://x.com/mr_mandal_16/" target="_blank" rel="noopener noreferrer">
-              <Twitter />
-            </IconButton>
-          </Box>
-
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ display: { xs: "none", md: "block" } }}>
+          {/* Right Side: Back to top */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ display: { xs: "none", sm: "block" } }}>
               Back to top
             </Typography>
-            <ScrollTopButton onClick={scrollToTop} size="medium">
+            <ScrollTopButton onClick={scrollToTop} size="small">
               <ArrowUpIcon />
             </ScrollTopButton>
           </Box>
         </Box>
 
-        <Divider sx={{ my: 3, borderColor: "rgba(255, 255, 255, 0.1)" }} />
+        <Divider sx={(theme) => ({ my: { xs: 1.5, sm: 1.5 }, borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)" })} />
 
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">

@@ -112,17 +112,18 @@ const Intro = ({ id }) => {
                 sx={{
                   mt: 3,
                   display: "flex",
-                  flexDirection: { xs: "column", sm: "row" }, // Stack on mobile, row on desktop
-                  gap: 2,
+                  flexDirection: "row", // Keep in one line
+                  gap: { xs: 1, sm: 2 },
                   justifyContent: "center",
                   alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <Button
                   variant="contained"
                   color="primary"
                   size="large"
-                  sx={{ minWidth: 200 }}
+                  sx={{ flex: { xs: 1, sm: "none" }, minWidth: { xs: "auto", sm: 200 }, whiteSpace: "nowrap", px: { xs: 1, sm: 3 } }}
                   component="a"
                   href="https://github.com/MrMandalNSU?tab=repositories"
                   target="_blank"
@@ -134,7 +135,7 @@ const Intro = ({ id }) => {
                   variant="outlined"
                   color="primary"
                   size="large"
-                  sx={{ minWidth: 200 }}
+                  sx={{ flex: { xs: 1, sm: "none" }, minWidth: { xs: "auto", sm: 200 }, whiteSpace: "nowrap", px: { xs: 1, sm: 3 } }}
                   component="a"
                   href="mailto:mr.mandal16@gmail.com"
                   target="_blank"

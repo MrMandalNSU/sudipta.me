@@ -166,14 +166,16 @@ const Navbar = () => {
               textTransform: "none", // Prevent text from being capitalized
               fontSize: "1.25rem", // Adjust text size
               color: "inherit", // Inherit the color from the theme
-              display: { xs: "none", sm: "block" }, // Only display on larger screens
+              display: { xs: "none", md: "block" }, // Only display on md and larger screens
               mr: "auto", // Keep it left-aligned
+              whiteSpace: "nowrap", // Prevent text from wrapping
+              flexShrink: 0, // Prevent button from shrinking
             }}
           >
             Sudipta Mandal
           </Button>
 
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
             {navItems.map((item) => (
               <Button
                 key={item}
@@ -213,7 +215,7 @@ const Navbar = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ ml: 1, display: { sm: "none" } }}
+            sx={{ ml: 1, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -229,7 +231,7 @@ const Navbar = () => {
           keepMounted: true,
         }}
         sx={{
-          display: { xs: "block", sm: "none" },
+          display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
         }}
       >

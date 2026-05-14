@@ -95,6 +95,21 @@ const NavButton = styled(IconButton)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(15, 23, 42, 0.9)",
   },
   zIndex: 10,
+  [theme.breakpoints.down("sm")]: {
+    top: "auto",
+    bottom: theme.spacing(1), // align horizontally with the dots
+    transform: "none",
+    width: 32,
+    height: 32,
+    backgroundColor: "transparent", // remove background to look cleaner at bottom
+    backdropFilter: "none",
+    "& svg": {
+      fontSize: "1.2rem",
+    },
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+  },
 }));
 
 const DotsContainer = styled(Box)(({ theme }) => ({
@@ -161,6 +176,34 @@ const Gallery = ({ id }) => {
     return () => clearInterval(interval);
   }, [images.length, currentIndex]); // depends on currentIndex so it resets on manual navigation
 
+  // Touch handlers for swiping
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+  };
+
   if (images.length === 0) return null;
 
   return (
@@ -182,7 +225,11 @@ const Gallery = ({ id }) => {
             </Typography>
           </Box>
 
-          <CarouselContainer>
+          <CarouselContainer
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <BlurredBackground 
               style={{ backgroundImage: `url(${images[currentIndex].img})` }} 
             />

@@ -7,6 +7,7 @@ import Research from "./components/Research";
 
 import Projects from "./components/Projects";
 import CompetitiveProgramming from "./components/CompetitiveProgramming";
+import Education from "./components/Education";
 import Gallery from "./components/Gallery";
 import Footer from "./components/Footer";
 
@@ -19,6 +20,7 @@ function App() {
       <Research id="research" />
       <Projects id="projects" />
       <CompetitiveProgramming id="cp" />
+      <Education id="education" />
       <Gallery id="gallery" />
       <Footer />
     </ThemeProvider>

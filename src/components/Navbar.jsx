@@ -31,7 +31,7 @@ const Navbar = () => {
   const [resumeMenuAnchor, setResumeMenuAnchor] = useState(null);
   const { mode, toggleColorMode } = useTheme();
   const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -157,9 +157,9 @@ const Navbar = () => {
           borderRadius: { xs: 0, sm: 4 },
           background: mode === "light" ? "rgba(255, 255, 255, 0.7)" : "rgba(15, 23, 42, 0.7)",
           backdropFilter: "blur(12px)",
-  WebkitBackdropFilter: "blur(12px)",
-  WebkitBackfaceVisibility: "hidden",
-  backfaceVisibility: "hidden",
+          WebkitBackdropFilter: "blur(12px)",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
           border: "1px solid rgba(255, 255, 255, 0.1)",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
           color: "text.primary",
@@ -172,7 +172,7 @@ const Navbar = () => {
               textTransform: "none", // Prevent text from being capitalized
               fontSize: "1.25rem", // Adjust text size
               color: "inherit", // Inherit the color from the theme
-              display: { xs: "none", md: "block" }, // Only display on md and larger screens
+              display: { xs: "none", lg: "block" }, // Only display on lg and larger screens
               mr: "auto", // Keep it left-aligned
               whiteSpace: "nowrap", // Prevent text from wrapping
               flexShrink: 0, // Prevent button from shrinking
@@ -181,7 +181,7 @@ const Navbar = () => {
             Sudipta Mandal
           </Button>
 
-          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+          <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center" }}>
             {navItems.map((item) => (
               <Button
                 key={item}
@@ -221,7 +221,7 @@ const Navbar = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ ml: 1, display: { md: "none" } }}
+            sx={{ ml: 1, display: { lg: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -237,7 +237,7 @@ const Navbar = () => {
           keepMounted: true,
         }}
         sx={{
-          display: { xs: "block", md: "none" },
+          display: { xs: "block", lg: "none" },
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
         }}
       >

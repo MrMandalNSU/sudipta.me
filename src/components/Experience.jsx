@@ -43,8 +43,8 @@ const ExperienceCard = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
-  WebkitBackfaceVisibility: "hidden",
-  backfaceVisibility: "hidden",
+
+
   border: "1px solid rgba(255, 255, 255, 0.1)",
   boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
   transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",

@@ -21,16 +21,16 @@ const FooterContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2), // Reduce padding on mobile
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    width: "90%",
+    width: "95%",
     padding: theme.spacing(3),
     borderRadius: theme.spacing(4),
   },
   [theme.breakpoints.up("md")]: {
-    width: "80%",
+    width: "95%",
     padding: theme.spacing(4),
   },
   [theme.breakpoints.up("lg")]: {
-    width: "70%",
+    width: "80%",
   },
   background: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.7)" : "rgba(15, 23, 42, 0.7)",
   backdropFilter: "blur(12px)",

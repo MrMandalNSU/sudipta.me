@@ -45,10 +45,12 @@ const CPCard = styled(Box)(({ theme }) => ({
   border: "1px solid rgba(255, 255, 255, 0.1)",
   boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
   transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-  "&:hover": {
-    transform: "translateY(-8px) scale(1.02)",
-    boxShadow: "0 12px 24px rgba(245, 158, 11, 0.2)",
-    border: `1px solid ${theme.palette.warning.main}`,
+  "@media (hover: hover)": {
+    "&:hover": {
+      transform: "translateY(-8px) scale(1.02)",
+      boxShadow: "0 12px 24px rgba(245, 158, 11, 0.2)",
+      border: `1px solid ${theme.palette.warning.main}`,
+    },
   },
   [theme.breakpoints.down("sm")]: {
     borderRadius: 0,

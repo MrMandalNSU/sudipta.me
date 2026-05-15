@@ -36,10 +36,13 @@ const EducationCard = styled(Box)(({ theme }) => ({
   cursor: "default",
 
 
-  transform: "translateZ(0)",
   transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-  "&:hover": {
-    transform: "translateY(-8px) scale(1.02) translateZ(0)",
+  "@media (hover: hover)": {
+    "&:hover": {
+      transform: "translateY(-8px) scale(1.02)",
+      boxShadow: "0 12px 24px rgba(16, 185, 129, 0.2)",
+      border: `1px solid ${theme.palette.success.main}`,
+    },
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),

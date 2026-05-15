@@ -31,7 +31,7 @@ const Navbar = () => {
   const [resumeMenuAnchor, setResumeMenuAnchor] = useState(null);
   const { mode, toggleColorMode } = useTheme();
   const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -141,7 +141,7 @@ const Navbar = () => {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%" },
+        width: { xs: "100%", sm: "95%", md: "95%", lg: "80%" },
         transform: "translateX(-50%)",
         position: "fixed",
         top: { xs: 0, sm: 16 },
@@ -165,36 +165,49 @@ const Navbar = () => {
           color: "text.primary",
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ display: "flex" }}>
           <Button
             onClick={scrollToTop}
             sx={{
-              textTransform: "none", // Prevent text from being capitalized
-              fontSize: "1.25rem", // Adjust text size
-              color: "inherit", // Inherit the color from the theme
-              display: { xs: "none", lg: "block" }, // Only display on lg and larger screens
-              mr: "auto", // Keep it left-aligned
-              whiteSpace: "nowrap", // Prevent text from wrapping
-              flexShrink: 0, // Prevent button from shrinking
+              textTransform: "none",
+              fontSize: { xs: "1.1rem", md: "1.25rem" },
+              color: "inherit",
+              display: "block",
+              order: { xs: 2, md: 1 },
+              ml: { xs: "auto", md: 0 },
+              mr: { xs: 0, md: "auto" },
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
           >
             Sudipta Mandal
           </Button>
 
-          <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center" }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", order: 2 }}>
             {navItems.map((item) => (
               <Button
                 key={item}
-                sx={{ color: "inherit", mx: 0.5 }}
+                sx={{ 
+                  color: "inherit", 
+                  mx: { md: 0, lg: 0.5 },
+                  px: { md: 0.5, lg: 2 },
+                  minWidth: "auto",
+                  fontSize: { md: "0.75rem", lg: "1rem" }
+                }}
                 onClick={() => handleNavClick(item)}
               >
                 {item}
               </Button>
             ))}
             <Button
-              sx={{ color: "inherit", ml: 1 }}
+              sx={{ 
+                color: "inherit", 
+                ml: { md: 0.25, lg: 1 },
+                px: { md: 0.5, lg: 2 },
+                fontSize: { md: "0.75rem", lg: "1rem" }
+              }}
               onClick={handleResumeMenuOpen}
-              endIcon={<DescriptionIcon />}
+              endIcon={<DescriptionIcon sx={{ fontSize: { md: "1rem", lg: "1.5rem" } }} />}
             >
               Resume
             </Button>
@@ -213,18 +226,21 @@ const Navbar = () => {
               </MenuItem>
             </Menu>
           </Box>
-          <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: 1 }}>
-            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ ml: 1, display: { lg: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
+          
+          <Box sx={{ display: "flex", alignItems: "center", order: { xs: 1, md: 3 } }}>
+            <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, md: 1 } }}>
+              {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ ml: 1, display: { md: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -237,7 +253,7 @@ const Navbar = () => {
           keepMounted: true,
         }}
         sx={{
-          display: { xs: "block", lg: "none" },
+          display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
         }}
       >

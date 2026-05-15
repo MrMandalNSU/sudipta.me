@@ -138,7 +138,7 @@ const Experience = ({ id }) => {
       ],
     },
     {
-      title: "Software Engineer I - II",
+      title: "Software Engineer I → II",
       company: "Eucaps AB",
       companyLogo: "/eucaps_logo.png",
       companyUrl: "https://eucaps.com/",

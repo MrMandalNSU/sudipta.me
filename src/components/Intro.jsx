@@ -160,7 +160,7 @@ const Intro = ({ id }) => {
                 order: { xs: 1, md: 2 },
                 zIndex: 2,
                 position: "relative",
-                mt: { xs: -8, md: -10 }, // Photo pops out of the top of the card
+                mt: { xs: -8, md: -5 }, // Down-shifted slightly to align social buttons with left buttons perfectly
                 mb: { xs: 4, md: 0 },
               }}
             >
@@ -172,7 +172,6 @@ const Intro = ({ id }) => {
                   fontWeight: 600,
                   color: "text.primary",
                   textAlign: "center",
-                  fontSize: { xs: "0.85rem", sm: "0.9rem" },
                   letterSpacing: "0.5px",
                   lineHeight: 1.5,
                   maxWidth: "280px",

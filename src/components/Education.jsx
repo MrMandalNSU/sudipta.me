@@ -70,7 +70,7 @@ const Education = ({ id }) => {
     {
       institution: "North South University (NSU)",
       degree: "BSc in Computer Science & Engineering",
-      duration: "School of 2021",
+      duration: "Class of 2021",
       logo: "/education/nsu_logo.png",
       details: [
         "CGPA: 3.53/4.00 (88%+)",
@@ -82,7 +82,7 @@ const Education = ({ id }) => {
     {
       institution: "BCIC College",
       degree: "Higher Secondary in Science",
-      duration: "School of 2015",
+      duration: "Class of 2015",
       logo: "/education/bcic_logo.jpg",
       details: [
         "GPA 5.00/5.00"
@@ -92,7 +92,7 @@ const Education = ({ id }) => {
     {
       institution: "Betagi Govt. High School",
       degree: "Secondary in Science",
-      duration: "School of 2013",
+      duration: "Class of 2013",
       logo: "/education/bghs_logo.jpg",
       details: [
         "GPA 5.00/5.00"

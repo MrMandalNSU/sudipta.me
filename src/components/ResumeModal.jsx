@@ -96,17 +96,30 @@ const ResumeModal = ({ open, onClose }) => {
         sx={{
           p: 2,
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
-          gap: 1,
+          alignItems: { xs: "stretch", sm: "center" },
+          gap: 1.5,
         }}
       >
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box 
+          sx={{ 
+            display: "flex", 
+            gap: 1,
+            flexDirection: { xs: "column", sm: "row" },
+            width: { xs: "100%", sm: "auto" }
+          }}
+        >
           <Tooltip title="View in new tab">
             <Button
               startIcon={<FullscreenIcon />}
               onClick={handleFullscreen}
               variant="outlined"
               size="small"
+              sx={{ 
+                width: { xs: "100%", sm: "auto" },
+                whiteSpace: "nowrap"
+              }}
             >
               Full Screen
             </Button>
@@ -118,12 +131,35 @@ const ResumeModal = ({ open, onClose }) => {
               variant="contained"
               color="primary"
               size="small"
+              sx={{ 
+                width: { xs: "100%", sm: "auto" },
+                whiteSpace: "nowrap"
+              }}
             >
               Download
             </Button>
           </Tooltip>
         </Box>
-        <Button onClick={onClose} variant="outlined">
+        <Button 
+          onClick={onClose} 
+          variant="outlined"
+          size="small"
+          startIcon={<CloseIcon />}
+          sx={{ 
+            width: { xs: "100%", sm: "auto" },
+            ml: "0 !important", // Override default MUI margin-left to prevent alignment mismatch
+            color: "text.secondary",
+            transition: "all 0.2s ease-in-out",
+            borderColor: (theme) => theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.15)" : "rgba(255, 255, 255, 0.15)",
+            "&:hover": {
+              color: "error.main",
+              borderColor: "error.main",
+              backgroundColor: (theme) => theme.palette.mode === "light" ? "rgba(211, 47, 47, 0.04)" : "rgba(244, 67, 54, 0.08)",
+              transform: "translateY(-2px)",
+              boxShadow: "0 4px 8px rgba(211, 47, 47, 0.12)"
+            }
+          }}
+        >
           Close
         </Button>
       </DialogActions>

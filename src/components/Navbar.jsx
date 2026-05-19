@@ -14,12 +14,25 @@ import {
   useTheme as useMuiTheme,
   Menu,
   MenuItem,
+  Avatar,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import DescriptionIcon from "@mui/icons-material/Description";
+import {
+  Person as PersonIcon,
+  Work as WorkIcon,
+  Code as CodeIcon,
+  EmojiEvents as EmojiEventsIcon,
+  School as SchoolIcon,
+  PhotoLibrary as PhotoLibraryIcon,
+  Close as CloseIcon,
+  LinkedIn as LinkedInIcon,
+  GitHub as GitHubIcon,
+} from "@mui/icons-material";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 
@@ -111,30 +124,182 @@ const Navbar = () => {
     setResumeModalOpen(false);
   };
 
+  const itemIcons = {
+    Intro: <PersonIcon />,
+    Experience: <WorkIcon />,
+    Projects: <CodeIcon />,
+    CP: <EmojiEventsIcon />,
+    Education: <SchoolIcon />,
+    Gallery: <PhotoLibraryIcon />,
+  };
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Sudipta Mandal
-      </Typography>
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <Button fullWidth onClick={() => handleNavClick(item)}>
-              <ListItemText primary={item} />
-            </Button>
-          </ListItem>
-        ))}
-        <ListItem disablePadding>
-          <Button fullWidth onClick={handleViewResume}>
-            <ListItemText primary="View Resume" />
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      {/* Header section with close button and profile overview */}
+      <Box 
+        sx={{ 
+          p: 3, 
+          position: "relative",
+          background: mode === "light" 
+            ? "linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1))" 
+            : "linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(34, 211, 238, 0.15))",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <IconButton 
+          onClick={handleDrawerToggle}
+          sx={{ 
+            position: "absolute", 
+            top: 8, 
+            right: 8, 
+            color: "text.secondary" 
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 1 }}>
+          <Avatar 
+            src="/sudipta_dp.png" 
+            alt="Sudipta Mandal"
+            sx={{ 
+              width: 70, 
+              height: 70, 
+              mb: 1.5,
+              border: "3px solid",
+              borderColor: "primary.main",
+              boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)"
+            }}
+          />
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              fontWeight: 800, 
+              color: "text.primary",
+              letterSpacing: "-0.01em",
+              fontSize: "1.15rem"
+            }}
+          >
+            Sudipta Mandal
+          </Typography>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: "text.secondary", 
+              fontWeight: 500,
+              fontSize: "0.8rem",
+              textAlign: "center"
+            }}
+          >
+            Software Engineer III @ Cargo Stream
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Navigation List */}
+      <Box sx={{ flexGrow: 1, px: 2, py: 2, overflowY: "auto" }}>
+        <List sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+          {navItems.map((item) => (
+            <ListItem key={item} disablePadding>
+              <Button 
+                fullWidth 
+                onClick={() => {
+                  handleNavClick(item);
+                  handleDrawerToggle();
+                }}
+                sx={{
+                  justifyContent: "flex-start",
+                  px: 2,
+                  py: 1.25,
+                  borderRadius: 2,
+                  color: "text.primary",
+                  transition: "all 0.2s ease",
+                  textTransform: "none",
+                  "& .MuiButton-startIcon": {
+                    color: "primary.main",
+                    transition: "transform 0.2s ease",
+                  },
+                  "&:hover": {
+                    backgroundColor: mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.15)",
+                    transform: "translateX(4px)",
+                    "& .MuiButton-startIcon": {
+                      transform: "scale(1.1)",
+                    },
+                  }
+                }}
+                startIcon={itemIcons[item]}
+              >
+                <Typography variant="body2" sx={{ fontWeight: 600, letterSpacing: "0.3px" }}>
+                  {item}
+                </Typography>
+              </Button>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+
+      {/* Resume Options and Social Links at Bottom */}
+      <Box 
+        sx={{ 
+          p: 2, 
+          borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+          background: mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)" 
+        }}
+      >
+        <Stack spacing={1} sx={{ mb: 2 }}>
+          <Button 
+            fullWidth 
+            onClick={() => {
+              handleViewResume();
+              handleDrawerToggle();
+            }}
+            variant="outlined"
+            color="primary"
+            size="small"
+            startIcon={<DescriptionIcon />}
+            sx={{ py: 1, borderRadius: 2 }}
+          >
+            View Resume
           </Button>
-        </ListItem>
-        <ListItem disablePadding>
-          <Button fullWidth onClick={handleDownloadResume}>
-            <ListItemText primary="Download Resume" />
+          <Button 
+            fullWidth 
+            onClick={() => {
+              handleDownloadResume();
+              handleDrawerToggle();
+            }}
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<GetAppIcon />}
+            sx={{ py: 1, borderRadius: 2 }}
+          >
+            Download PDF
           </Button>
-        </ListItem>
-      </List>
+        </Stack>
+
+        <Stack direction="row" spacing={2} justifyContent="center">
+          <IconButton 
+            color="primary"
+            component="a"
+            href="https://www.linkedin.com/in/mrmandal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="small"
+          >
+            <LinkedInIcon />
+          </IconButton>
+          <IconButton 
+            color="primary"
+            component="a"
+            href="https://github.com/MrMandalNSU/"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="small"
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Stack>
+      </Box>
     </Box>
   );
 
@@ -254,7 +419,19 @@ const Navbar = () => {
         }}
         sx={{
           display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
+          "& .MuiDrawer-paper": { 
+            boxSizing: "border-box", 
+            width: 280,
+            background: mode === "light"
+              ? "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 244, 246, 0.95))"
+              : "linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95))",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            borderLeft: "none",
+            borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+            boxShadow: "4px 0 24px rgba(0, 0, 0, 0.15)",
+            color: "text.primary",
+          },
         }}
       >
         {drawer}

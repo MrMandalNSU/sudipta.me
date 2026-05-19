@@ -165,6 +165,30 @@ const Intro = ({ id }) => {
               }}
             >
               <ProfileImage src={PROFILE_PHOTO} alt="Profile" />
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 2,
+                  fontWeight: 600,
+                  color: "text.primary",
+                  textAlign: "center",
+                  fontSize: { xs: "0.85rem", sm: "0.9rem" },
+                  letterSpacing: "0.5px",
+                  lineHeight: 1.5,
+                  maxWidth: "280px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: "2px 6px",
+                  opacity: 0.9,
+                  "& span": {
+                    color: "primary.main",
+                    fontWeight: 700,
+                  }
+                }}
+              >
+                4Y+ Experience <span>|</span> Laravel <span>|</span> Node.js <span>|</span> AWS <span>|</span> Context Engineering
+              </Typography>
               {/* Social Media Buttons */}
               <Box
                 sx={{
@@ -174,7 +198,7 @@ const Intro = ({ id }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   width: "100%",
-                  mt: 3,
+                  mt: 2,
                 }}
               >
                 {/* <IconButton

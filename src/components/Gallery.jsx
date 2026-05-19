@@ -7,7 +7,7 @@ import {
   IconButton,
   useTheme as useMuiTheme,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { styled, keyframes } from "@mui/material/styles";
 import {
   ArrowBackIosNew as PrevIcon,
   ArrowForwardIos as NextIcon,
@@ -146,9 +146,86 @@ const Dot = styled(Box)(({ theme, active }) => ({
   },
 }));
 
+const spin = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+});
+
+const pulse = keyframes({
+  "0%, 100%": { opacity: 0.6, transform: "scale(0.95)" },
+  "50%": { opacity: 1, transform: "scale(1.05)" },
+});
+
+const slideInRight = keyframes({
+  "0%": { transform: "translateX(40px) scale(0.96)", opacity: 0 },
+  "100%": { transform: "translateX(0) scale(1)", opacity: 1 },
+});
+
+const slideInLeft = keyframes({
+  "0%": { transform: "translateX(-40px) scale(0.96)", opacity: 0 },
+  "100%": { transform: "translateX(0) scale(1)", opacity: 1 },
+});
+
+const LoadingOverlay = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  background: theme.palette.mode === "light"
+    ? "rgba(255, 255, 255, 0.45)"
+    : "rgba(15, 23, 42, 0.45)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  zIndex: 3,
+  transition: "opacity 0.4s ease-in-out, visibility 0.4s ease-in-out",
+}));
+
+const SpinnerWrapper = styled(Box)({
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: 80,
+  height: 80,
+});
+
+const SpinnerRing = styled(Box)(({ theme }) => ({
+  width: 64,
+  height: 64,
+  borderRadius: "50%",
+  border: `3px solid ${
+    theme.palette.mode === "light"
+      ? "rgba(79, 70, 229, 0.08)"
+      : "rgba(129, 140, 248, 0.08)"
+  }`,
+  borderTop: `3px solid ${theme.palette.primary.main}`,
+  borderRight: `3px solid ${theme.palette.secondary.main}`,
+  animation: `${spin} 1s linear infinite`,
+  position: "absolute",
+}));
+
+const SpinnerPulse = styled(Box)(({ theme }) => ({
+  width: 44,
+  height: 44,
+  borderRadius: "50%",
+  background: theme.palette.mode === "light"
+    ? "radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%)"
+    : "radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%)",
+  animation: `${pulse} 2s ease-in-out infinite`,
+  position: "absolute",
+}));
+
 const Gallery = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [slideDirection, setSlideDirection] = useState("next");
+  const theme = useMuiTheme();
 
   const initialImages = [
     { img: "/gallery/annual_dinner_eucaps_2022.jpg", title: "Eucaps AB Annual Dinner 2022" },
@@ -168,13 +245,35 @@ const Gallery = ({ id }) => {
   useEffect(() => {
     const shuffled = [...initialImages].sort(() => 0.5 - Math.random());
     setImages(shuffled);
+    setIsLoaded(false);
   }, []);
 
+  // Preload next and previous images for instant loading
+  useEffect(() => {
+    if (images.length === 0) return;
+    const nextIndex = (currentIndex + 1) % images.length;
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+
+    [nextIndex, prevIndex].forEach((idx) => {
+      if (images[idx]) {
+        const img = new Image();
+        img.src = images[idx].img;
+      }
+    });
+  }, [currentIndex, images]);
+
+  // Set loading state to false when currentIndex changes
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [currentIndex]);
+
   const handleNext = () => {
+    setSlideDirection("next");
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
   const handlePrev = () => {
+    setSlideDirection("prev");
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
@@ -240,13 +339,54 @@ const Gallery = ({ id }) => {
             onTouchEnd={onTouchEnd}
           >
             <BlurredBackground
-              style={{ backgroundImage: `url(${images[currentIndex].img})` }}
+              style={{
+                backgroundImage: `url(${images[currentIndex].img})`,
+                opacity: isLoaded
+                  ? (theme.palette.mode === "light" ? 0.6 : 0.4)
+                  : 0,
+              }}
             />
             <CarouselImage
               key={currentIndex} // forces re-render/animation on index change
               src={images[currentIndex].img}
               alt={images[currentIndex].title}
+              onLoad={() => setIsLoaded(true)}
+              onError={() => setIsLoaded(true)}
+              style={{
+                opacity: isLoaded ? 1 : 0,
+              }}
+              sx={{
+                animation: isLoaded
+                  ? `${slideDirection === "next" ? slideInRight : slideInLeft} 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards`
+                  : "none",
+              }}
             />
+
+            <LoadingOverlay
+              style={{
+                opacity: isLoaded ? 0 : 1,
+                visibility: isLoaded ? "hidden" : "visible",
+              }}
+            >
+              <SpinnerWrapper>
+                <SpinnerRing />
+                <SpinnerPulse />
+              </SpinnerWrapper>
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 2,
+                  color: "text.secondary",
+                  fontWeight: 600,
+                  letterSpacing: "0.08em",
+                  fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                  textTransform: "uppercase",
+                  animation: `${pulse} 2s ease-in-out infinite`,
+                }}
+              >
+                Loading Moment...
+              </Typography>
+            </LoadingOverlay>
 
             <CaptionOverlay>
               <Typography
@@ -275,7 +415,10 @@ const Gallery = ({ id }) => {
                 <Dot
                   key={idx}
                   active={idx === currentIndex ? 1 : 0}
-                  onClick={() => setCurrentIndex(idx)}
+                  onClick={() => {
+                    setSlideDirection(idx > currentIndex ? "next" : "prev");
+                    setCurrentIndex(idx);
+                  }}
                 />
               ))}
             </DotsContainer>

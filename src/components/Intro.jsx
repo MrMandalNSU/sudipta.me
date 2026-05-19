@@ -107,8 +107,8 @@ const Intro = ({ id }) => {
               </Typography>
 
               <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.7, mb: 1, textAlign: "justify" }}>
-                A dedicated Software Engineer with five years of industrial experience in building scalable, high-performance web applications and backend systems. Currently serving as a <b>Software Engineer III at Cargo Stream</b>, I specialize in modern cloud architectures, complex data parsing, and backend development.
-                With a strong foundation in competitive programming, I thrive on solving algorithmic challenges and delivering robust, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge for NSU Problem Solvers (NSUPS).
+                A dedicated Software Engineer with 5+ years of industry experience in building scalable, high-performance web applications and backend systems. Currently working as a <b>Software Engineer III at Cargo Stream</b>, I specialize in backend engineering, cloud-based architectures, complex data parsing, and scalable system design. Experienced in collaborating with international remote teams, I combine strong technical expertise with effective English communication and product-focused problem solving.
+                With a solid foundation in competitive programming and algorithms, I enjoy tackling complex engineering challenges and building reliable, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge at NSU Problem Solvers (NSUPS).
               </Typography>
 
               <Box
@@ -187,7 +187,7 @@ const Intro = ({ id }) => {
                   }
                 }}
               >
-                4Y+ Experience <span>|</span> Laravel <span>|</span> Node.js <span>|</span> AWS <span>|</span> Context Engineering
+                5Y+ Experience <span>|</span> Laravel <span>|</span> Node.js <span>|</span> AWS <span>|</span> Context Engineering <span>|</span> Remote-First Engineer
               </Typography>
               {/* Social Media Buttons */}
               <Box

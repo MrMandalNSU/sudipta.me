@@ -277,10 +277,14 @@ const Gallery = ({ id }) => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
-  // Auto-slide every 7 seconds
+  // Auto-slide every 7 seconds, pausing when the tab/page is hidden to save resources and prevent background load bugs
   useEffect(() => {
     if (images.length === 0) return;
-    const interval = setInterval(handleNext, 7000);
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        handleNext();
+      }
+    }, 7000);
     return () => clearInterval(interval);
   }, [images.length, currentIndex]); // depends on currentIndex so it resets on manual navigation
 

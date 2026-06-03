@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Container,
@@ -52,9 +52,8 @@ const CarouselContainer = styled(Box)(({ theme }) => ({
 const CarouselImage = styled("img")({
   width: "100%",
   height: "100%",
-  objectFit: "contain", // changed from "cover" to avoid cropping
+  objectFit: "contain",
   display: "block",
-  transition: "opacity 0.5s ease-in-out",
   position: "relative",
   zIndex: 1,
 });
@@ -156,16 +155,6 @@ const pulse = keyframes({
   "50%": { opacity: 1, transform: "scale(1.05)" },
 });
 
-const slideInRight = keyframes({
-  "0%": { transform: "translateX(40px) scale(0.96)", opacity: 0 },
-  "100%": { transform: "translateX(0) scale(1)", opacity: 1 },
-});
-
-const slideInLeft = keyframes({
-  "0%": { transform: "translateX(-40px) scale(0.96)", opacity: 0 },
-  "100%": { transform: "translateX(0) scale(1)", opacity: 1 },
-});
-
 const LoadingOverlay = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: 0,
@@ -176,11 +165,10 @@ const LoadingOverlay = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  // Solid semi-transparent background instead of expensive backdropFilter blur
   background: theme.palette.mode === "light"
-    ? "rgba(255, 255, 255, 0.45)"
-    : "rgba(15, 23, 42, 0.45)",
-  backdropFilter: "blur(16px)",
-  WebkitBackdropFilter: "blur(16px)",
+    ? "rgba(255, 255, 255, 0.85)"
+    : "rgba(15, 23, 42, 0.85)",
   zIndex: 3,
   transition: "opacity 0.4s ease-in-out, visibility 0.4s ease-in-out",
 }));
@@ -220,32 +208,33 @@ const SpinnerPulse = styled(Box)(({ theme }) => ({
   position: "absolute",
 }));
 
+// Hoisted to module scope — no longer recreated every render
+const GALLERY_IMAGES = [
+  { img: "/gallery/annual_dinner_eucaps_2022.webp", title: "Eucaps AB Annual Dinner 2022" },
+  { img: "/gallery/annual_tour_eucaps_2024.webp", title: "Eucaps AB Annual Tour 2024" },
+  { img: "/gallery/bootcamp_intro_2020.webp", title: "NSUPS Bootcamp Intro Session 2020" },
+  { img: "/gallery/convocation_2023.webp", title: "NSU Convocation Ceremony 2023" },
+  { img: "/gallery/full_team_intra_2023.webp", title: "Organizing Team, Intra NSU Programming Contest 2023" },
+  { img: "/gallery/icpc_team_2019.webp", title: "ACM ICPC Regional Team (NSU_0011) 2019" },
+  { img: "/gallery/intra_nsu_2018.webp", title: "Placement, Intra NSU Programming Contest 2018" },
+  { img: "/gallery/intra_nsu_2019.webp", title: "Intra NSU Junior Programming Contest 2019" },
+  { img: "/gallery/intra_nsu_jr_contest_2024.webp", title: "Intra NSU Junior Programming Contest 2024" },
+  { img: "/gallery/judge_pannel_intra_2023.webp", title: "Judge Panel, Intra NSU Programming Contest 2023" },
+  { img: "/gallery/team_lunch_eucaps_2022.webp", title: "Eucaps AB Team Lunch 2022" },
+];
+
 const Gallery = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [slideDirection, setSlideDirection] = useState("next");
+  // Track whether the enter animation has completed (separate from image load)
+  const [animationPhase, setAnimationPhase] = useState("idle"); // "idle" | "entering" | "visible"
   const theme = useMuiTheme();
-
-  const initialImages = [
-    { img: "/gallery/annual_dinner_eucaps_2022.jpg", title: "Eucaps AB Annual Dinner 2022" },
-    { img: "/gallery/annual_tour_eucaps_2024.jpg", title: "Eucaps AB Annual Tour 2024" },
-    { img: "/gallery/bootcamp_intro_2020.jpg", title: "NSUPS Bootcamp Intro Session 2020" },
-    { img: "/gallery/convocation_2023.jpg", title: "NSU Convocation Ceremony 2023" },
-    { img: "/gallery/full_team_intra_2023.JPG", title: "Organizing Team, Intra NSU Programming Contest 2023" },
-    { img: "/gallery/icpc_team_2019.jpg", title: "ACM ICPC Regional Team (NSU_0011) 2019" },
-    { img: "/gallery/intra_nsu_2018.png", title: "Placement, Intra NSU Programming Contest 2018" },
-    { img: "/gallery/intra_nsu_2019.jpg", title: "Intra NSU Programming Contest 2019" },
-    { img: "/gallery/intra_nsu_jr_contest_2024.jpg", title: "Intra NSU Junior Programming Contest 2024" },
-    { img: "/gallery/judge_pannel_intra_2023.JPG", title: "Judge Panel, Intra NSU Programming Contest 2023" },
-    { img: "/gallery/team_lunch_eucaps_2022.png", title: "Eucaps AB Team Lunch 2022" },
-  ];
 
   // Randomize images on mount
   useEffect(() => {
-    const shuffled = [...initialImages].sort(() => 0.5 - Math.random());
+    const shuffled = [...GALLERY_IMAGES].sort(() => 0.5 - Math.random());
     setImages(shuffled);
-    setIsLoaded(false);
   }, []);
 
   // Preload next and previous images for instant loading
@@ -262,20 +251,33 @@ const Gallery = ({ id }) => {
     });
   }, [currentIndex, images]);
 
-  // Set loading state to false when currentIndex changes
-  useEffect(() => {
+  // Handle slide transition: set up animation phase when image loads
+  const handleImageLoad = useCallback(() => {
+    setIsLoaded(true);
+    setAnimationPhase("entering");
+    // After animation completes, mark as visible
+    const timer = setTimeout(() => setAnimationPhase("visible"), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const goToSlide = useCallback((newIndex, direction) => {
     setIsLoaded(false);
-  }, [currentIndex]);
+    setAnimationPhase("idle");
+    if (direction) {
+      // direction is implicit from comparison
+    }
+    setCurrentIndex(newIndex);
+  }, []);
 
-  const handleNext = () => {
-    setSlideDirection("next");
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+  const handleNext = useCallback(() => {
+    if (images.length === 0) return;
+    goToSlide((currentIndex + 1) % images.length);
+  }, [currentIndex, images.length, goToSlide]);
 
-  const handlePrev = () => {
-    setSlideDirection("prev");
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
+  const handlePrev = useCallback(() => {
+    if (images.length === 0) return;
+    goToSlide(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
+  }, [currentIndex, images.length, goToSlide]);
 
   // Auto-slide every 7 seconds, pausing when the tab/page is hidden to save resources and prevent background load bugs
   useEffect(() => {
@@ -286,7 +288,7 @@ const Gallery = ({ id }) => {
       }
     }, 7000);
     return () => clearInterval(interval);
-  }, [images.length, currentIndex]); // depends on currentIndex so it resets on manual navigation
+  }, [images.length, handleNext]);
 
   // Touch handlers for swiping
   const [touchStart, setTouchStart] = useState(null);
@@ -317,6 +319,13 @@ const Gallery = ({ id }) => {
   };
 
   if (images.length === 0) return null;
+
+  // Compute image styles: crossfade + subtle scale animation without key remount
+  const imageStyle = {
+    opacity: isLoaded ? 1 : 0,
+    transform: animationPhase === "entering" ? "scale(1)" : isLoaded ? "scale(1)" : "scale(0.97)",
+    transition: "opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+  };
 
   return (
     <Box
@@ -350,20 +359,13 @@ const Gallery = ({ id }) => {
                   : 0,
               }}
             />
+            {/* No key prop — src change triggers new load without destroying the DOM node */}
             <CarouselImage
-              key={currentIndex} // forces re-render/animation on index change
               src={images[currentIndex].img}
               alt={images[currentIndex].title}
-              onLoad={() => setIsLoaded(true)}
+              onLoad={handleImageLoad}
               onError={() => setIsLoaded(true)}
-              style={{
-                opacity: isLoaded ? 1 : 0,
-              }}
-              sx={{
-                animation: isLoaded
-                  ? `${slideDirection === "next" ? slideInRight : slideInLeft} 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards`
-                  : "none",
-              }}
+              style={imageStyle}
             />
 
             <LoadingOverlay
@@ -420,8 +422,7 @@ const Gallery = ({ id }) => {
                   key={idx}
                   active={idx === currentIndex ? 1 : 0}
                   onClick={() => {
-                    setSlideDirection(idx > currentIndex ? "next" : "prev");
-                    setCurrentIndex(idx);
+                    goToSlide(idx);
                   }}
                 />
               ))}

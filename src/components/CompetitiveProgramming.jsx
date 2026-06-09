@@ -79,7 +79,7 @@ const CompetitiveProgramming = ({ id }) => {
       icon: <TrophyIcon />
     },
     {
-      title: "NCPC, MIST 2019",
+      title: "NCPC, MIST 2020",
       description: "Ranked top 100 in national level programming contest. Team: NSU_LongLiveBatman",
       links: [],
       icon: <MedalIcon />

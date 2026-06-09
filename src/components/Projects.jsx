@@ -65,13 +65,60 @@ const ProjectIconBox = styled(Avatar)(({ theme }) => ({
   marginRight: theme.spacing(1.5),
   backgroundColor: "rgba(79, 70, 229, 0.1)",
   color: theme.palette.primary.main,
+  borderRadius: "12px",
+  "& .MuiAvatar-img": {
+    objectFit: "contain",
+    padding: theme.spacing(0.5),
+  },
 }));
 
 const Projects = ({ id }) => {
   const projects = [
     {
+      title: "ValoDash",
+      type: "Full-Stack Web App",
+      logo: "/project_logos/valodash_logo.svg",
+      liveLink: "https://valo-dash.vercel.app/",
+      githubLink: "",
+      achievements: [
+        "Developed a full-stack analytics dashboard for custom Valorant teams, using Node.js, TypeScript, Next.js, Zod, Prisma, and PostgreSQL. Integrated Riot Games APIs to collect and process player profiles and historical match data, powering team leaderboards, comparative analytics, graphical analysis, and performance insights.",
+        "Implemented automated data refresh pipelines with scheduled cron jobs, maintaining up-to-date statistics and improving the reliability of backend data synchronization. Implemented a highly interactive data visualization UI.",
+      ],
+      technologies: [
+        "Node.js",
+        "TypeScript",
+        "Next.js",
+        "Zod",
+        "Prisma",
+        "PostgreSQL",
+        "Riot Games API",
+        "Cron Jobs",
+        "Data Visualization",
+      ],
+    },
+    {
+      title: "ColorCuddle",
+      type: "Interactive Web Game",
+      logo: "/project_logos/colorcuddle_logo.svg",
+      liveLink: "https://color-cuddle.vercel.app/",
+      githubLink: "",
+      achievements: [
+        "Developed Color Cuddle Games, an interactive web-based game using Next.js, featuring low-latency gameplay, drag-and-drop gameplay mechanics, responsive UI, and full mobile compatibility across devices.",
+        "Designed and implemented three difficulty levels with dynamic game logic, creating a progressive user experience while optimizing performance and accessibility for both desktop and mobile users.",
+      ],
+      technologies: [
+        "Next.js",
+        "React",
+        "Drag-and-Drop",
+        "Web Game",
+        "Responsive Design",
+        "Mobile Optimization",
+      ],
+    },
+    {
       title: "Text Analyzer",
       type: "Web App",
+      logo: "/project_logos/textanalyzer_logo.svg",
       liveLink: "https://text-analyzer-sudipta.vercel.app/",
       githubLink: "https://github.com/MrMandalNSU/text-analyzer",
       achievements: [
@@ -91,6 +138,7 @@ const Projects = ({ id }) => {
     {
       title: "Product Pouch",
       type: "Full-Stack Web App",
+      logo: "/project_logos/productpouch_logo.svg",
       liveLink: "",
       githubLink: "https://github.com/MrMandalNSU/ProductPouch",
       achievements: [
@@ -111,6 +159,7 @@ const Projects = ({ id }) => {
     {
       title: "DSE SME Data Scraper",
       type: "Automation Script",
+      logo: "/project_logos/dsescript_logo.svg",
       liveLink: "",
       githubLink: "https://github.com/MrMandalNSU/dse-sme-data-scraper",
       achievements: [
@@ -163,7 +212,13 @@ const Projects = ({ id }) => {
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <ProjectIconBox>
+                      <ProjectIconBox
+                        src={project.logo}
+                        alt={`${project.title} logo`}
+                        sx={{
+                          backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                        }}
+                      >
                         <CodeIcon />
                       </ProjectIconBox>
                       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>

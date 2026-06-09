@@ -1,0 +1,13 @@
+<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="geminiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#fb7185" />
+    </linearGradient>
+  </defs>
+  <!-- Large Sparkle -->
+  <path d="M160,20 Q160,160 300,160 Q160,160 160,300 Q160,160 20,160 Q160,160 160,20 Z" fill="url(#geminiGrad)" />
+  <!-- Small Sparkle -->
+  <path d="M250,30 Q250,70 290,70 Q250,70 250,110 Q250,70 210,70 Q250,70 250,30 Z" fill="url(#geminiGrad)" opacity="0.85" />
+</svg>

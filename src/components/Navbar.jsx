@@ -32,11 +32,12 @@ import {
   Close as CloseIcon,
   LinkedIn as LinkedInIcon,
   GitHub as GitHubIcon,
+  SmartToy as SmartToyIcon,
 } from "@mui/icons-material";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 
-const navItems = ["Intro", "Experience", "Projects", "CP", "Education", "Gallery"];
+const navItems = ["Intro", "Experience", "Agentic AI", "Projects", "CP", "Education", "Gallery"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -75,6 +76,9 @@ const Navbar = () => {
         break;
       case "Experience":
         scrollToSection("experience");
+        break;
+      case "Agentic AI":
+        scrollToSection("agentic-ai");
         break;
       case "Projects":
         scrollToSection("projects");
@@ -127,6 +131,7 @@ const Navbar = () => {
   const itemIcons = {
     Intro: <PersonIcon />,
     Experience: <WorkIcon />,
+    "Agentic AI": <SmartToyIcon />,
     Projects: <CodeIcon />,
     CP: <EmojiEventsIcon />,
     Education: <SchoolIcon />,

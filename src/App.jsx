@@ -3,6 +3,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Navbar from "./components/Navbar";
 import Intro from "./components/Intro";
 import Experience from "./components/Experience";
+import AgenticAI from "./components/AgenticAI";
 import Research from "./components/Research";
 
 import Projects from "./components/Projects";
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <Intro id="intro" />
       <Experience id="experience" />
+      <AgenticAI id="agentic-ai" />
       <Research id="research" />
       <Projects id="projects" />
       <CompetitiveProgramming id="cp" />

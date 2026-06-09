@@ -111,7 +111,7 @@ const AgenticAI = ({ id }) => {
     { id: "claude", name: "Claude", logo: "/ai_logos/claude_logo.svg", color: "#cc5a37" },
     { id: "gpt", name: "GPT", logo: "/ai_logos/gpt_logo.svg", color: "#10b981" },
     { id: "gemini", name: "Gemini", logo: "/ai_logos/gemini_logo.svg", color: "#818cf8" },
-    { id: "claudecode", name: "Claude Code", logo: "/ai_logos/claudecode_logo.svg", color: "#e2e8f0" },
+    { id: "claudecode", name: "Claude Code", logo: "/ai_logos/claudecode_logo.svg", color: "#e4932aff" },
     { id: "antigravity", name: "Antigravity", logo: "/ai_logos/antigravity_logo.svg", color: "#d946ef" },
     { id: "cursor", name: "Cursor", logo: "/ai_logos/cursor_logo.svg", color: "#0ea5e9" },
     { id: "codex", name: "Codex", logo: "/ai_logos/codex_logo.svg", color: "#f59e0b" },

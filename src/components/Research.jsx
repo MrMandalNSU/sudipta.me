@@ -76,7 +76,7 @@ const InstitutionLogo = styled(Avatar)(({ theme }) => ({
 const Research = ({ id }) => {
   const researches = [
     {
-      title: "Social Media Opinion Mining Based on Bangla Public Posts",
+      title: "Social Media Opinion Mining Based on Bangla Public Post of Facebook",
       institution: "North South University (NSU)",
       institutionLogo: "/research_logo.png",
       institutionUrl: "https://www.northsouth.edu/",
@@ -84,12 +84,13 @@ const Research = ({ id }) => {
       location: "Dhaka, Bangladesh",
       duration: "2021",
       type: "Research",
-      focus: "Sentiment analysis of Bangla text from Facebook public posts",
+      focus: "Sentiment analysis of Bangla text from Facebook public posts (Both Male & Female Celebrities)",
       achievements: [
-        "Conducted sentiment analysis on Bangla text using state-of-the-art ML techniques",
-        "Created a dataset of 11K Bangla comments using semi-automatic crawler from Facebook",
-        "Applied TF-IDF vectors, uni-bi-tri-gram analysis, and confusion matrix evaluation",
-        "Implemented traditional ML algorithms for text classification and sentiment detection",
+        "Coordinated data cleaning methods, data noise reduction, categorized, and annotated into 11 subcategories",
+        "Created a dataset of 11K Bangla comments by using a semi-automatic crawler to fetch from Facebook",
+        "Used state-of-the-art ML techniques (TF-IDF vectors, uni-bi, tri-gram, confusion matrix, etc) to analyze data",
+        "Generated text clouds based on 3 main categories and 11 subcategories for the visual representation of data",
+        "Published at the 24th ICCIT. Skills learned: Python, Google Colab, traditional ML algorithms, LaTeX, etc.",
       ],
       technologies: [
         "Python",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sudipta-mandal.vercel.app/sitemap.xml
+Sitemap: https://sudipta.xyz/sitemap.xml

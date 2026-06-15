@@ -35,6 +35,43 @@ const ValoDashDetail = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  /* ── SEO Meta updates ── */
+  useEffect(() => {
+    // 1. Update Document Title
+    document.title = "ValoDash - SaaS Valorant Analytics Platform | Sudipta Mandal";
+
+    // 2. Update Meta Description
+    let descriptionMeta = document.querySelector('meta[name="description"]');
+    if (!descriptionMeta) {
+      descriptionMeta = document.createElement('meta');
+      descriptionMeta.setAttribute('name', 'description');
+      document.head.appendChild(descriptionMeta);
+    }
+    const originalDesc = descriptionMeta.getAttribute('content');
+    descriptionMeta.setAttribute('content', 'Detailed breakdown of ValoDash: A high-density SaaS analytics platform for Valorant rosters featuring scheduled cron syncs, Riot API rate limit queues, Winston logs, and JWT/Discord OAuth.');
+
+    // 3. Update Canonical Link
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    const originalCanonical = canonicalLink.getAttribute('href');
+    canonicalLink.setAttribute('href', 'https://sudipta.xyz/projects/valodash');
+
+    // 4. Restore original tags when leaving the page (unmounting)
+    return () => {
+      document.title = "Sudipta Mandal | Software Engineer & Researcher";
+      if (descriptionMeta && originalDesc) {
+        descriptionMeta.setAttribute('content', originalDesc);
+      }
+      if (canonicalLink && originalCanonical) {
+        canonicalLink.setAttribute('href', originalCanonical);
+      }
+    };
+  }, []);
+
   /* ── Scrollspy ── */
   useEffect(() => {
     const ids = tocSections.map((s) => s.id);

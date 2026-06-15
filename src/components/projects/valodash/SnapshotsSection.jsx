@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Dialog, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {
@@ -18,6 +18,44 @@ const SnapshotsSection = ({
   lightboxIndex,
   setLightboxIndex,
 }) => {
+  const [touchStart, setTouchStart] = useState({ x: null, y: null });
+  const [touchEnd, setTouchEnd] = useState({ x: null, y: null });
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd({ x: null, y: null });
+    setTouchStart({
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY,
+    });
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd({
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY,
+    });
+  };
+
+  const onTouchEnd = () => {
+    if (touchStart.x === null || touchEnd.x === null) return;
+    const xDistance = touchStart.x - touchEnd.x;
+    const yDistance = touchStart.y - touchEnd.y;
+    
+    // Check if horizontal swipe is significantly greater than vertical swipe
+    const isHorizontalSwipe = Math.abs(xDistance) > Math.abs(yDistance);
+    
+    if (isHorizontalSwipe) {
+      if (xDistance > minSwipeDistance) {
+        // Swipe left -> next image
+        setLightboxIndex((prev) => (prev === snapshotsList.length - 1 ? 0 : prev + 1));
+      } else if (xDistance < -minSwipeDistance) {
+        // Swipe right -> prev image
+        setLightboxIndex((prev) => (prev === 0 ? snapshotsList.length - 1 : prev - 1));
+      }
+    }
+  };
+
   return (
     <>
       {/* ════ Section 6: Snapshots ════ */}
@@ -33,72 +71,159 @@ const SnapshotsSection = ({
           Desktop Layouts
         </Typography>
 
-        <Grid container spacing={3} sx={{ mb: 6 }}>
+        {/* Desktop View: Grid Layout */}
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <Grid container spacing={3} sx={{ mb: 6 }}>
+            {snapshotsList.filter(s => s.type === "desktop").map((item, idx) => {
+              const originalIndex = snapshotsList.findIndex(s => s.src === item.src);
+              return (
+                <Grid key={idx} size={{ xs: 12, sm: 6 }}>
+                  <Box
+                    onClick={() => {
+                      setLightboxIndex(originalIndex);
+                      setLightboxOpen(true);
+                    }}
+                    sx={{
+                      cursor: "pointer",
+                      position: "relative",
+                      borderRadius: 3,
+                      overflow: "hidden",
+                      border: "3px solid rgba(255, 255, 255, 0.15)",
+                      background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
+                      boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      "&:hover": {
+                        transform: "translateY(-4px) scale(1.01)",
+                        boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.15)" : "0 12px 30px rgba(129, 140, 248, 0.15)",
+                        borderColor: "primary.main",
+                        "& .hover-overlay": { opacity: 1 },
+                      }
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={item.src}
+                      alt={item.title}
+                      sx={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                    {/* Hover Overlay */}
+                    <Box
+                      className="hover-overlay"
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(15, 23, 42, 0.6)",
+                        backdropFilter: "blur(4px)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: 0,
+                        transition: "opacity 0.3s ease",
+                        p: 2,
+                        textAlign: "center"
+                      }}
+                    >
+                      <Typography variant="subtitle2" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px" }}>
+                        {item.title}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+
+        {/* Mobile View: Horizontal Scrollable/Swipable Row */}
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            overflowX: "auto",
+            gap: 2.5,
+            pb: 2.5,
+            mb: 5,
+            px: 0.5,
+            scrollSnapType: "x mandatory",
+            "&::-webkit-scrollbar": {
+              height: 6,
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
+              borderRadius: 3,
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
+              borderRadius: 3,
+            },
+            scrollbarWidth: "thin",
+          }}
+        >
           {snapshotsList.filter(s => s.type === "desktop").map((item, idx) => {
             const originalIndex = snapshotsList.findIndex(s => s.src === item.src);
             return (
-              <Grid key={idx} size={{ xs: 12, sm: 6 }}>
+              <Box
+                key={idx}
+                onClick={() => {
+                  setLightboxIndex(originalIndex);
+                  setLightboxOpen(true);
+                }}
+                sx={{
+                  flex: "0 0 340px", // fixed width card on mobile (wider for 16:9 desktop images)
+                  scrollSnapAlign: "start",
+                  cursor: "pointer",
+                  position: "relative",
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  border: "3px solid rgba(255, 255, 255, 0.15)",
+                  background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                  }
+                }}
+              >
                 <Box
-                  onClick={() => {
-                    setLightboxIndex(originalIndex);
-                    setLightboxOpen(true);
-                  }}
+                  component="img"
+                  src={item.src}
+                  alt={item.title}
                   sx={{
-                    cursor: "pointer",
-                    position: "relative",
-                    borderRadius: 3,
-                    overflow: "hidden",
-                    border: "3px solid rgba(255, 255, 255, 0.15)",
-                    background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
-                    boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    "&:hover": {
-                      transform: "translateY(-4px) scale(1.01)",
-                      boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.15)" : "0 12px 30px rgba(129, 140, 248, 0.15)",
-                      borderColor: "primary.main",
-                      "& .hover-overlay": { opacity: 1 },
-                    }
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
+                    aspectRatio: "16/9",
+                    objectFit: "cover"
+                  }}
+                />
+                {/* Visual Label Banner */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: "rgba(15, 23, 42, 0.72)",
+                    backdropFilter: "blur(3px)",
+                    py: 1,
+                    px: 0.5,
+                    textAlign: "center"
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={item.src}
-                    alt={item.title}
-                    sx={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                    }}
-                  />
-                  {/* Hover Overlay */}
-                  <Box
-                    className="hover-overlay"
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: "rgba(15, 23, 42, 0.6)",
-                      backdropFilter: "blur(4px)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      opacity: 0,
-                      transition: "opacity 0.3s ease",
-                      p: 2,
-                      textAlign: "center"
-                    }}
-                  >
-                    <Typography variant="subtitle2" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px" }}>
-                      {item.title}
-                    </Typography>
-                  </Box>
+                  <Typography variant="caption" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: "0.65rem", letterSpacing: "0.5px" }}>
+                    {item.title}
+                  </Typography>
                 </Box>
-              </Grid>
+              </Box>
             );
           })}
-        </Grid>
+        </Box>
 
         {/* Subheading: Mobile Views */}
         <Typography variant="h6" sx={{ fontWeight: 800, mb: 2.5, display: "flex", alignItems: "center", gap: 1 }}>
@@ -106,75 +231,160 @@ const SnapshotsSection = ({
           Mobile Viewports
         </Typography>
 
-        {/* Grid layout for vertical mobile viewports */}
-        <Grid container spacing={3} columns={10}>
+        {/* Desktop View: Grid Layout */}
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <Grid container spacing={3} columns={10}>
+            {snapshotsList.filter(s => s.type === "mobile").map((item, idx) => {
+              const originalIndex = snapshotsList.findIndex(s => s.src === item.src);
+              return (
+                <Grid key={idx} size={{ xs: 5, md: 2 }}>
+                  <Box
+                    onClick={() => {
+                      setLightboxIndex(originalIndex);
+                      setLightboxOpen(true);
+                    }}
+                    sx={{
+                      cursor: "pointer",
+                      position: "relative",
+                      borderRadius: 3,
+                      overflow: "hidden",
+                      border: "3px solid rgba(255, 255, 255, 0.15)",
+                      background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
+                      boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      "&:hover": {
+                        transform: "translateY(-4px) scale(1.02)",
+                        boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.18)" : "0 12px 30px rgba(129, 140, 248, 0.18)",
+                        borderColor: "primary.main",
+                        "& .hover-overlay": { opacity: 1 },
+                      }
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={item.src}
+                      alt={item.title}
+                      sx={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                        aspectRatio: "383/851",
+                        objectFit: "cover"
+                      }}
+                    />
+                    {/* Hover Overlay */}
+                    <Box
+                      className="hover-overlay"
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(15, 23, 42, 0.65)",
+                        backdropFilter: "blur(4px)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: 0,
+                        transition: "opacity 0.3s ease",
+                        p: 1.5,
+                        textAlign: "center"
+                      }}
+                    >
+                      <Typography variant="caption" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.75rem" }}>
+                        {item.title}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+
+        {/* Mobile View: Horizontal Scrollable/Swipable Row */}
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            overflowX: "auto",
+            gap: 2.5,
+            pb: 2.5,
+            px: 0.5,
+            scrollSnapType: "x mandatory",
+            "&::-webkit-scrollbar": {
+              height: 6,
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
+              borderRadius: 3,
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
+              borderRadius: 3,
+            },
+            scrollbarWidth: "thin",
+          }}
+        >
           {snapshotsList.filter(s => s.type === "mobile").map((item, idx) => {
             const originalIndex = snapshotsList.findIndex(s => s.src === item.src);
             return (
-              <Grid key={idx} size={{ xs: 5, md: 2 }}>
+              <Box
+                key={idx}
+                onClick={() => {
+                  setLightboxIndex(originalIndex);
+                  setLightboxOpen(true);
+                }}
+                sx={{
+                  flex: "0 0 170px", // fixed width card on mobile
+                  scrollSnapAlign: "start",
+                  cursor: "pointer",
+                  position: "relative",
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  border: "3px solid rgba(255, 255, 255, 0.15)",
+                  background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                  }
+                }}
+              >
                 <Box
-                  onClick={() => {
-                    setLightboxIndex(originalIndex);
-                    setLightboxOpen(true);
-                  }}
+                  component="img"
+                  src={item.src}
+                  alt={item.title}
                   sx={{
-                    cursor: "pointer",
-                    position: "relative",
-                    borderRadius: 3,
-                    overflow: "hidden",
-                    border: "3px solid rgba(255, 255, 255, 0.15)",
-                    background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
-                    boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    "&:hover": {
-                      transform: "translateY(-4px) scale(1.02)",
-                      boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.18)" : "0 12px 30px rgba(129, 140, 248, 0.18)",
-                      borderColor: "primary.main",
-                      "& .hover-overlay": { opacity: 1 },
-                    }
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
+                    aspectRatio: "383/851",
+                    objectFit: "cover"
+                  }}
+                />
+                {/* Visual Label Banner */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: "rgba(15, 23, 42, 0.72)",
+                    backdropFilter: "blur(3px)",
+                    py: 1,
+                    px: 0.5,
+                    textAlign: "center"
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={item.src}
-                    alt={item.title}
-                    sx={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                      aspectRatio: "383/851",
-                      objectFit: "cover"
-                    }}
-                  />
-                  {/* Hover Overlay */}
-                  <Box
-                    className="hover-overlay"
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: "rgba(15, 23, 42, 0.65)",
-                      backdropFilter: "blur(4px)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      opacity: 0,
-                      transition: "opacity 0.3s ease",
-                      p: 1.5,
-                      textAlign: "center"
-                    }}
-                  >
-                    <Typography variant="caption" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.75rem" }}>
-                      {item.title}
-                    </Typography>
-                  </Box>
+                  <Typography variant="caption" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: "0.65rem", letterSpacing: "0.5px" }}>
+                    {item.title}
+                  </Typography>
                 </Box>
-              </Grid>
+              </Box>
             );
           })}
-        </Grid>
+        </Box>
       </Box>
 
       {/* ── Lightbox Modal ── */}
@@ -191,7 +401,12 @@ const SnapshotsSection = ({
           }
         }}
       >
-        <Box sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}
+        >
           {/* Close Button */}
           <IconButton
             onClick={() => setLightboxOpen(false)}

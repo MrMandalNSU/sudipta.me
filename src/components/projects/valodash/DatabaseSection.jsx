@@ -204,7 +204,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                 Fields & Types
               </Typography>
               <Grid container spacing={1.5}>
-                {activeTableData.fields.map((field, i) => (
+                {activeTableData.fields.map((field) => (
                   <Grid key={field.name} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                     <Box
                       sx={{
@@ -446,7 +446,6 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
             <Box sx={{ display: { xs: "block", md: "none" } }}>
               <Grid container spacing={1.5}>
                 {chunks.map((pair, pIdx) => {
-                  const activeTblInPair = pair.find((tbl) => tbl.id === activeTable);
                   return (
                     <React.Fragment key={pIdx}>
                       {pair.map((tbl) => {

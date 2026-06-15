@@ -205,7 +205,16 @@ export const workflows = {
       { label: "Token Handshake", text: "The backend exchanges the auth code with Discord APIs for an access token to retrieve the user's username, avatar, and unique Discord ID." },
       { label: "Session Issue", text: "The backend maps the Discord ID to a local User model in PostgreSQL. It then generates a secure JWT token containing the user profile." },
       { label: "Context Storage", text: "The frontend SPA stores the JWT token in LocalStorage and updates the global AuthContext, granting access to private team management panels." }
-    ]
+    ],
+    payload: {
+      discordId: "3829104859013058",
+      username: "sudipta_mandal",
+      jwtSession: {
+        sub: "usr_91",
+        role: "ROSTER_ADMIN",
+        exp: 1718449600
+      }
+    }
   },
   enrollment: {
     title: "Player Enrollment",
@@ -218,7 +227,16 @@ export const workflows = {
       { label: "Roster Bounds Check", text: "The server checks database constraints: enforces a maximum roster size of 10 players, and limits standard users to a maximum of 2 teams." },
       { label: "Relational Mapping", text: "If the player PUUID is new globally, a Player entry is created. A TeamPlayer junction record is created mapping the player to the team." },
       { label: "Async Queue", text: "The server initiates an asynchronous match synchronization job in the background and returns a 201 Success code to the client immediately." }
-    ]
+    ],
+    payload: {
+      puuid: "riot_ap_9b8a7c6d5e4...",
+      gameName: "MrMandal",
+      tagLine: "NSU",
+      roster: {
+        teamId: "team_21",
+        joinedAt: "2026-06-15T03:45Z"
+      }
+    }
   },
   sync: {
     title: "Match Sync Engine",
@@ -231,7 +249,14 @@ export const workflows = {
       { label: "Match Parse", text: "For each player, the server pulls recent competitive games. It verifies if the match is new; if so, it calculates game length, map details, and team scores." },
       { label: "Stats Ingestion", text: "The server iterates through match participants, identifies PUUIDs present in our database, computes combat metrics (K/D, ACS, headshot %), and records PlayerMatchStats." },
       { label: "Rank Tracking", text: "The player's competitive tier is checked against their last record; any rank updates (promotions/demotions) are written to the RankHistory timeline." }
-    ]
+    ],
+    payload: {
+      event: "match.sync_webhook",
+      staggerMs: 2000,
+      syncFrequency: "12h",
+      processedMatches: 24,
+      cacheHits: 19
+    }
   }
 };
 

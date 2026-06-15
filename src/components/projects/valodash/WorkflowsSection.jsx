@@ -4,6 +4,56 @@ import Grid from "@mui/material/Grid";
 import { workflows } from "./constants";
 import { GlassCard, SectionHeading } from "./styles";
 
+const highlightJson = (obj) => {
+  if (!obj) return null;
+  const jsonString = JSON.stringify(obj, null, 2);
+  const lines = jsonString.split("\n");
+
+  return lines.map((line, index) => {
+    const match = line.match(/^(\s*)"([^"]+)"(:\s*)(.*)$/);
+    if (match) {
+      const indent = match[1];
+      const key = match[2];
+      const colon = match[3];
+      const value = match[4];
+
+      let valueElement;
+      if (value.startsWith('"')) {
+        const isComma = value.endsWith(",");
+        const cleanVal = isComma ? value.slice(0, -1) : value;
+        valueElement = (
+          <>
+            <span style={{ color: "#34D399" }}>{cleanVal}</span>
+            {isComma && <span style={{ color: "#94A3B8" }}>,</span>}
+          </>
+        );
+      } else if (value.trim() === "{" || value.trim() === "[") {
+        valueElement = <span style={{ color: "#94A3B8" }}>{value}</span>;
+      } else {
+        const isComma = value.endsWith(",");
+        const cleanVal = isComma ? value.slice(0, -1) : value;
+        valueElement = (
+          <>
+            <span style={{ color: "#FB7185" }}>{cleanVal}</span>
+            {isComma && <span style={{ color: "#94A3B8" }}>,</span>}
+          </>
+        );
+      }
+
+      return (
+        <div key={index}>
+          {indent}
+          <span style={{ color: "#60A5FA" }}>"{key}"</span>
+          {colon}
+          {valueElement}
+        </div>
+      );
+    }
+
+    return <div key={index}>{line}</div>;
+  });
+};
+
 const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
   return (
     <Box id="workflows" sx={{ scrollMarginTop: 120, mb: 4 }}>
@@ -121,6 +171,70 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
               );
             })}
           </Stack>
+
+          {/* API Payload Schema Preview Console */}
+          <Box
+            sx={{
+              display: { xs: "none", lg: "flex" },
+              flexDirection: "column",
+              mt: 2.5,
+              borderRadius: 2,
+              backgroundColor: "#0F1923", // Valorant dark slate theme background
+              border: "1px solid rgba(255,255,255,0.06)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Console Tab Header */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                px: 2,
+                py: 1,
+                backgroundColor: "rgba(255,255,255,0.02)",
+                borderBottom: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 700,
+                  color: "#94A3B8",
+                  textTransform: "uppercase",
+                  letterSpacing: "1.5px",
+                  fontSize: "0.68rem",
+                }}
+              >
+                {activeWorkflow === "auth" && "Session JWT Schema (JSON)"}
+                {activeWorkflow === "enrollment" && "Roster Ingest Schema (JSON)"}
+                {activeWorkflow === "sync" && "Webhook Event Schema (JSON)"}
+              </Typography>
+              <Box sx={{ display: "flex", gap: 0.5 }}>
+                <Box sx={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.2)" }} />
+                <Box sx={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.2)" }} />
+                <Box sx={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.2)" }} />
+              </Box>
+            </Box>
+
+            {/* Console Code View */}
+            <Box
+              sx={{
+                p: 2.5,
+                fontFamily: "'Fira Code', 'Courier New', Courier, monospace",
+                fontSize: "0.78rem",
+                lineHeight: 1.6,
+                textAlign: "left",
+                color: "#94A3B8",
+                overflowX: "auto",
+                whiteSpace: "pre",
+              }}
+            >
+              <code>
+                {highlightJson(workflows[activeWorkflow]?.payload)}
+              </code>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </Box>

@@ -121,13 +121,14 @@ export const workflows = {
       { label: "Matched Load", text: "When a match returns true, the scanner terminates search loops and instantiates the target client parser assistant." }
     ],
     payload: {
-      inputSource: "invoice_adampolis_1.pdf",
+      inputSource: "invoice_CargoStream_1.pdf",
       fileBytes: "152 KB",
       detectedMime: "application/pdf"
     },
     responsePayload: {
-      matchedClass: "App\\Assistants\\AdampolisServiceInvoicePdfAssistant",
-      status: "DISCOVERED"
+      matchedClass: "App\\Assistants\\CargoStreamServiceInvoicePdfAssistant",
+      status: "DISCOVERED",
+      type: "service_invoice",
     }
   },
   extraction: {
@@ -168,7 +169,7 @@ export const workflows = {
     },
     responsePayload: {
       schemaValid: true,
-      debugTraceSaved: "storage/service_invoices/debug_output/adampolis_debug.txt"
+      debugTraceSaved: "storage/service_invoices/debug_output/CargoStream_debug.txt"
     }
   }
 };

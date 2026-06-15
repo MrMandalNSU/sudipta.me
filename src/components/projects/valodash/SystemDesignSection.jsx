@@ -6,8 +6,8 @@ import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
 const userFlowSteps = [
   { key: "client", label: "User Request", sub: "Client" },
-  { key: "discord", label: "Discord OAuth", sub: "Auth Handshake" },
-  { key: "api", label: "Backend API", sub: "Cache Check" },
+  { key: "api", label: "Express Router", sub: "Rate & Auth Check" },
+  { key: "api", label: "Cache Check", sub: "Local DB Check" },
   { key: "postgres", label: "Query Cache", sub: "Postgres / Prisma" },
   { key: "postgres", label: "PostgreSQL DB", sub: "Persistent Cache" },
   { key: "client", label: "Render Stats", sub: "Update UI Dashboard" },
@@ -16,6 +16,7 @@ const userFlowSteps = [
 const syncFlowSteps = [
   { key: "sync", label: "GitHub Actions", sub: "Cron Trigger (12h)" },
   { key: "sync", label: "Staggered Sync", sub: "2000ms Request Loop" },
+  { key: "riot", label: "Riot API Rate Limit", sub: "Concurrency Check" },
   { key: "riot", label: "Ingest & Parse", sub: "Riot Games API" },
   { key: "postgres", label: "PostgreSQL DB", sub: "Persistent Cache" },
 ];
@@ -157,15 +158,18 @@ const SystemDesignSection = ({
 
             {/* Connection Lines */}
             {[
-              { from: "client", to: "discord", path: "M 160 65 L 200 65" },
-              { from: "discord", to: "api", path: "M 320 65 L 380 65" },
-              { from: "api", to: "postgres", path: "M 500 65 L 560 65" },
-              { from: "postgres", to: "postgres", path: "M 690 65 L 750 115" },
-              { from: "api", to: "sync", path: "M 440 100 L 440 180 L 285 180 L 285 220" },
-              { from: "sync", to: "sync", path: "M 160 245 L 220 245" },
-              { from: "sync", to: "riot", path: "M 350 245 L 410 245" },
-              { from: "riot", to: "postgres", path: "M 540 245 L 630 245 L 630 140 L 750 140" },
-              { from: "postgres", to: "client", path: "M 810 165 L 810 270" },
+              { from: "client", to: "api", path: "M 100 90 L 100 155 L 220 155" },
+              { from: "client", to: "discord", path: "M 160 65 L 220 65" },
+              { from: "discord", to: "api", path: "M 285 90 L 285 130" },
+              { from: "api", to: "api", path: "M 350 155 L 370 155 L 370 65 L 390 65" },
+              { from: "api", to: "postgres", path: "M 510 65 L 580 65" },
+              { from: "postgres", to: "postgres", path: "M 710 65 L 750 65 L 750 135 L 790 135" },
+              { from: "api", to: "sync", path: "M 450 105 L 450 215 L 260 215 L 260 240" },
+              { from: "sync", to: "api", path: "M 100 240 L 100 205 L 250 205 L 250 180" },
+              { from: "sync", to: "riot", path: "M 320 265 L 380 265" },
+              { from: "riot", to: "riot", path: "M 500 265 L 560 265" },
+              { from: "riot", to: "postgres", path: "M 680 265 L 750 265 L 750 170 L 790 170" },
+              { from: "postgres", to: "client", path: "M 840 202 L 840 240" },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
@@ -191,14 +195,16 @@ const SystemDesignSection = ({
             {/* Nodes */}
             {[
               { key: "client", type: "start", x: 40, y: 40, w: 120, h: 50, rx: 25, cx: 100, cy: 65, label: "User Request", sub: "Client" },
-              { key: "discord", type: "decision", d: "M 260 25 L 320 65 L 260 105 L 200 65 Z", cx: 260, cy: 65, label: "Auth?", sub: "OAuth" },
-              { key: "api", type: "decision", d: "M 440 25 L 500 65 L 440 105 L 380 65 Z", cx: 440, cy: 65, label: "Cached?", sub: "Client Cache" },
-              { key: "postgres", type: "process", x: 560, y: 40, w: 130, h: 50, rx: 8, cx: 625, cy: 65, label: "Query Cache", sub: "Postgres / Prisma" },
-              { key: "postgres", type: "cylinder", x: 750, y: 80, w: 120, h: 70, cx: 810, cy: 115, label: "PostgreSQL DB", sub: "Postgres Cache" },
-              { key: "client", type: "process", x: 745, y: 270, w: 130, h: 50, rx: 8, cx: 810, cy: 295, label: "Render Stats", sub: "Update UI" },
-              { key: "sync", type: "process", x: 40, y: 220, w: 120, h: 50, rx: 8, cx: 100, cy: 245, label: "GitHub Actions", sub: "Cron Trigger" },
-              { key: "sync", type: "process", x: 220, y: 220, w: 130, h: 50, rx: 8, cx: 285, cy: 245, label: "Staggered Sync", sub: "2000ms Loop" },
-              { key: "riot", type: "process", x: 410, y: 220, w: 130, h: 50, rx: 8, cx: 475, cy: 245, label: "Ingest & Parse", sub: "Riot API" },
+              { key: "discord", type: "process", x: 220, y: 40, w: 130, h: 50, rx: 8, cx: 285, cy: 65, label: "Discord Portal", sub: "OAuth2 Login" },
+              { key: "api", type: "decision", d: "M 450 25 L 510 65 L 450 105 L 390 65 Z", cx: 450, cy: 65, label: "Cached?", sub: "Local DB Check" },
+              { key: "postgres", type: "process", x: 580, y: 40, w: 130, h: 50, rx: 8, cx: 645, cy: 65, label: "Query Cache", sub: "Postgres / Prisma" },
+              { key: "api", type: "process", x: 220, y: 130, w: 130, h: 50, rx: 8, cx: 285, cy: 155, label: "Express Router", sub: "Rate & Auth Check" },
+              { key: "postgres", type: "cylinder", x: 790, y: 120, w: 100, h: 70, cx: 840, cy: 155, label: "PostgreSQL DB", sub: "Postgres Cache" },
+              { key: "sync", type: "process", x: 40, y: 240, w: 120, h: 50, rx: 8, cx: 100, cy: 265, label: "GitHub Actions", sub: "Cron Trigger (12h)" },
+              { key: "sync", type: "process", x: 200, y: 240, w: 120, h: 50, rx: 8, cx: 260, cy: 265, label: "Staggered Sync", sub: "2000ms Delay" },
+              { key: "riot", type: "decision", d: "M 440 225 L 500 265 L 440 305 L 380 265 Z", cx: 440, cy: 265, label: "Rate Limit?", sub: "Riot API Limit" },
+              { key: "riot", type: "process", x: 560, y: 240, w: 120, h: 50, rx: 8, cx: 620, cy: 265, label: "Ingest & Parse", sub: "Riot API" },
+              { key: "client", type: "process", x: 780, y: 240, w: 120, h: 50, rx: 8, cx: 840, cy: 265, label: "Render Stats", sub: "Update UI" },
             ].map((node, nIdx) => {
               const isActive = activeSystemNode === node.key;
               const fillBg = isActive

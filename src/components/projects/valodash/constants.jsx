@@ -33,7 +33,7 @@ export const systemNodes = {
     title: "Backend API (Express.js / TypeScript)",
     shortTitle: "Backend",
     icon: <SettingsSuggestIcon />,
-    description: "Express.js server structured in TypeScript. Validates request payloads with Zod schemas, manages authorization via JSON Web Tokens, and processes logging telemetry via Winston.",
+    description: "Express.js server structured in TypeScript. Implements rate-limiting middleware to prevent API abuse, validates request payloads with Zod schemas, manages authorization via JSON Web Tokens, and processes logging telemetry via Winston.",
     role: "Core application router coordinating Postgres client requests, scheduled background triggers, and user authentication mapping.",
   },
   postgres: {
@@ -54,7 +54,7 @@ export const systemNodes = {
     title: "Riot Games API",
     shortTitle: "API",
     icon: <SportsEsportsIcon />,
-    description: "External Valorant API queried to look up in-game account identifiers (PUUID), rank MMR standings, game versions, maps, and detailed round stats.",
+    description: "External Valorant API queried to look up in-game account identifiers (PUUID), rank MMR standings, game versions, maps, and detailed round stats. Subject to strict third-party rate limits managed by staggered sync queues.",
     role: "Source of real-time game telemetry, fetched in batches to minimize latency and manage rate limits.",
   },
   sync: {

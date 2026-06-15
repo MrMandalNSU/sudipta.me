@@ -90,7 +90,7 @@ const Footer = () => {
               </Box>
             </Box>
             <Typography variant="body2" color="text.secondary">
-              Software Engineer III @ Cargo Stream
+              Senior Software Engineer @ Cargo Stream
             </Typography>
           </Box>
 

@@ -220,25 +220,93 @@ const Projects = ({ id }) => {
                       gap: 2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <ProjectIconBox
-                        src={project.logo}
-                        alt={`${project.title} logo`}
-                        sx={{
-                          backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
-                        }}
-                      >
-                        <CodeIcon />
-                      </ProjectIconBox>
-                      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                          {project.title}
-                        </Typography>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
-                          {project.type}
-                        </Typography>
+                    {project.liveLink ? (
+                      <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ color: "inherit" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                          <ProjectIconBox
+                            src={project.logo}
+                            alt={`${project.title} logo`}
+                            sx={{
+                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                            }}
+                          >
+                            <CodeIcon />
+                          </ProjectIconBox>
+                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                              {project.title}
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                              {project.type}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Link>
+                    ) : project.githubLink ? (
+                      <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ color: "inherit" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                          <ProjectIconBox
+                            src={project.logo}
+                            alt={`${project.title} logo`}
+                            sx={{
+                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                            }}
+                          >
+                            <CodeIcon />
+                          </ProjectIconBox>
+                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                              {project.title}
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                              {project.type}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Link>
+                    ) : project.detailsLink ? (
+                      <RouterLink to={project.detailsLink} style={{ textDecoration: "none", color: "inherit" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                          <ProjectIconBox
+                            src={project.logo}
+                            alt={`${project.title} logo`}
+                            sx={{
+                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                            }}
+                          >
+                            <CodeIcon />
+                          </ProjectIconBox>
+                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                              {project.title}
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                              {project.type}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </RouterLink>
+                    ) : (
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                        <ProjectIconBox
+                          src={project.logo}
+                          alt={`${project.title} logo`}
+                          sx={{
+                            backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                          }}
+                        >
+                          <CodeIcon />
+                        </ProjectIconBox>
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+                          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                            {project.title}
+                          </Typography>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            {project.type}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
+                    )}
                     <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
                       {project.detailsLink && (
                         <RouterLink to={project.detailsLink} style={{ textDecoration: "none" }}>

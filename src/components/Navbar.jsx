@@ -140,45 +140,45 @@ const Navbar = () => {
   const drawer = (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Header section with close button and profile overview */}
-      <Box 
-        sx={{ 
-          p: 3, 
+      <Box
+        sx={{
+          p: 3,
           position: "relative",
-          background: mode === "light" 
-            ? "linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1))" 
+          background: mode === "light"
+            ? "linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1))"
             : "linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(34, 211, 238, 0.15))",
           borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
         }}
       >
-        <IconButton 
+        <IconButton
           onClick={handleDrawerToggle}
-          sx={{ 
-            position: "absolute", 
-            top: 8, 
-            right: 8, 
-            color: "text.secondary" 
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            color: "text.secondary"
           }}
         >
           <CloseIcon />
         </IconButton>
-        
+
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 1 }}>
-          <Avatar 
-            src="/sudipta_dp.png" 
+          <Avatar
+            src="/sudipta_dp.png"
             alt="Sudipta Mandal"
-            sx={{ 
-              width: 70, 
-              height: 70, 
+            sx={{
+              width: 70,
+              height: 70,
               mb: 1.5,
               border: "3px solid",
               borderColor: "primary.main",
               boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)"
             }}
           />
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontWeight: 800, 
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 800,
               color: "text.primary",
               letterSpacing: "-0.01em",
               fontSize: "1.15rem"
@@ -186,16 +186,16 @@ const Navbar = () => {
           >
             Sudipta Mandal
           </Typography>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: "text.secondary", 
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
               fontWeight: 500,
               fontSize: "0.8rem",
               textAlign: "center"
             }}
           >
-            Software Engineer III @ Cargo Stream
+            Senior Software Engineer @ Cargo Stream
           </Typography>
         </Box>
       </Box>
@@ -205,8 +205,8 @@ const Navbar = () => {
         <List sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
           {navItems.map((item) => (
             <ListItem key={item} disablePadding>
-              <Button 
-                fullWidth 
+              <Button
+                fullWidth
                 onClick={() => {
                   handleNavClick(item);
                   handleDrawerToggle();
@@ -243,16 +243,16 @@ const Navbar = () => {
       </Box>
 
       {/* Resume Options and Social Links at Bottom */}
-      <Box 
-        sx={{ 
-          p: 2, 
+      <Box
+        sx={{
+          p: 2,
           borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-          background: mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)" 
+          background: mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)"
         }}
       >
         <Stack spacing={1} sx={{ mb: 2 }}>
-          <Button 
-            fullWidth 
+          <Button
+            fullWidth
             onClick={() => {
               handleViewResume();
               handleDrawerToggle();
@@ -265,8 +265,8 @@ const Navbar = () => {
           >
             View Resume
           </Button>
-          <Button 
-            fullWidth 
+          <Button
+            fullWidth
             onClick={() => {
               handleDownloadResume();
               handleDrawerToggle();
@@ -282,7 +282,7 @@ const Navbar = () => {
         </Stack>
 
         <Stack direction="row" spacing={2} justifyContent="center">
-          <IconButton 
+          <IconButton
             color="primary"
             component="a"
             href="https://www.linkedin.com/in/mrmandal/"
@@ -292,7 +292,7 @@ const Navbar = () => {
           >
             <LinkedInIcon />
           </IconButton>
-          <IconButton 
+          <IconButton
             color="primary"
             component="a"
             href="https://github.com/MrMandalNSU/"
@@ -356,8 +356,8 @@ const Navbar = () => {
             {navItems.map((item) => (
               <Button
                 key={item}
-                sx={{ 
-                  color: "inherit", 
+                sx={{
+                  color: "inherit",
                   mx: { md: 0, lg: 0.5 },
                   px: { md: 0.5, lg: 2 },
                   minWidth: "auto",
@@ -369,8 +369,8 @@ const Navbar = () => {
               </Button>
             ))}
             <Button
-              sx={{ 
-                color: "inherit", 
+              sx={{
+                color: "inherit",
                 ml: { md: 0.25, lg: 1 },
                 px: { md: 0.5, lg: 2 },
                 fontSize: { md: "0.75rem", lg: "1rem" }
@@ -395,7 +395,7 @@ const Navbar = () => {
               </MenuItem>
             </Menu>
           </Box>
-          
+
           <Box sx={{ display: "flex", alignItems: "center", order: { xs: 1, md: 3 } }}>
             <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, md: 1 } }}>
               {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -423,8 +423,8 @@ const Navbar = () => {
         }}
         sx={{
           display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": { 
-            boxSizing: "border-box", 
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
             width: 280,
             background: mode === "light"
               ? "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 244, 246, 0.95))"

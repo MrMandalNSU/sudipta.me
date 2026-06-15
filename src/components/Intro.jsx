@@ -107,7 +107,7 @@ const Intro = ({ id }) => {
               </Typography>
 
               <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.7, mb: 1, textAlign: "justify" }}>
-                A dedicated Software Engineer with 5+ years of industry experience in building scalable, high-performance web applications and backend systems. Currently working as a <b>Software Engineer III at Cargo Stream</b>, I specialize in backend engineering, cloud-based architectures, complex data parsing, and scalable system design. Experienced in collaborating with international remote teams, I combine strong technical expertise with effective English communication and product-focused problem solving.
+                A dedicated Software Engineer with 5+ years of industry experience in building scalable, high-performance web applications and backend systems. Currently working as a <b>Senior Software Engineer at Cargo Stream</b>, I specialize in backend engineering, interactive frontend systems, cloud-based architectures, complex data parsing, and scalable system design. Experienced in collaborating with international remote teams, I combine strong technical expertise with effective English communication and product-focused problem solving.
                 With a solid foundation in competitive programming and algorithms, I enjoy tackling complex engineering challenges and building reliable, user-centric solutions. Beyond my professional work, I actively contribute to the programming community as a mentor, problem setter, and judge at NSU Problem Solvers (NSUPS).
               </Typography>
 

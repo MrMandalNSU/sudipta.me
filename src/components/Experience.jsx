@@ -76,7 +76,7 @@ const CompanyLogo = styled(Avatar)(({ theme }) => ({
 const Experience = ({ id }) => {
   const experiences = [
     {
-      title: "Software Engineer III",
+      title: "Senior Software Engineer",
       company: "Cargo Stream",
       companyLogo: "/cargo_stream_logo.png",
       companyUrl: "https://cargostream.co/",

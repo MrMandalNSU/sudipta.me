@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogTitle,
@@ -18,7 +18,7 @@ import {
 const RESUME_PATH = "/Resume_Sudipta_Mandal.pdf";
 
 const ResumeModal = ({ open, onClose }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+
 
   const handleDownload = () => {
     const link = document.createElement("a");

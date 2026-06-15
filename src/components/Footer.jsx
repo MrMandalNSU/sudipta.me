@@ -17,7 +17,7 @@ import {
 } from "@mui/icons-material";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
-  margin: theme.spacing(8, "auto", 4, "auto"),
+  margin: theme.spacing(4, "auto", 4, "auto"),
   padding: theme.spacing(2), // Reduce padding on mobile
   width: "100%",
   [theme.breakpoints.up("sm")]: {

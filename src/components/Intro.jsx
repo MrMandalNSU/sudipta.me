@@ -51,7 +51,7 @@ const IntroCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ProfileImage = styled("img")(({ theme }) => ({
+const ProfileImage = styled("img")(() => ({
   width: "100%",
   height: "auto",
   maxHeight: 275,

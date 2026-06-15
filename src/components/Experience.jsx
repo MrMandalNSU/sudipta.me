@@ -243,21 +243,14 @@ const Experience = ({ id }) => {
                         </Link>
                       </Box>
                     </Box>
-                    <Box sx={{ textAlign: { xs: "left", sm: "right" } }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
-                        <CalendarIcon sx={{ fontSize: 14 }} /> {exp.duration}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, mt: 0.5 }}>
-                        <LocationIcon sx={{ fontSize: 14 }} /> {exp.location}
-                      </Typography>
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: { xs: "flex-start", sm: "center" }, gap: { xs: 1.5, sm: 3 }, textAlign: { xs: "left", sm: "right" } }}>
                       {exp.detailsLink && (
                         <RouterLink to={exp.detailsLink} style={{ textDecoration: "none" }}>
                           <Chip
                             icon={<ArrowIcon fontSize="small" />}
-                            label="Detailed Experience"
+                            label="Detailed Overview"
                             size="small"
                             sx={{
-                              mt: 1,
                               cursor: "pointer",
                               fontWeight: 600,
                               backgroundColor: "rgba(129, 140, 248, 0.1)",
@@ -268,6 +261,14 @@ const Experience = ({ id }) => {
                           />
                         </RouterLink>
                       )}
+                      <Box>
+                        <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
+                          <CalendarIcon sx={{ fontSize: 14 }} /> {exp.duration}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, mt: 0.5 }}>
+                          <LocationIcon sx={{ fontSize: 14 }} /> {exp.location}
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
 

@@ -13,6 +13,8 @@ import Education from "./components/Education";
 import Gallery from "./components/Gallery";
 import Footer from "./components/Footer";
 import ValoDashDetail from "./components/projects/valodash/ValoDashDetail";
+import CargoStreamDetail from "./components/experiences/cargostream/CargoStreamDetail";
+
 
 // Scroll handler to reset scroll to top on route change, or scroll to section anchors (hashes) on the home page.
 const ScrollHandler = () => {
@@ -70,6 +72,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/projects/valodash" element={<ValoDashDetail />} />
+        <Route path="/experience/cargostream" element={<CargoStreamDetail />} />
       </Routes>
       <Footer />
     </ThemeProvider>

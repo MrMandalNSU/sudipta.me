@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Container,
@@ -21,6 +22,7 @@ import {
   LocationOn as LocationIcon,
   CalendarToday as CalendarIcon,
   Business as BusinessIcon,
+  ArrowForward as ArrowIcon,
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
@@ -83,6 +85,7 @@ const Experience = ({ id }) => {
       location: "Vilnius, Lithuania · Remote",
       duration: "Nov 2025 - Present",
       type: "Full-time",
+      detailsLink: "/experience/cargostream",
       achievements: [
         "Architect and built a flexible, layout-aware document-processing system utilizing Laravel, pattern recognition, text analysis, and context mapping to accurately parse inconsistent logistic PDFs from multiple global partners.",
         "Designed custom extraction logic and robust fallback rules to seamlessly isolate tabular and irregular data from unstructured logistic documents, including orders, credit notes, and service invoices across multiple languages.",
@@ -247,6 +250,24 @@ const Experience = ({ id }) => {
                       <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5, justifyContent: { xs: "flex-start", sm: "flex-end" }, mt: 0.5 }}>
                         <LocationIcon sx={{ fontSize: 14 }} /> {exp.location}
                       </Typography>
+                      {exp.detailsLink && (
+                        <RouterLink to={exp.detailsLink} style={{ textDecoration: "none" }}>
+                          <Chip
+                            icon={<ArrowIcon fontSize="small" />}
+                            label="Detailed Experience"
+                            size="small"
+                            sx={{
+                              mt: 1,
+                              cursor: "pointer",
+                              fontWeight: 600,
+                              backgroundColor: "rgba(129, 140, 248, 0.1)",
+                              color: "primary.main",
+                              border: "1px solid rgba(129, 140, 248, 0.3)",
+                              "&:hover": { backgroundColor: "rgba(129, 140, 248, 0.2)" }
+                            }}
+                          />
+                        </RouterLink>
+                      )}
                     </Box>
                   </Box>
 

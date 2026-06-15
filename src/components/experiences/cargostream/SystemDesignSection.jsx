@@ -59,6 +59,7 @@ const macroSteps = [
     sub: "Web / API Ingestion",
     icon: <ClientIcon />,
     explanation: "Receives raw logistics files uploaded via customer portals, administrative dashboards, or automated webhook ingestion streams.",
+    role: "Ingests raw business document streams from various ingestion vectors.",
   },
   {
     key: "formats",
@@ -66,6 +67,7 @@ const macroSteps = [
     sub: "PDF, XLSX, EML Streams",
     icon: <LayersIcon />,
     explanation: "Normalizes incoming streams, preparing unstructured PDFs, structured Excel spreadsheets, or multi-part EML emails for extraction.",
+    role: "Standardizes file types and stream formats before parsing starts.",
   },
   {
     key: "processing",
@@ -74,6 +76,7 @@ const macroSteps = [
     icon: <ProcessingIcon />,
     isCore: true,
     explanation: "Sudipta's Core Pipeline: Automates layout footprint discovery, strategy blueprint mapping, pattern-based line extraction, and strict schema validator guards.",
+    role: "Orchestrates modular coordinate extraction & layout validation rules.",
   },
   {
     key: "json",
@@ -81,6 +84,7 @@ const macroSteps = [
     sub: "Validated Output",
     icon: <JsonIcon />,
     explanation: "Converts raw extracted coordinates and tables into clean, validated JSON records conforming to strict database schema definitions.",
+    role: "Produces clean, format-agnostic payloads for downstream integration.",
   },
   {
     key: "app",
@@ -88,6 +92,7 @@ const macroSteps = [
     sub: "Main Logistics App",
     icon: <AppIcon />,
     explanation: "Feeds the normalized JSON transactional data into the core Cargo Stream web application for scheduling, billing, and auditing.",
+    role: "Main logistics application persisting transactions to database records.",
   },
 ];
 
@@ -178,98 +183,47 @@ const SystemDesignSection = ({
       </Typography>
 
       {/* Macro Node Detail Box (Popup on top of diagram box) */}
-      {activeMacroNode ? (
-        <Box
-          sx={{
-            mb: 2.5,
-            p: 2.5,
-            borderRadius: 2,
-            backgroundColor: theme.palette.mode === "light"
-              ? "rgba(255, 255, 255, 0.85)"
-              : "rgba(30, 41, 59, 0.6)",
-            backdropFilter: "blur(12px)",
-            border: `1px solid ${
-              theme.palette.mode === "light"
-                ? "rgba(79, 70, 229, 0.15)"
-                : "rgba(129, 140, 248, 0.2)"
-            }`,
-            borderLeft: `5px solid ${theme.palette.primary.main}`,
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: { xs: "flex-start", sm: "center" },
-            justifyContent: "space-between",
-            gap: 2,
-            animation: `${fadeInUp} 0.3s ease-out`,
-            boxShadow: theme.palette.mode === "light"
-              ? "0 4px 16px rgba(0,0,0,0.04)"
-              : "0 4px 16px rgba(0,0,0,0.2)"
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)",
-                color: "primary.main",
-              }}
-            >
-              {activeMacroNode === "client" && <ClientIcon />}
-              {activeMacroNode === "formats" && <LayersIcon />}
-              {activeMacroNode === "processing" && <ProcessingIcon />}
-              {activeMacroNode === "json" && <JsonIcon />}
-              {activeMacroNode === "app" && renderSvgIcon("app", 0, 0, 22, theme.palette.primary.main)}
-            </Box>
-            <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap", mb: 0.5 }}>
-                <Typography variant="body1" sx={{ fontWeight: 800, color: "text.primary" }}>
-                  {macroSteps.find((s) => s.key === activeMacroNode)?.label}
-                  {activeMacroNode === "processing" && (
-                    <Box component="span" sx={{ ml: 1.5, fontWeight: 700, fontSize: "0.78rem", color: "primary.main", verticalAlign: "middle" }}>
-                      (Sudipta's Core Responsibility)
-                    </Box>
-                  )}
-                </Typography>
+      <GlassCard sx={{ p: 3, mb: 3, animation: `${fadeInUp} 0.3s ease-out` }}>
+        <Grid container spacing={3} sx={{ alignItems: "center" }}>
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 1, display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Box
+                sx={{
+                  color: "primary.main",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {activeMacroNode === "client" && <ClientIcon sx={{ fontSize: 20 }} />}
+                {activeMacroNode === "formats" && <LayersIcon sx={{ fontSize: 20 }} />}
+                {activeMacroNode === "processing" && <ProcessingIcon sx={{ fontSize: 20 }} />}
+                {activeMacroNode === "json" && <JsonIcon sx={{ fontSize: 20 }} />}
+                {activeMacroNode === "app" && renderSvgIcon("app", 0, 0, 20, theme.palette.primary.main)}
               </Box>
-              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                {macroSteps.find((s) => s.key === activeMacroNode)?.explanation}
+              {macroSteps.find((s) => s.key === activeMacroNode)?.label}
+              {activeMacroNode === "processing" && (
+                <Box component="span" sx={{ ml: 1.5, fontWeight: 700, fontSize: "0.78rem", color: "primary.main", verticalAlign: "middle" }}>
+                  (Sudipta's Core Responsibility)
+                </Box>
+              )}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+              {macroSteps.find((s) => s.key === activeMacroNode)?.explanation}
+            </Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box sx={{ borderLeft: `3px solid ${theme.palette.primary.main}`, pl: 2 }}>
+              <Typography variant="caption" sx={{ fontWeight: 800, color: "primary.main", letterSpacing: "1px", display: "block", mb: 0.5 }}>
+                PIPELINE ROLE
+              </Typography>
+              <Typography variant="body2" color="text.primary" sx={{ fontStyle: "italic", fontWeight: 500, lineHeight: 1.6 }}>
+                "{macroSteps.find((s) => s.key === activeMacroNode)?.role}"
               </Typography>
             </Box>
-          </Box>
-          <Button
-            size="small"
-            onClick={() => setActiveMacroNode(null)}
-            sx={{
-              minWidth: "auto",
-              p: 0.8,
-              borderRadius: "50%",
-              color: "text.secondary",
-              "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" }
-            }}
-          >
-            ✕
-          </Button>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            mb: 2.5,
-            p: 2,
-            borderRadius: 2,
-            border: `1px dashed ${theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)"}`,
-            backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)",
-            textAlign: "center"
-          }}
-        >
-          <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, fontStyle: "italic" }}>
-            💡 Click any node in the macro diagram below to view detailed scope explanations.
-          </Typography>
-        </Box>
-      )}
+          </Grid>
+        </Grid>
+      </GlassCard>
 
       {/* Macro Diagram Board */}
       <DiagramBoard sx={{ mb: 5 }}>

@@ -53,8 +53,8 @@ const LandingPage = () => {
       <Intro id="intro" />
       <Experience id="experience" />
       <AgenticAI id="agentic-ai" />
-      <Research id="research" />
       <Projects id="projects" />
+      <Research id="research" />
       <CompetitiveProgramming id="cp" />
       <Education id="education" />
       <Gallery id="gallery" />

@@ -32,11 +32,12 @@ import {
   LinkedIn as LinkedInIcon,
   GitHub as GitHubIcon,
   SmartToy as SmartToyIcon,
+  Science as ScienceIcon,
 } from "@mui/icons-material";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 
-const navItems = ["Intro", "Experience", "Agentic AI", "Projects", "CP", "Education", "Gallery"];
+const navItems = ["Intro", "Experience", "Agentic AI", "Projects", "Research", "Programming", "Education", "Gallery"];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -74,7 +75,8 @@ const Navbar = () => {
       Experience: "experience",
       "Agentic AI": "agentic-ai",
       Projects: "projects",
-      CP: "cp",
+      Research: "research",
+      Programming: "cp",
       Education: "education",
       Gallery: "gallery",
     };
@@ -132,7 +134,8 @@ const Navbar = () => {
     Experience: <WorkIcon />,
     "Agentic AI": <SmartToyIcon />,
     Projects: <CodeIcon />,
-    CP: <EmojiEventsIcon />,
+    Research: <ScienceIcon />,
+    Programming: <EmojiEventsIcon />,
     Education: <SchoolIcon />,
     Gallery: <PhotoLibraryIcon />,
   };

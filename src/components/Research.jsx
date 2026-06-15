@@ -78,7 +78,7 @@ const Research = ({ id }) => {
     {
       title: "Social Media Opinion Mining Based on Bangla Public Post of Facebook",
       institution: "North South University (NSU)",
-      institutionLogo: "/research_logo.png",
+      institutionLogo: "/research_logo.svg",
       institutionUrl: "https://www.northsouth.edu/",
       researchLink: "https://ieeexplore.ieee.org/document/9689860",
       location: "Dhaka, Bangladesh",

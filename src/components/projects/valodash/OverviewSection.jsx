@@ -1,6 +1,16 @@
 import React from "react";
-import { Box, Typography, Button, Stack, Chip } from "@mui/material";
+import { Box, Typography, Button, Stack, Chip, Link } from "@mui/material";
+import { keyframes } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
+
+const shimmer = keyframes`
+  0% {
+    transform: skewX(-20deg) translateX(-150%);
+  }
+  100% {
+    transform: skewX(-20deg) translateX(250%);
+  }
+`;
 import {
   Language as LanguageIcon,
   SettingsSuggest as SettingsSuggestIcon,
@@ -40,24 +50,57 @@ const OverviewSection = ({ theme }) => {
                   }}
                 />
                 <Box>
-                  <Typography
-                    variant="h4"
+                  <Link
+                    href="https://valodash.sudipta.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    underline="none"
                     sx={{
-                      fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                      fontWeight: 800,
-                      textTransform: "uppercase",
-                      letterSpacing: "3px",
-                      lineHeight: 1.1,
-                      mb: 0.5,
-                      color: theme.palette.mode === "light" ? "#0F1923" : "#ECE8E1",
+                      display: "inline-block",
+                      position: "relative",
+                      overflow: "hidden",
+                      borderRadius: "4px",
+                      px: 0.5,
+                      mx: -0.5,
+                      "&:hover .shimmer-shine": {
+                        animation: `${shimmer} 0.8s ease-in-out`,
+                      },
                     }}
                   >
-                    Valo
-                    <Box component="span" sx={{ color: "#ff4655" }}>
-                      Dash
-                    </Box>
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                        fontWeight: 800,
+                        textTransform: "uppercase",
+                        letterSpacing: "3px",
+                        lineHeight: 1.1,
+                        mb: 0.5,
+                        color: theme.palette.mode === "light" ? "#0F1923" : "#ECE8E1",
+                        display: "inline-block",
+                      }}
+                    >
+                      Valo
+                      <Box component="span" sx={{ color: "#ff4655" }}>
+                        Dash
+                      </Box>
+                    </Typography>
+                    <Box
+                      className="shimmer-shine"
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0) 100%)",
+                        pointerEvents: "none",
+                        mixBlendMode: "overlay",
+                        transform: "skewX(-20deg) translateX(-150%)",
+                      }}
+                    />
+                  </Link>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase" }}>
                     Valorant Match Analytics
                   </Typography>
                 </Box>
@@ -93,16 +136,45 @@ const OverviewSection = ({ theme }) => {
                 rel="noopener noreferrer"
                 variant="contained"
                 size="small"
-                startIcon={<LanguageIcon sx={{ fontSize: 16 }} />}
+                startIcon={
+                  <Box
+                    component="img"
+                    src="/project_logos/valodash_logo.svg"
+                    alt="ValoDash Icon"
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      objectFit: "contain",
+                      transition: "transform 0.3s ease",
+                    }}
+                  />
+                }
                 sx={{
                   height: 34,
-                  fontWeight: 700,
+                  fontWeight: 800,
                   fontSize: "0.78rem",
-                  borderRadius: 1.5,
+                  borderRadius: 1,
                   px: 2,
-                  boxShadow: "0 4px 12px rgba(79, 70, 229, 0.2)",
-                  background: "linear-gradient(135deg, #4F46E5, #06B6D4)",
-                  "&:hover": { background: "linear-gradient(135deg, #4338CA, #0891B2)" },
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  boxShadow: "none",
+                  backgroundColor: "#0F1923",
+                  color: "#ECE8E1",
+                  border: theme.palette.mode === "light" ? "1.5px solid rgba(15, 25, 35, 0.15)" : "1.5px solid rgba(255, 255, 255, 0.15)",
+                  transition: "all 0.2s ease-in-out",
+                  "& .MuiButton-startIcon": {
+                    marginRight: "6px",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#ff4655",
+                    color: "#ffffff",
+                    borderColor: "#ff4655",
+                    boxShadow: "none",
+                    "& img": {
+                      transform: "scale(1.1) rotate(5deg)",
+                      filter: "brightness(0) invert(1)",
+                    }
+                  },
                 }}
               >
                 Launch App

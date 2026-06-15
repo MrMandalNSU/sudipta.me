@@ -127,10 +127,18 @@ const Intro = ({ id }) => {
                   color="primary"
                   size="large"
                   sx={{ flex: { xs: 1, sm: "none" }, minWidth: { xs: "auto", sm: 200 }, whiteSpace: "nowrap", px: { xs: 1, sm: 3 } }}
-                  component="a"
-                  href="https://github.com/MrMandalNSU?tab=repositories"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() => {
+                    const element = document.getElementById("projects");
+                    if (element) {
+                      const navbarHeight = 100;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth",
+                      });
+                    }
+                  }}
                 >
                   View My Work
                 </Button>

@@ -87,8 +87,7 @@ const Projects = ({ id }) => {
         "Engineered a cron scheduler and background worker service that executes staggered data ingestion updates to handle third-party API rate limits and refresh telemetry cache.",
         "Integrated Discord OAuth2 authentication and architected a PostgreSQL database with relational tables via Prisma ORM, utilizing cascading integrity constraints and team-scoped roster isolation to ensure total data privacy.",
         "Designed a multi-tiered leaderboard sorting algorithm (evaluating competitive MMR, ACS, and K/D ratios) and built a responsive UI optimized with micro-animations and touchscreen swiping for image previews.",
-        "The platform is adoped by more than 50 individual players and 10 teams. Valodash currently helping valorant teams to understand and organize their match data and analytics.",
-        "To see how I designed the project and visualized the use cases, click on the System Design button above.",
+        "The platform is adoped by more than 50 individual valorant players and 10 teams. Valodash currently helping valorant teams to understand and organize their match data and analytics. To see how I designed the project and visualized the use cases, click on the System Design button above.",
       ],
       technologies: [
         "Node.js",

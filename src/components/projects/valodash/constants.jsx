@@ -24,36 +24,42 @@ export const features = [
 export const systemNodes = {
   client: {
     title: "Client Frontend (React / Next.js)",
+    shortTitle: "Frontend",
     icon: <TimelineIcon />,
     description: "Responsive browser dashboard built with React and custom Vanilla CSS. Renders Valorant profiles, historical match analytics, dynamic leaderboards, and custom player stats tracking.",
     role: "Sends HTTP REST requests to the Backend, handles Discord login callbacks, and visualizes analytical insights.",
   },
   api: {
     title: "Backend API (Express.js / TypeScript)",
+    shortTitle: "Backend",
     icon: <SettingsSuggestIcon />,
     description: "Express.js server structured in TypeScript. Validates request payloads with Zod schemas, manages authorization via JSON Web Tokens, and processes logging telemetry via Winston.",
     role: "Core application router coordinating Postgres client requests, scheduled background triggers, and user authentication mapping.",
   },
   postgres: {
     title: "PostgreSQL Database",
+    shortTitle: "DB",
     icon: <StorageIcon />,
     description: "Relational database caching historical telemetry, user session metadata, Valorant player stats snapshots, and sync execution logs.",
     role: "Persistent store structured with relational constraint checks, mapped and queried via Prisma ORM.",
   },
   discord: {
     title: "Discord OAuth Integration",
+    shortTitle: "OAuth",
     icon: <SecurityIcon />,
     description: "Integrates Discord OAuth for secure profile creation. Associates the logged-in Discord profile directly with their Valorant game tags.",
     role: "Resolves Discord avatar and account email, returning authorized secure user tokens.",
   },
   riot: {
     title: "Riot Games API",
+    shortTitle: "API",
     icon: <SportsEsportsIcon />,
     description: "External Valorant API queried to look up in-game account identifiers (PUUID), rank MMR standings, game versions, maps, and detailed round stats.",
     role: "Source of real-time game telemetry, fetched in batches to minimize latency and manage rate limits.",
   },
   sync: {
     title: "Sync Service (Scheduled Cron Jobs)",
+    shortTitle: "Sync",
     icon: <SyncIcon />,
     description: "Automated background process running on Node schedules. Cycles through tracked players, retrieves new matches, and upserts player statistics.",
     role: "Performs scheduled automated updates via GitHub Actions trigger webhooks to maintain database sync without throttling the client-facing APIs.",

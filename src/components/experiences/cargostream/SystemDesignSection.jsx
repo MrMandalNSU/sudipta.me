@@ -2,9 +2,94 @@ import React, { useState } from "react";
 import { Box, Button, Typography, Menu, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { systemNodes } from "./constants";
-import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
+import { GlassCard, SectionHeading, DiagramBoard, fadeInUp } from "./styles";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import LayersIcon from "@mui/icons-material/Layers";
+import ClientIcon from "@mui/icons-material/CloudUpload";
+import ProcessingIcon from "@mui/icons-material/Settings";
+import JsonIcon from "@mui/icons-material/DataObject";
+import AppIcon from "@mui/icons-material/LocalShipping";
+
+const renderSvgIcon = (key, x, y, size, fill) => {
+  if (key === "client") {
+    return (
+      <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill={fill}>
+        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z" />
+      </svg>
+    );
+  }
+  if (key === "formats") {
+    return (
+      <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill={fill}>
+        <path d="M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27zM12 16l7.36-5.73L21 11.54l-9 7-9-7 1.64-1.27L12 16zm0-11.47L4.64 10.26 12 16l7.36-5.74L12 4.53z" />
+      </svg>
+    );
+  }
+  if (key === "processing") {
+    return (
+      <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill={fill}>
+        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+      </svg>
+    );
+  }
+  if (key === "json") {
+    return (
+      <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill={fill}>
+        <path d="M4 15c0 1.1.9 2 2 2h2c1.1 0 2 .9 2 2s-.9 2-2 2H6c-3.3 0-6-2.7-6-6V9c0-3.3 2.7-6 6-6h2c1.1 0 2 .9 2 2s-.9 2-2 2H6c-1.1 0-2 .9-2 2v6zm16-6c0-1.1-.9-2-2-2h-2c-1.1 0-2-.9-2-2s.9-2 2-2h2c3.3 0 6 2.7 6 6v6c0 3.3-2.7 6-6 6h-2c-1.1 0-2-.9-2-2s.9-2 2-2h2c1.1 0 2-.9 2-2V9z" />
+      </svg>
+    );
+  }
+  if (key === "app") {
+    return (
+      <svg x={x} y={y} width={size} height={size} viewBox="0 0 100 100">
+        <g fill={fill}>
+          <path d="M 50 10 L 35 10 A 25 25 0 0 0 35 60 L 50 60 L 50 47.5 L 35 47.5 A 12.5 12.5 0 0 1 35 22.5 L 50 22.5 Z" />
+          <path d="M 50 90 L 65 90 A 25 25 0 0 0 65 40 L 50 40 L 50 52.5 L 65 52.5 A 12.5 12.5 0 0 1 65 77.5 L 50 77.5 Z" />
+        </g>
+      </svg>
+    );
+  }
+  return null;
+};
+
+const macroSteps = [
+  {
+    key: "client",
+    label: "Client",
+    sub: "Web / API Ingestion",
+    icon: <ClientIcon />,
+    explanation: "Receives raw logistics files uploaded via customer portals, administrative dashboards, or automated webhook ingestion streams.",
+  },
+  {
+    key: "formats",
+    label: "Formats",
+    sub: "PDF, XLSX, EML Streams",
+    icon: <LayersIcon />,
+    explanation: "Normalizes incoming streams, preparing unstructured PDFs, structured Excel spreadsheets, or multi-part EML emails for extraction.",
+  },
+  {
+    key: "processing",
+    label: "Document Processing",
+    sub: "Extraction & Validation",
+    icon: <ProcessingIcon />,
+    isCore: true,
+    explanation: "Sudipta's Core Pipeline: Automates layout footprint discovery, strategy blueprint mapping, pattern-based line extraction, and strict schema validator guards.",
+  },
+  {
+    key: "json",
+    label: "Structured JSON",
+    sub: "Validated Output",
+    icon: <JsonIcon />,
+    explanation: "Converts raw extracted coordinates and tables into clean, validated JSON records conforming to strict database schema definitions.",
+  },
+  {
+    key: "app",
+    label: "Cargo Stream",
+    sub: "Main Logistics App",
+    icon: <AppIcon />,
+    explanation: "Feeds the normalized JSON transactional data into the core Cargo Stream web application for scheduling, billing, and auditing.",
+  },
+];
 
 const userFlowSteps = [
   { key: "ingestion", label: "Document Ingestion", sub: "Incoming PDF, XLSX, EML Streams" },
@@ -28,6 +113,7 @@ const SystemDesignSection = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeMobileFlow, setActiveMobileFlow] = useState("orders_blueprint");
+  const [activeMacroNode, setActiveMacroNode] = useState("processing");
   const openMenu = Boolean(anchorEl);
 
   const handleOpenMenu = (event) => {
@@ -81,9 +167,321 @@ const SystemDesignSection = ({
       }}
     >
       <SectionHeading theme={theme}>System Design & Processing Pipeline</SectionHeading>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 700 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 700 }}>
         An overview of the Laravel-based ingestion and auto-discovery processing pipeline.
-        Click any node to see its function in the parsing workflow.
+      </Typography>
+
+      {/* Subtitle 1: Macro System Architecture & Data Flow */}
+      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1.5, letterSpacing: "0.5px", color: "text.primary", display: "flex", alignItems: "center", gap: 1 }}>
+        <LayersIcon sx={{ fontSize: 18, color: "primary.main" }} />
+        Macro System Architecture & Data Flow
+      </Typography>
+
+      {/* Macro Node Detail Box (Popup on top of diagram box) */}
+      {activeMacroNode ? (
+        <Box
+          sx={{
+            mb: 2.5,
+            p: 2.5,
+            borderRadius: 2,
+            backgroundColor: theme.palette.mode === "light"
+              ? "rgba(255, 255, 255, 0.85)"
+              : "rgba(30, 41, 59, 0.6)",
+            backdropFilter: "blur(12px)",
+            border: `1px solid ${
+              theme.palette.mode === "light"
+                ? "rgba(79, 70, 229, 0.15)"
+                : "rgba(129, 140, 248, 0.2)"
+            }`,
+            borderLeft: `5px solid ${theme.palette.primary.main}`,
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "flex-start", sm: "center" },
+            justifyContent: "space-between",
+            gap: 2,
+            animation: `${fadeInUp} 0.3s ease-out`,
+            boxShadow: theme.palette.mode === "light"
+              ? "0 4px 16px rgba(0,0,0,0.04)"
+              : "0 4px 16px rgba(0,0,0,0.2)"
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)",
+                color: "primary.main",
+              }}
+            >
+              {activeMacroNode === "client" && <ClientIcon />}
+              {activeMacroNode === "formats" && <LayersIcon />}
+              {activeMacroNode === "processing" && <ProcessingIcon />}
+              {activeMacroNode === "json" && <JsonIcon />}
+              {activeMacroNode === "app" && renderSvgIcon("app", 0, 0, 22, theme.palette.primary.main)}
+            </Box>
+            <Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap", mb: 0.5 }}>
+                <Typography variant="body1" sx={{ fontWeight: 800, color: "text.primary" }}>
+                  {macroSteps.find((s) => s.key === activeMacroNode)?.label}
+                  {activeMacroNode === "processing" && (
+                    <Box component="span" sx={{ ml: 1.5, fontWeight: 700, fontSize: "0.78rem", color: "primary.main", verticalAlign: "middle" }}>
+                      (Sudipta's Core Responsibility)
+                    </Box>
+                  )}
+                </Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                {macroSteps.find((s) => s.key === activeMacroNode)?.explanation}
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            size="small"
+            onClick={() => setActiveMacroNode(null)}
+            sx={{
+              minWidth: "auto",
+              p: 0.8,
+              borderRadius: "50%",
+              color: "text.secondary",
+              "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" }
+            }}
+          >
+            ✕
+          </Button>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            mb: 2.5,
+            p: 2,
+            borderRadius: 2,
+            border: `1px dashed ${theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)"}`,
+            backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)",
+            textAlign: "center"
+          }}
+        >
+          <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, fontStyle: "italic" }}>
+            💡 Click any node in the macro diagram below to view detailed scope explanations.
+          </Typography>
+        </Box>
+      )}
+
+      {/* Macro Diagram Board */}
+      <DiagramBoard sx={{ mb: 5 }}>
+        {/* Desktop View SVG Flowchart (5 nodes) */}
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <svg
+            width="100%"
+            viewBox="0 0 920 120"
+            style={{ display: "block", maxWidth: "100%", height: "auto" }}
+          >
+            <defs>
+              <marker id="macroArrowActive" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill={primaryColor} />
+              </marker>
+              <marker id="macroArrowMuted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill={theme.palette.mode === "light" ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.15)"} />
+              </marker>
+            </defs>
+
+            {/* Connection Lines */}
+            {[
+              { path: "M 155 60 H 185", from: "client", to: "formats" },
+              { path: "M 335 60 H 365", from: "formats", to: "processing" },
+              { path: "M 555 60 H 585", from: "processing", to: "json" },
+              { path: "M 735 60 H 765", from: "json", to: "app" }
+            ].map((line, lIdx) => {
+              const isActive = activeMacroNode === line.from || activeMacroNode === line.to;
+              const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)");
+              const strokeWidth = isActive ? 2.5 : 1.5;
+              const marker = isActive ? "url(#macroArrowActive)" : "url(#macroArrowMuted)";
+              return (
+                <path
+                  key={lIdx}
+                  d={line.path}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  fill="none"
+                  markerEnd={marker}
+                  style={{ transition: "all 0.3s ease" }}
+                />
+              );
+            })}
+
+            {/* Nodes */}
+            {[
+              { x: 15, y: 36, w: 140, h: 48, label: "Client", sub: "Web / API Ingestion", key: "client" },
+              { x: 185, y: 36, w: 150, h: 48, label: "Formats", sub: "PDF, XLSX, EML Streams", key: "formats" },
+              { x: 365, y: 32, w: 190, h: 56, label: "Document Processing", sub: "Extraction & Validation", key: "processing" },
+              { x: 585, y: 36, w: 150, h: 48, label: "Structured JSON", sub: "Validated Output", key: "json" },
+              { x: 765, y: 36, w: 140, h: 48, label: "Cargo Stream", sub: "Main Logistics App", key: "app" }
+            ].map((node, nIdx) => {
+              const isSelected = activeMacroNode === node.key;
+              const fillBg = isSelected
+                ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)")
+                : (theme.palette.mode === "light" ? "rgba(255,255,255,0.75)" : "rgba(30, 41, 59, 0.7)");
+              const strokeColor = isSelected
+                ? primaryColor
+                : (theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)");
+              const strokeWidth = isSelected ? 2 : 1.2;
+
+              const isProc = node.key === "processing";
+              const txtX = isProc ? node.x + 42 : node.x + 38;
+              const titleY = isProc ? node.y + 24 : node.y + 20;
+              const subY = isProc ? node.y + 39 : node.y + 33;
+              const logoSize = isProc ? 26 : 24;
+              const logoX = isProc ? node.x + 10 : node.x + 8;
+              const logoY = isProc ? node.y + 15 : node.y + 12;
+
+              return (
+                <g
+                  key={nIdx}
+                  onClick={() => setActiveMacroNode(node.key)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <rect
+                    x={node.x}
+                    y={node.y}
+                    width={node.w}
+                    height={node.h}
+                    rx={6}
+                    fill={fillBg}
+                    stroke={strokeColor}
+                    strokeWidth={strokeWidth}
+                    style={{ transition: "all 0.3s ease" }}
+                  />
+
+                  {/* Render Logo inside Node */}
+                  {renderSvgIcon(
+                    node.key,
+                    logoX,
+                    logoY,
+                    logoSize,
+                    isSelected ? primaryColor : theme.palette.text.secondary
+                  )}
+
+                  {/* Title text */}
+                  <text
+                    x={txtX}
+                    y={titleY}
+                    fontWeight="800"
+                    fill={isSelected ? primaryColor : theme.palette.text.primary}
+                    fontSize="9.5"
+                    fontFamily="Inter, sans-serif"
+                    textAnchor="start"
+                  >
+                    {node.label}
+                  </text>
+                  {/* Sub text */}
+                  <text
+                    x={txtX}
+                    y={subY}
+                    fill={theme.palette.text.secondary}
+                    fontSize="8.2"
+                    fontFamily="Inter, sans-serif"
+                    textAnchor="start"
+                  >
+                    {node.sub}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </Box>
+
+        {/* Mobile View Vertical flowchart for macro steps */}
+        <Box sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", gap: 2 }}>
+          {macroSteps.map((step, idx) => {
+            const isSelected = activeMacroNode === step.key;
+            return (
+              <React.Fragment key={idx}>
+                <Box
+                  onClick={() => setActiveMacroNode(step.key)}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    backgroundColor: isSelected
+                      ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.06)" : "rgba(129, 140, 248, 0.1)")
+                      : (theme.palette.mode === "light" ? "rgba(255,255,255,0.5)" : "rgba(30,41,59,0.5)"),
+                    border: `1px solid ${
+                      isSelected
+                        ? primaryColor
+                        : (theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)")
+                    }`,
+                    boxShadow: isSelected
+                      ? (theme.palette.mode === "light" ? "0 4px 12px rgba(79, 70, 229, 0.1)" : "0 4px 12px rgba(129, 140, 248, 0.15)")
+                      : "none",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: isSelected
+                        ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)")
+                        : "rgba(0,0,0,0.03)",
+                      color: isSelected ? "primary.main" : "text.secondary",
+                    }}
+                  >
+                    {step.key === "app" ? (
+                      <svg width="24" height="24" viewBox="0 0 100 100">
+                        <g fill={isSelected ? primaryColor : theme.palette.text.secondary}>
+                          <path d="M 50 10 L 35 10 A 25 25 0 0 0 35 60 L 50 60 L 50 47.5 L 35 47.5 A 12.5 12.5 0 0 1 35 22.5 L 50 22.5 Z" />
+                          <path d="M 50 90 L 65 90 A 25 25 0 0 0 65 40 L 50 40 L 50 52.5 L 65 52.5 A 12.5 12.5 0 0 1 65 77.5 L 50 77.5 Z" />
+                        </g>
+                      </svg>
+                    ) : (
+                      step.icon
+                    )}
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 800, color: isSelected ? "primary.main" : "text.primary" }}>
+                      {step.label}
+                      {step.key === "processing" && (
+                        <Box component="span" sx={{ ml: 1, fontWeight: 700, fontSize: "0.72rem", color: "primary.main" }}>
+                          (Core Responsibility)
+                        </Box>
+                      )}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {step.sub}
+                    </Typography>
+                  </Box>
+                </Box>
+                {idx < macroSteps.length - 1 && (
+                  <Box sx={{ display: "flex", justifyContent: "center", my: -0.5 }}>
+                    <Typography sx={{ color: isSelected ? primaryColor : "text.disabled", fontWeight: 900, fontSize: "1.2rem" }}>
+                      ↓
+                    </Typography>
+                  </Box>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Box>
+      </DiagramBoard>
+
+      {/* Subtitle 2: Micro Processing Pipeline Details */}
+      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, letterSpacing: "0.5px", color: "text.primary", display: "flex", alignItems: "center", gap: 1 }}>
+        <LayersIcon sx={{ fontSize: 18, color: "primary.main" }} />
+        Micro Processing Pipeline Details
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 700 }}>
+        Click any node in the detailed diagram below to see its specific role, configuration strategies, and extraction patterns.
       </Typography>
 
       {/* Node Selector Chips */}

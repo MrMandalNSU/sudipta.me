@@ -80,11 +80,11 @@ const OverviewSection = ({ theme }) => {
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>db models</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>8 Tables</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>10+ Tables</Typography>
                 </Box>
               </Stack>
               <Button
-                href="https://valo-dash.vercel.app/"
+                href="https://valodash.sudipta.xyz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="contained"

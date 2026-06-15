@@ -79,7 +79,7 @@ const Projects = ({ id }) => {
       title: "ValoDash",
       type: "Full-Stack Web App",
       logo: "/project_logos/valodash_logo.svg",
-      liveLink: "https://valo-dash.vercel.app/",
+      liveLink: "https://valodash.sudipta.xyz/",
       githubLink: "",
       detailsLink: "/projects/valodash",
       achievements: [

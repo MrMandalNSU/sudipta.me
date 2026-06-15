@@ -196,6 +196,7 @@ export const schemaTables = {
 export const workflows = {
   auth: {
     title: "User Authentication Flow",
+    shortTitle: "Auth",
     icon: <SecurityIcon />,
     description: "Secures client sessions and maps Discord users to game metrics.",
     steps: [
@@ -208,6 +209,7 @@ export const workflows = {
   },
   enrollment: {
     title: "Player Enrollment Workflow",
+    shortTitle: "Enrollment",
     icon: <SportsEsportsIcon />,
     description: "Registers and isolates competitive player identities across rosters.",
     steps: [
@@ -220,6 +222,7 @@ export const workflows = {
   },
   sync: {
     title: "Match Sync Engine",
+    shortTitle: "Sync",
     icon: <SyncIcon />,
     description: "Ingests real-time game logs while operating safely within third-party rate limits.",
     steps: [

@@ -5,7 +5,6 @@ import { useTheme } from "@mui/material/styles";
 // Section Components
 import OverviewSection from "./OverviewSection";
 import ResponsibilitySection from "./ResponsibilitySection";
-import PatternRecognitionSection from "./PatternRecognitionSection";
 import AgenticAiSection from "./AgenticAiSection";
 import DocumentationSection from "./DocumentationSection";
 import SystemDesignSection from "./SystemDesignSection";
@@ -23,7 +22,6 @@ const CargoStreamDetail = () => {
   const tocSections = [
     { id: "overview", label: "Overview" },
     { id: "responsibility", label: "Responsibility" },
-    { id: "rnd", label: "R&D: Pattern Recognition" },
     { id: "agentic-ai", label: "Agentic AI & Testing" },
     { id: "documentation", label: "Documentation" },
     { id: "architecture", label: "System Design" },
@@ -219,11 +217,6 @@ const CargoStreamDetail = () => {
 
             {/* ════ Section 2: Responsibility & Contribution ════ */}
             <ResponsibilitySection theme={theme} />
-
-            <Divider sx={{ opacity: 0.06, mb: 4 }} />
-
-            {/* ════ Section 3: R&D: Pattern Recognition ════ */}
-            <PatternRecognitionSection theme={theme} />
 
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 

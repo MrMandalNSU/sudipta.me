@@ -22,9 +22,9 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
   return (
     <Box id="agentic-ai" sx={{ scrollMarginTop: 120, mb: 5 }}>
       <SectionHeading theme={theme}>Agentic AI & Testing Automation</SectionHeading>
-      
+
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 800, lineHeight: 1.7 }}>
-        Onboarding new layout variants in different languages could easily become a bottleneck. Sudipta addressed this by 
+        Onboarding new layout variants in different languages could easily become a bottleneck. Sudipta addressed this by
         leveraging agentic AI context engineering and custom testing workflows to validate parsing structures dynamically.
       </Typography>
 
@@ -35,12 +35,12 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
               <LangIcon color="primary" /> Multilingual AI Alignment
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, mb: 2 }}>
-              Sudipta leveraged AI-assisted context engineering to map parsing tags across languages automatically. By feeding 
+              Sudipta leveraged AI-assisted context engineering to map parsing tags across languages automatically. By feeding
               raw layout structures into customized context chains, the AI mapped related tags and anchor terms:
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-              For example, matching credit terms (<strong>Gutschrift</strong> in German), repair indicators 
-              (<strong>Remontų aktas</strong> in Lithuanian, <strong>Werkplaatsfactuur</strong> in Dutch), or invoice triggers 
+              For example, matching credit terms (<strong>Gutschrift</strong> in German), repair indicators
+              (<strong>Remontų aktas</strong> in Lithuanian, <strong>Werkplaatsfactuur</strong> in Dutch), or invoice triggers
               (<strong>Facture</strong> in French) with 100% format-agnostic accuracy.
             </Typography>
           </GlassCard>
@@ -59,7 +59,7 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
                 <strong>text_lines/</strong>: Raw text line dumps extracted from the document to cross-examine index locations.
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                <strong>debug_output/</strong>: Output logs (e.g. `SpontexPdfAssistant_1_debug.txt`) recording every matching variable, location array, and cargo assignment.
+                <strong>debug_output/</strong>: Output logs (e.g. `Format_1_debug.txt`) recording every matching variable, location array, and cargo assignment.
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
                 <strong>Schema Dry-Run</strong>: Validates outputs against target JSON schemas, logging details when properties mismatch.
@@ -79,7 +79,7 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 920 120"
+            viewBox="0 0 920 125"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -90,11 +90,11 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
 
             {/* Connection Lines */}
             {[
-              "M 120 45 L 150 45",
-              "M 270 45 L 300 45",
-              "M 420 45 L 450 45",
-              "M 570 45 L 600 45",
-              "M 720 45 L 750 45",
+              "M 135 45 H 165",
+              "M 290 45 H 320",
+              "M 445 45 H 475",
+              "M 600 45 H 630",
+              "M 755 45 H 785",
             ].map((line, lIdx) => (
               <path
                 key={lIdx}
@@ -106,9 +106,31 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
               />
             ))}
 
+            {/* Feedback Loop Path */}
+            <path
+              d="M 847.5 70 v 26 C 847.5 118, 537.5 118, 537.5 96 v -22"
+              stroke={primaryColor}
+              strokeWidth="2"
+              strokeDasharray="4 4"
+              fill="none"
+              markerEnd="url(#arrow)"
+            />
+
+            <text
+              x="692.5"
+              y="95"
+              textAnchor="middle"
+              fill={primaryColor}
+              fontWeight="800"
+              fontSize="9.5"
+              fontFamily="Inter, sans-serif"
+            >
+              If low accuracy context: List changes & re-validate
+            </text>
+
             {/* Steps */}
             {debugFlowSteps.map((step, idx) => {
-              const x = 10 + idx * 150;
+              const x = 10 + idx * 155;
               const fillBg = theme.palette.mode === "light" ? "rgba(79,70,229,0.04)" : "rgba(129,140,248,0.08)";
               const strokeColor = theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)";
               return (
@@ -116,7 +138,7 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
                   <rect
                     x={x}
                     y={20}
-                    width="110"
+                    width="125"
                     height="50"
                     rx="8"
                     fill={fillBg}
@@ -124,7 +146,7 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
                     strokeWidth="1.2"
                   />
                   <text
-                    x={x + 55}
+                    x={x + 62.5}
                     y={40}
                     textAnchor="middle"
                     fontWeight="800"
@@ -135,11 +157,11 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
                     {step.label}
                   </text>
                   <text
-                    x={x + 55}
-                    y={55}
+                    x={x + 62.5}
+                    y={54}
                     textAnchor="middle"
                     fill={theme.palette.text.secondary}
-                    fontSize="8"
+                    fontSize="8.5"
                     fontFamily="Inter, sans-serif"
                   >
                     {step.sub}
@@ -191,6 +213,27 @@ const AgenticAiSection = ({ theme, primaryColor }) => {
               </Box>
             </Box>
           ))}
+
+          {/* Mobile Loop Feedback Card */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              p: 1.5,
+              borderRadius: 2,
+              border: `1px dashed ${primaryColor}`,
+              backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.04)" : "rgba(129,140,248,0.06)",
+              mt: 1,
+            }}
+          >
+            <Typography variant="caption" sx={{ fontWeight: 800, color: primaryColor, textAlign: "center" }}>
+              🔄 Low Accuracy Context Loop
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center", mt: 0.5, px: 1 }}>
+              If debug logs show low accuracy context, the system lists necessary changes and routes back to validate the parsed payload again.
+            </Typography>
+          </Box>
         </Box>
       </DiagramBoard>
     </Box>

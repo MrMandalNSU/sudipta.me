@@ -9,7 +9,7 @@ import {
   Construction as ModularIcon
 } from "@mui/icons-material";
 
-const PatternRecognitionSection = ({ theme }) => {
+const PatternRecognitionSection = ({ theme, isEmbedded }) => {
   const steps = [
     {
       icon: <CoordinateIcon color="primary" />,
@@ -29,8 +29,17 @@ const PatternRecognitionSection = ({ theme }) => {
   ];
 
   return (
-    <Box id="rnd" sx={{ scrollMarginTop: 120, mb: 5 }}>
-      <SectionHeading theme={theme}>R&D: Pattern Recognition & Modular Extraction</SectionHeading>
+    <Box id={isEmbedded ? undefined : "rnd"} sx={{ scrollMarginTop: 120, mb: isEmbedded ? 0 : 5 }}>
+      {isEmbedded ? (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <RndIcon color="primary" sx={{ fontSize: 26 }} />
+          <Typography variant="h6" component="h3" sx={{ fontWeight: 800, color: "text.primary" }}>
+            R&D: Pattern Recognition & Modular Extraction
+          </Typography>
+        </Box>
+      ) : (
+        <SectionHeading theme={theme}>R&D: Pattern Recognition & Modular Extraction</SectionHeading>
+      )}
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 800, lineHeight: 1.7 }}>
         Logistics documents vary heavily in structure and layout conventions. To prevent parser failures, Sudipta focused on
@@ -38,36 +47,38 @@ const PatternRecognitionSection = ({ theme }) => {
       </Typography>
 
       <Grid container spacing={4}>
-        <Grid size={{ xs: 12, md: 7 }}>
-          <Stack spacing={3.5}>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Stack spacing={2.5}>
             {steps.map((step, idx) => (
-              <Box key={idx} sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
-                <Box
-                  sx={{
-                    p: 1.2,
-                    borderRadius: "12px",
-                    backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.1)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  {step.icon}
+              <GlassCard key={idx} sx={{ p: 2.5 }}>
+                <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
+                  <Box
+                    sx={{
+                      p: 1.2,
+                      borderRadius: "12px",
+                      backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.1)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    {step.icon}
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5, color: "text.primary" }}>
+                      {step.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                      {step.desc}
+                    </Typography>
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5, color: "text.primary" }}>
-                    {step.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                    {step.desc}
-                  </Typography>
-                </Box>
-              </Box>
+              </GlassCard>
             ))}
           </Stack>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <GlassCard sx={{ p: 3, display: "flex", flexDirection: "column", height: "100%", justifyContent: "center" }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
               <RndIcon color="primary" /> R&D Methodology

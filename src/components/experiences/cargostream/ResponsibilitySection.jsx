@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { GlassCard, SectionHeading } from "./styles";
 import {
@@ -8,6 +8,7 @@ import {
   Share as IntegrationIcon,
   RecordVoiceOver as CollabIcon,
 } from "@mui/icons-material";
+import PatternRecognitionSection from "./PatternRecognitionSection";
 
 const ResponsibilitySection = ({ theme }) => {
   const contributions = [
@@ -72,6 +73,10 @@ const ResponsibilitySection = ({ theme }) => {
           </Grid>
         ))}
       </Grid>
+
+      {/* R&D: Pattern Recognition Section integrated directly */}
+      <Divider sx={{ my: 5, opacity: 0.06 }} />
+      <PatternRecognitionSection theme={theme} isEmbedded={true} />
     </Box>
   );
 };

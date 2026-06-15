@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { systemNodes } from "./constants";
@@ -27,6 +27,18 @@ const SystemDesignSection = ({
   primaryColor
 }) => {
   const [activeMobileFlow, setActiveMobileFlow] = useState("request");
+
+  useEffect(() => {
+    if (activeSystemNode === "sync" || activeSystemNode === "riot") {
+      setActiveMobileFlow("sync");
+    } else if (
+      activeSystemNode === "client" ||
+      activeSystemNode === "discord" ||
+      activeSystemNode === "api"
+    ) {
+      setActiveMobileFlow("request");
+    }
+  }, [activeSystemNode]);
   return (
     <Box
       id="architecture"

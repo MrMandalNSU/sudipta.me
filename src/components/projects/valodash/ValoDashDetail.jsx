@@ -76,6 +76,17 @@ const ValoDashDetail = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const activeChip = document.getElementById(`toc-chip-${activeSection}`);
+    if (activeChip) {
+      activeChip.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [activeSection]);
+
   const primaryColor = theme.palette.mode === "light" ? "#4F46E5" : "#818CF8";
 
   return (
@@ -106,6 +117,7 @@ const ValoDashDetail = () => {
         >
           {tocSections.map((s) => (
             <MobileTocChip
+              id={`toc-chip-${s.id}`}
               key={s.id}
               label={s.label}
               active={activeSection === s.id ? 1 : 0}

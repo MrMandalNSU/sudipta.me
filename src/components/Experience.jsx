@@ -233,9 +233,27 @@ const Experience = ({ id }) => {
                         <BusinessIcon />
                       </CompanyLogo>
                       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                          {exp.title}
-                        </Typography>
+                        {exp.detailsLink ? (
+                          <RouterLink to={exp.detailsLink} style={{ textDecoration: "none", color: "inherit" }}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                transition: "color 0.2s ease",
+                                "&:hover": {
+                                  color: "primary.main",
+                                }
+                              }}
+                            >
+                              {exp.title}
+                            </Typography>
+                          </RouterLink>
+                        ) : (
+                          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                            {exp.title}
+                          </Typography>
+                        )}
                         <Link href={exp.companyUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
                           <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                             {exp.company} • {exp.type}

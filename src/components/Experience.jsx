@@ -105,7 +105,7 @@ const Experience = ({ id }) => {
       title: "Senior Software Engineer",
       company: "Sports Fixtures",
       companyLogo: "/sports_fixures_logo.avif",
-      companyUrl: "https://sportsfixtures.com/",
+      companyUrl: "https://sportsfixtures.net/",
       location: "Pattaya, Thailand · Remote",
       duration: "Oct 2025 - Jan 2026",
       type: "Contract, Project-Based",

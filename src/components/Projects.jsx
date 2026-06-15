@@ -237,7 +237,7 @@ const Projects = ({ id }) => {
                         <RouterLink to={project.detailsLink} style={{ textDecoration: "none" }}>
                           <Chip
                             icon={<CodeIcon fontSize="small" />}
-                            label="Details"
+                            label="System Design"
                             size="small"
                             sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(129, 140, 248, 0.1)", color: "primary.main", border: "1px solid rgba(129, 140, 248, 0.3)", "&:hover": { backgroundColor: "rgba(129, 140, 248, 0.2)" } }}
                           />

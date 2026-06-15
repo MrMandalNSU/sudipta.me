@@ -346,7 +346,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                     fields: [{ n: "id", k: "PK" }, { n: "playerId", k: "FK" }, { n: "matchId", k: "FK" }, { n: "kills", k: "" }, { n: "tierName", k: "" }]
                   },
                   {
-                    id: "RankHistory", x: 680, y: 380, w: 220, h: 90,
+                    id: "RankHistory", x: 680, y: 380, w: 220, h: 100,
                     fields: [{ n: "id", k: "PK" }, { n: "playerId", k: "FK" }, { n: "tierId", k: "" }]
                   },
                 ].map((tbl) => {

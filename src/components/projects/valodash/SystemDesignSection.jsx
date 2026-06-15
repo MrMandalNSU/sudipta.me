@@ -5,9 +5,9 @@ import { systemNodes } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
 const userFlowSteps = [
-  { key: "client", label: "User Request", sub: "Vite/Next.js Client" },
+  { key: "client", label: "User Request", sub: "Client" },
   { key: "discord", label: "Discord OAuth", sub: "Auth Handshake" },
-  { key: "api", label: "Backend API", sub: "Express.js Cache Check" },
+  { key: "api", label: "Backend API", sub: "Cache Check" },
   { key: "postgres", label: "Query Cache", sub: "Postgres / Prisma" },
   { key: "postgres", label: "PostgreSQL DB", sub: "Persistent Cache" },
   { key: "client", label: "Render Stats", sub: "Update UI Dashboard" },
@@ -165,7 +165,7 @@ const SystemDesignSection = ({
               { from: "sync", to: "sync", path: "M 160 245 L 220 245" },
               { from: "sync", to: "riot", path: "M 350 245 L 410 245" },
               { from: "riot", to: "postgres", path: "M 540 245 L 630 245 L 630 140 L 750 140" },
-              { from: "postgres", to: "client", path: "M 810 150 L 810 270" },
+              { from: "postgres", to: "client", path: "M 810 165 L 810 270" },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
@@ -190,9 +190,9 @@ const SystemDesignSection = ({
 
             {/* Nodes */}
             {[
-              { key: "client", type: "start", x: 40, y: 40, w: 120, h: 50, rx: 25, cx: 100, cy: 65, label: "User Request", sub: "Vite/Next.js Client" },
-              { key: "discord", type: "decision", d: "M 260 25 L 320 65 L 260 105 L 200 65 Z", cx: 260, cy: 65, label: "Auth?", sub: "Discord OAuth" },
-              { key: "api", type: "decision", d: "M 440 25 L 500 65 L 440 105 L 380 65 Z", cx: 440, cy: 65, label: "Cached?", sub: "Express API" },
+              { key: "client", type: "start", x: 40, y: 40, w: 120, h: 50, rx: 25, cx: 100, cy: 65, label: "User Request", sub: "Client" },
+              { key: "discord", type: "decision", d: "M 260 25 L 320 65 L 260 105 L 200 65 Z", cx: 260, cy: 65, label: "Auth?", sub: "OAuth" },
+              { key: "api", type: "decision", d: "M 440 25 L 500 65 L 440 105 L 380 65 Z", cx: 440, cy: 65, label: "Cached?", sub: "Client Cache" },
               { key: "postgres", type: "process", x: 560, y: 40, w: 130, h: 50, rx: 8, cx: 625, cy: 65, label: "Query Cache", sub: "Postgres / Prisma" },
               { key: "postgres", type: "cylinder", x: 750, y: 80, w: 120, h: 70, cx: 810, cy: 115, label: "PostgreSQL DB", sub: "Postgres Cache" },
               { key: "client", type: "process", x: 745, y: 270, w: 130, h: 50, rx: 8, cx: 810, cy: 295, label: "Render Stats", sub: "Update UI" },
@@ -349,14 +349,14 @@ const SystemDesignSection = ({
                     borderRadius: 2,
                     cursor: "pointer",
                     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                    backgroundColor: isActive 
-                      ? (theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.1)") 
+                    backgroundColor: isActive
+                      ? (theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.1)")
                       : "transparent",
                     border: `1px solid ${isActive ? primaryColor : "transparent"}`,
                     boxShadow: isActive ? `0 4px 12px ${theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.1)"}` : "none",
                     "&:hover": {
-                      backgroundColor: isActive 
-                        ? (theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.12)") 
+                      backgroundColor: isActive
+                        ? (theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.12)")
                         : (theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)"),
                       borderColor: isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"),
                     }
@@ -372,8 +372,8 @@ const SystemDesignSection = ({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        backgroundColor: isActive 
-                          ? primaryColor 
+                        backgroundColor: isActive
+                          ? primaryColor
                           : (theme.palette.mode === "light" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.03)"),
                         color: isActive ? "#FFF" : "text.secondary",
                         border: `1px solid ${isActive ? "transparent" : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)")}`,

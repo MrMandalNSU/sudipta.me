@@ -31,7 +31,7 @@ const CargoStreamDetail = () => {
   ];
 
   const [activeSection, setActiveSection] = useState("overview");
-  const [activeSystemNode, setActiveSystemNode] = useState("ingestion");
+  const [activeSystemNode, setActiveSystemNode] = useState("orders_blueprint");
   const [activeTable, setActiveTable] = useState("Order");
   const [activeWorkflow, setActiveWorkflow] = useState("formatScan");
 

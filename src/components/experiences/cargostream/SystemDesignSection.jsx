@@ -1,15 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, Typography, Menu, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { systemNodes } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import LayersIcon from "@mui/icons-material/Layers";
 
 const userFlowSteps = [
-  { key: "ingestion", label: "Document Upload", sub: "Incoming PDF, XLSX, EML" },
-  { key: "scanner", label: "Class Scanner", sub: "Scan Assistants namespace" },
-  { key: "parser", label: "Assistant Client", sub: "Execute processLines()" },
-  { key: "layout", label: "Layout Mode", sub: "Preserve column coordinates" },
-  { key: "validator", label: "Validation Guard", sub: "Verify against JSON schemas" },
+  { key: "ingestion", label: "Document Ingestion", sub: "Incoming PDF, XLSX, EML Streams" },
+  { key: "validator", label: "Dynamic Validator", sub: "Analyze layout format markers" },
+  { key: "orders_blueprint", label: "Orders Blueprint", sub: "Map load/unload destinations" },
+  { key: "credit_note_blueprint", label: "Credit Note Blueprint", sub: "Check refund & vat structures" },
+  { key: "service_invoice_blueprint", label: "Service Invoice Blueprint", sub: "Verify chassis & VIN indices" },
+  { key: "invoice_blueprint", label: "Invoice Blueprint", sub: "Aggregate invoice VAT totals" },
+  { key: "mail_body_blueprint", label: "Mail Body Blueprint", sub: "Clean email section dividers" },
+  { key: "parser", label: "Client Parser", sub: "Translate & sanitize lines" },
+  { key: "json_schemas", label: "JSON Schemas", sub: "Validate target structures" },
+  { key: "formatted_json", label: "Formatted JSON", sub: "Serialize final data structures" },
+  { key: "csv_output", label: "CSV Output", sub: "UTF-8 accounting compatibility" },
 ];
 
 const SystemDesignSection = ({
@@ -18,7 +26,49 @@ const SystemDesignSection = ({
   setActiveSystemNode,
   primaryColor
 }) => {
-  const [activeMobileFlow, setActiveMobileFlow] = useState("ingestion");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [activeMobileFlow, setActiveMobileFlow] = useState("orders_blueprint");
+  const openMenu = Boolean(anchorEl);
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  const handleSelectBlueprint = (key) => {
+    setActiveSystemNode(key);
+    handleCloseMenu();
+  };
+
+  const blueprintKeys = [
+    "orders_blueprint",
+    "credit_note_blueprint",
+    "service_invoice_blueprint",
+    "invoice_blueprint",
+    "mail_body_blueprint",
+  ];
+  const isBlueprintActive = blueprintKeys.includes(activeSystemNode);
+
+  const getButtonStyles = (key) => {
+    const isActive = activeSystemNode === key;
+    return {
+      textTransform: "none",
+      fontWeight: 700,
+      fontSize: "0.8rem",
+      borderRadius: 1.5,
+      px: 2,
+      py: 0.6,
+      backgroundColor: isActive ? theme.palette.primary.main : "transparent",
+      color: isActive ? "#FFF" : "text.secondary",
+      border: `1px solid ${isActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
+      "&:hover": {
+        backgroundColor: isActive ? theme.palette.primary.main : theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
+        transform: "none",
+        boxShadow: "none",
+      },
+    };
+  };
 
   return (
     <Box
@@ -49,40 +99,133 @@ const SystemDesignSection = ({
           border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)"}`,
         }}
       >
-        {Object.entries(systemNodes).map(([key, val]) => {
-          const isActive = activeSystemNode === key;
-          return (
-            <Button
-              key={key}
-              onClick={() => setActiveSystemNode(key)}
-              size="small"
-              sx={{
-                textTransform: "none",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                borderRadius: 1.5,
-                px: 2,
-                py: 0.6,
-                backgroundColor: isActive ? theme.palette.primary.main : "transparent",
-                color: isActive ? "#FFF" : "text.secondary",
-                border: `1px solid ${isActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
-                "&:hover": {
-                  backgroundColor: isActive ? theme.palette.primary.main : theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
-                  transform: "none",
-                  boxShadow: "none",
-                },
-              }}
-              startIcon={React.cloneElement(val.icon, { sx: { fontSize: 16 } })}
-            >
-              <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
-                {val.title.split(" (")[0]}
-              </Box>
-              <Box component="span" sx={{ display: { xs: "inline", sm: "none" } }}>
-                {val.shortTitle || val.title.split(" (")[0]}
-              </Box>
-            </Button>
-          );
-        })}
+        {/* Document Intake */}
+        <Button
+          onClick={() => setActiveSystemNode("ingestion")}
+          size="small"
+          sx={getButtonStyles("ingestion")}
+          startIcon={React.cloneElement(systemNodes.ingestion.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.ingestion.shortTitle}
+        </Button>
+
+        {/* Dynamic Validator */}
+        <Button
+          onClick={() => setActiveSystemNode("validator")}
+          size="small"
+          sx={getButtonStyles("validator")}
+          startIcon={React.cloneElement(systemNodes.validator.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.validator.shortTitle}
+        </Button>
+
+        {/* Blueprints Dropdown Button */}
+        <Button
+          onClick={handleOpenMenu}
+          size="small"
+          endIcon={<ArrowDropDownIcon sx={{ fontSize: 16 }} />}
+          startIcon={React.cloneElement(
+            isBlueprintActive ? systemNodes[activeSystemNode].icon : <LayersIcon />,
+            { sx: { fontSize: 16 } }
+          )}
+          sx={{
+            textTransform: "none",
+            fontWeight: 700,
+            fontSize: "0.8rem",
+            borderRadius: 1.5,
+            px: 2,
+            py: 0.6,
+            backgroundColor: isBlueprintActive ? theme.palette.primary.main : "transparent",
+            color: isBlueprintActive ? "#FFF" : "text.secondary",
+            border: `1px solid ${isBlueprintActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
+            "&:hover": {
+              backgroundColor: isBlueprintActive ? theme.palette.primary.main : theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
+              transform: "none",
+              boxShadow: "none",
+            },
+          }}
+        >
+          {isBlueprintActive ? systemNodes[activeSystemNode].shortTitle : "Blueprints"}
+        </Button>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleCloseMenu}
+          PaperProps={{
+            sx: {
+              borderRadius: 1.5,
+              mt: 0.5,
+              border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)"}`,
+              boxShadow: theme.palette.mode === "light" ? "0 4px 12px rgba(0,0,0,0.05)" : "0 4px 12px rgba(0,0,0,0.35)",
+            }
+          }}
+        >
+          {blueprintKeys.map((key) => {
+            const val = systemNodes[key];
+            const isNodeActive = activeSystemNode === key;
+            return (
+              <MenuItem
+                key={key}
+                onClick={() => handleSelectBlueprint(key)}
+                selected={isNodeActive}
+                sx={{
+                  fontWeight: 700,
+                  fontSize: "0.825rem",
+                  py: 1,
+                  px: 2,
+                  color: isNodeActive ? "primary.main" : "text.secondary",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                }}
+              >
+                {React.cloneElement(val.icon, { sx: { fontSize: 16 } })}
+                {val.shortTitle}
+              </MenuItem>
+            );
+          })}
+        </Menu>
+
+        {/* Client Assistant Parser */}
+        <Button
+          onClick={() => setActiveSystemNode("parser")}
+          size="small"
+          sx={getButtonStyles("parser")}
+          startIcon={React.cloneElement(systemNodes.parser.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.parser.shortTitle}
+        </Button>
+
+        {/* JSON Schemas */}
+        <Button
+          onClick={() => setActiveSystemNode("json_schemas")}
+          size="small"
+          sx={getButtonStyles("json_schemas")}
+          startIcon={React.cloneElement(systemNodes.json_schemas.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.json_schemas.shortTitle}
+        </Button>
+
+        {/* Formatted JSON Output */}
+        <Button
+          onClick={() => setActiveSystemNode("formatted_json")}
+          size="small"
+          sx={getButtonStyles("formatted_json")}
+          startIcon={React.cloneElement(systemNodes.formatted_json.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.formatted_json.shortTitle}
+        </Button>
+
+        {/* CSV Output File */}
+        <Button
+          onClick={() => setActiveSystemNode("csv_output")}
+          size="small"
+          sx={getButtonStyles("csv_output")}
+          startIcon={React.cloneElement(systemNodes.csv_output.icon, { sx: { fontSize: 16 } })}
+        >
+          {systemNodes.csv_output.shortTitle}
+        </Button>
       </Box>
 
       {/* Node Detail Card */}
@@ -116,7 +259,7 @@ const SystemDesignSection = ({
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 920 300"
+            viewBox="0 0 920 270"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -137,11 +280,23 @@ const SystemDesignSection = ({
 
             {/* Connection Lines */}
             {[
-              { from: "ingestion", to: "scanner", path: "M 170 150 L 220 150" },
-              { from: "scanner", to: "parser", path: "M 350 150 L 400 150" },
-              { from: "parser", to: "layout", path: "M 465 175 L 465 210 L 580 210" },
-              { from: "parser", to: "validator", path: "M 530 150 L 580 150" },
-              { from: "layout", to: "validator", path: "M 710 210 L 750 210 L 750 175" },
+              { from: "ingestion", to: "validator", path: "M 130 131 H 155" },
+              { from: "validator", to: "orders_blueprint", path: "M 270 131 C 285 131, 285 47, 300 47" },
+              { from: "validator", to: "credit_note_blueprint", path: "M 270 131 C 285 131, 285 89, 300 89" },
+              { from: "validator", to: "service_invoice_blueprint", path: "M 270 131 H 300" },
+              { from: "validator", to: "invoice_blueprint", path: "M 270 131 C 285 131, 285 173, 300 173" },
+              { from: "validator", to: "mail_body_blueprint", path: "M 270 131 C 285 131, 285 215, 300 215" },
+              
+              { from: "orders_blueprint", to: "parser", path: "M 415 47 C 430 47, 430 131, 445 131" },
+              { from: "credit_note_blueprint", to: "parser", path: "M 415 89 C 430 89, 430 131, 445 131" },
+              { from: "service_invoice_blueprint", to: "parser", path: "M 415 131 H 445" },
+              { from: "invoice_blueprint", to: "parser", path: "M 415 173 C 430 173, 430 131, 445 131" },
+              { from: "mail_body_blueprint", to: "parser", path: "M 415 215 C 430 215, 430 131, 445 131" },
+              
+              { from: "parser", to: "json_schemas", path: "M 560 131 H 590" },
+              
+              { from: "json_schemas", to: "formatted_json", path: "M 705 131 C 720 131, 720 101, 740 101" },
+              { from: "json_schemas", to: "csv_output", path: "M 705 131 C 720 131, 720 161, 740 161" },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
@@ -162,11 +317,20 @@ const SystemDesignSection = ({
 
             {/* Nodes */}
             {[
-              { key: "ingestion", type: "start", x: 40, y: 125, w: 130, h: 50, rx: 8, cx: 105, cy: 150, label: "Document Ingestion", sub: "Incoming Streams" },
-              { key: "scanner", type: "process", x: 220, y: 125, w: 130, h: 50, rx: 8, cx: 285, cy: 150, label: "Dynamic Scanner", sub: "Format Discovery" },
-              { key: "parser", type: "decision", d: "M 465 100 L 530 150 L 465 200 L 400 150 Z", cx: 465, cy: 150, label: "Client Parser", sub: "Matched Rules" },
-              { key: "layout", type: "process", x: 580, y: 185, w: 130, h: 50, rx: 8, cx: 645, cy: 210, label: "Layout Engine", sub: "Column-Aware mode" },
-              { key: "validator", type: "cylinder", x: 580, y: 110, w: 130, h: 55, cx: 645, cy: 142, label: "Schema Validator", sub: "JSON Validation Guard" },
+              { key: "ingestion", type: "process", x: 15, y: 111, w: 115, h: 40, rx: 6, cx: 72.5, cy: 131, label: "Document Ingestion", sub: "Incoming Streams" },
+              { key: "validator", type: "process", x: 155, y: 111, w: 115, h: 40, rx: 6, cx: 212.5, cy: 131, label: "Dynamic Validator", sub: "Format Discovery" },
+              
+              { key: "orders_blueprint", type: "process", x: 300, y: 31, w: 115, h: 32, rx: 6, cx: 357.5, cy: 47, label: "Orders Blueprint", sub: "Transport Details" },
+              { key: "credit_note_blueprint", type: "process", x: 300, y: 73, w: 115, h: 32, rx: 6, cx: 357.5, cy: 89, label: "Credit Blueprint", sub: "Refund Metadata" },
+              { key: "service_invoice_blueprint", type: "process", x: 300, y: 115, w: 115, h: 32, rx: 6, cx: 357.5, cy: 131, label: "Service Blueprint", sub: "Repairs & Plates" },
+              { key: "invoice_blueprint", type: "process", x: 300, y: 157, w: 115, h: 32, rx: 6, cx: 357.5, cy: 173, label: "Invoice Blueprint", sub: "Standard Invoices" },
+              { key: "mail_body_blueprint", type: "process", x: 300, y: 199, w: 115, h: 32, rx: 6, cx: 357.5, cy: 215, label: "Mail Blueprint", sub: "Email Ingestion" },
+              
+              { key: "parser", type: "process", x: 445, y: 111, w: 115, h: 40, rx: 6, cx: 502.5, cy: 131, label: "Client Parser", sub: "Matched Rules" },
+              { key: "json_schemas", type: "cylinder", x: 590, y: 101, w: 115, h: 45, cx: 647.5, cy: 128, label: "JSON Schemas", sub: "Enforcement specs" },
+              
+              { key: "formatted_json", type: "process", x: 740, y: 71, w: 115, h: 40, rx: 6, cx: 797.5, cy: 91, label: "Formatted JSON", sub: "Internal Models" },
+              { key: "csv_output", type: "process", x: 740, y: 151, w: 115, h: 40, rx: 6, cx: 797.5, cy: 171, label: "CSV Output", sub: "UTF-8 BOM Tabular" },
             ].map((node, nIdx) => {
               const isActive = activeSystemNode === node.key;
               const fillBg = isActive
@@ -178,14 +342,8 @@ const SystemDesignSection = ({
 
               return (
                 <g key={nIdx} style={{ cursor: "pointer" }} onClick={() => setActiveSystemNode(node.key)}>
-                  {node.type === "start" && (
-                    <rect x={node.x} y={node.y} width={node.w} height={node.h} rx={node.rx} fill={fillBg} stroke={strokeColor} strokeWidth={strokeWidth} filter={glowFilter} />
-                  )}
                   {node.type === "process" && (
                     <rect x={node.x} y={node.y} width={node.w} height={node.h} rx={node.rx} fill={fillBg} stroke={strokeColor} strokeWidth={strokeWidth} filter={glowFilter} />
-                  )}
-                  {node.type === "decision" && (
-                    <path d={node.d} fill={fillBg} stroke={strokeColor} strokeWidth={strokeWidth} filter={glowFilter} />
                   )}
                   {node.type === "cylinder" && (
                     <g filter={glowFilter}>
@@ -234,7 +392,7 @@ const SystemDesignSection = ({
               );
             })}
 
-            <text x="20" y="280" fontSize="10" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+            <text x="20" y="255" fontSize="10" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
               ── Processing Pipeline Route   Click on nodes to view details
             </text>
           </svg>

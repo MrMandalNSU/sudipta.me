@@ -10,6 +10,13 @@ import {
   Speed as SpeedIcon,
   DocumentScanner as DocumentScannerIcon,
   HistoryToggleOff as HistoryIcon,
+  Inventory as OrdersIcon,
+  ReceiptLong as CreditsIcon,
+  Description as OthersIcon,
+  DataObject as JsonIcon,
+  GridOn as CsvIcon,
+  MailOutline as MailIcon,
+  Receipt as InvoiceIcon,
 } from "@mui/icons-material";
 
 export const features = [
@@ -29,12 +36,47 @@ export const systemNodes = {
     description: "Ingests raw logistic files uploaded by users or parsed from automated webhook email feeds, routing them to format-specific ingestion modules.",
     role: "Intakes the file format, extracts raw bytes, and routes to format helper methods.",
   },
-  scanner: {
-    title: "Parser Class Scanner (Laravel Auto-Discovery)",
-    shortTitle: "Class Scanner",
+  validator: {
+    title: "Dynamic Validator (Layout Auto-Discovery)",
+    shortTitle: "Dynamic Validator",
     icon: <AltRouteIcon />,
-    description: "Iterates dynamically through registered assistant parser modules, identifying format mappings without requiring hardcoded partner-to-parser relationships.",
-    role: "Scans and tests validateFormat() signatures dynamically to find matching layout assistants.",
+    description: "Iterates dynamically through registered document validator classes, detecting file metadata and layout footprints to classify document types.",
+    role: "Scans and maps document types dynamically to corresponding blueprints.",
+  },
+  orders_blueprint: {
+    title: "Orders Blueprint",
+    shortTitle: "Orders Blueprint",
+    icon: <OrdersIcon />,
+    description: "Blueprint validation rule that structures coordinates and fields specifically for Transport Orders, loading/unloading stops, and carrier metadata.",
+    role: "Validates order loading/unloading stops, cargo details, and carrier metadata.",
+  },
+  credit_note_blueprint: {
+    title: "Credit Note Blueprint",
+    shortTitle: "Credit Blueprint",
+    icon: <CreditsIcon />,
+    description: "Blueprint validation rule enforcing adjusted data parameters, tax details, and refund sums for Credit Notes.",
+    role: "Validates credit note headers, original invoice ties, and tax percentages.",
+  },
+  service_invoice_blueprint: {
+    title: "Service Invoice Blueprint",
+    shortTitle: "Service Blueprint",
+    icon: <OthersIcon />,
+    description: "Blueprint validation rule specifically checking repair details, parts line-items, and license plates for service invoices.",
+    role: "Enforces integrity for maintenance records and vehicle scopes.",
+  },
+  invoice_blueprint: {
+    title: "Invoice Blueprint",
+    shortTitle: "Invoice Blueprint",
+    icon: <InvoiceIcon />,
+    description: "Blueprint validation rule for standard billing invoices, validating sub-total aggregates and supplier vat records.",
+    role: "Ensures correct totals, supplier IDs, and VAT breakdowns.",
+  },
+  mail_body_blueprint: {
+    title: "Mail Body Blueprint",
+    shortTitle: "Mail Blueprint",
+    icon: <MailIcon />,
+    description: "Blueprint validation rule checking EML content sections and splitting repeating text dividers to parse email body structures.",
+    role: "Handles parsed parameters from automated webhook email streams.",
   },
   parser: {
     title: "Client Assistant Parser",
@@ -43,19 +85,26 @@ export const systemNodes = {
     description: "Translates unstructured text lists into structured model instances, applying anchor logic, fallback rules, and regex pattern recognitions.",
     role: "Implements validateFormat() and processLines() routines custom to each partner format.",
   },
-  layout: {
-    title: "Layout Mode Engine",
-    shortTitle: "Layout Engine",
-    icon: <TableRowsIcon />,
-    description: "Maintains tabular positioning for columnar invoices and tables. Converts raw PDF elements based on coordinates to avoid text overlapping.",
-    role: "Retains vertical column splits and groups tabular rows based on character x-indices.",
-  },
-  validator: {
-    title: "JSON Schema Validator (Validation Guard)",
-    shortTitle: "Validator",
+  json_schemas: {
+    title: "JSON Schemas (Validation Guard)",
+    shortTitle: "JSON Schemas",
     icon: <RuleIcon />,
     description: "Performs strict validations against JSON specs, rejecting parsed arrays with structural anomalies before serialization.",
     role: "Checks schema structures (e.g. order_schema, invoice_headers) and logs diagnostic trace exceptions.",
+  },
+  formatted_json: {
+    title: "Formatted JSON Output",
+    shortTitle: "JSON Output",
+    icon: <JsonIcon />,
+    description: "Output target delivering finalized, structured JSON data mapped directly to target database attributes.",
+    role: "Serializes the parsed output to JSON records.",
+  },
+  csv_output: {
+    title: "CSV Output File",
+    shortTitle: "CSV Output",
+    icon: <CsvIcon />,
+    description: "Compatible accounting format spreadsheet with UTF-8 BOM encoding for partner imports.",
+    role: "Generates custom CSV sheets for external billing engines.",
   },
 };
 

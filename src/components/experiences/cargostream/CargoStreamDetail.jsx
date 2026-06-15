@@ -22,12 +22,12 @@ const CargoStreamDetail = () => {
   const tocSections = [
     { id: "overview", label: "Overview" },
     { id: "responsibility", label: "Responsibility" },
-    { id: "agentic-ai", label: "Agentic AI & Testing" },
-    { id: "documentation", label: "Documentation" },
     { id: "architecture", label: "System Design" },
     { id: "workflows", label: "Workflows" },
     { id: "database", label: "Schema Mapping" },
+    { id: "agentic-ai", label: "Agentic AI & Testing" },
     { id: "features", label: "Key Features" },
+    { id: "documentation", label: "Documentation" },
   ];
 
   const [activeSection, setActiveSection] = useState("overview");
@@ -220,17 +220,7 @@ const CargoStreamDetail = () => {
 
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 
-            {/* ════ Section 4: Agentic AI & Testing Automation ════ */}
-            <AgenticAiSection theme={theme} primaryColor={primaryColor} />
-
-            <Divider sx={{ opacity: 0.06, mb: 4 }} />
-
-            {/* ════ Section 5: Knowledge Engineering & Strategy ════ */}
-            <DocumentationSection theme={theme} />
-
-            <Divider sx={{ opacity: 0.06, mb: 4 }} />
-
-            {/* ════ Section 6: System Design ════ */}
+            {/* ════ Section 3: System Design ════ */}
             <SystemDesignSection
               theme={theme}
               activeSystemNode={activeSystemNode}
@@ -240,7 +230,7 @@ const CargoStreamDetail = () => {
 
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 
-            {/* ════ Section 7: Workflows ════ */}
+            {/* ════ Section 4: Workflows ════ */}
             <WorkflowsSection
               theme={theme}
               activeWorkflow={activeWorkflow}
@@ -249,7 +239,7 @@ const CargoStreamDetail = () => {
 
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 
-            {/* ════ Section 8: Schema Mapping ════ */}
+            {/* ════ Section 5: Schema Mapping ════ */}
             <SchemaSection
               theme={theme}
               activeTable={activeTable}
@@ -258,8 +248,18 @@ const CargoStreamDetail = () => {
 
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 
-            {/* ════ Section 9: Key Features ════ */}
+            {/* ════ Section 6: Agentic AI & Testing Automation ════ */}
+            <AgenticAiSection theme={theme} primaryColor={primaryColor} />
+
+            <Divider sx={{ opacity: 0.06, mb: 4 }} />
+
+            {/* ════ Section 7: Key Features ════ */}
             <KeyFeaturesSection theme={theme} />
+
+            <Divider sx={{ opacity: 0.06, mb: 4 }} />
+
+            {/* ════ Section 8: Knowledge Engineering & Strategy (Documentation) ════ */}
+            <DocumentationSection theme={theme} />
           </Box>
         </Box>
       </Container>

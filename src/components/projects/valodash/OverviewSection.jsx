@@ -6,6 +6,10 @@ import {
   SettingsSuggest as SettingsSuggestIcon,
   Speed as SpeedIcon,
   CheckCircleOutline as CheckCircleIcon,
+  Dns as DnsIcon,
+  Storage as StorageIcon,
+  Hub as HubIcon,
+  Build as BuildIcon,
 } from "@mui/icons-material";
 import { GlassCard, SectionHeading } from "./styles";
 
@@ -119,6 +123,7 @@ const OverviewSection = ({ theme }) => {
               {[
                 {
                   category: "Backend & Core",
+                  icon: <DnsIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
                   items: ["Node.js", "TypeScript", "Express.js"],
                   color: "primary.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
@@ -126,6 +131,7 @@ const OverviewSection = ({ theme }) => {
                 },
                 {
                   category: "Database & ORM",
+                  icon: <StorageIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
                   items: ["PostgreSQL", "Prisma ORM"],
                   color: "secondary.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(6,182,212,0.06)" : "rgba(34,211,238,0.08)",
@@ -133,6 +139,7 @@ const OverviewSection = ({ theme }) => {
                 },
                 {
                   category: "Integrations",
+                  icon: <HubIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
                   items: ["Riot Games API", "Discord OAuth"],
                   color: "warning.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(245,158,11,0.06)" : "rgba(251,191,36,0.08)",
@@ -140,24 +147,39 @@ const OverviewSection = ({ theme }) => {
                 },
                 {
                   category: "Operations & Dev",
+                  icon: <BuildIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
                   items: ["Cron Jobs", "GitHub Actions", "Zod Validation"],
                   color: "success.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(16,185,129,0.06)" : "rgba(52,211,153,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(16,185,129,0.12)" : "rgba(52,211,153,0.15)",
                 }
               ].map((group, gIdx) => (
-                <Grid key={gIdx} size={{ xs: 12, sm: 6 }}>
+                <Grid key={gIdx} size={{ xs: 6, sm: 6 }}>
                   <Box sx={{
-                    p: 2,
+                    p: { xs: 1.5, sm: 2 },
                     height: "100%",
                     borderRadius: 2,
                     backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)",
                     border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)"}`,
                   }}>
-                    <Typography variant="caption" sx={{ fontWeight: 800, color: group.color, textTransform: "uppercase", letterSpacing: "0.5px", display: "block", mb: 1.5 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        fontWeight: 800,
+                        color: group.color,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                        mb: 1.5,
+                        fontSize: { xs: "0.62rem", sm: "0.75rem" }
+                      }}
+                    >
+                      {group.icon}
                       {group.category}
                     </Typography>
-                    <Stack direction="row" flexWrap="wrap" gap={0.75}>
+                    <Stack direction="row" flexWrap="wrap" gap={{ xs: 0.5, sm: 0.75 }}>
                       {group.items.map((tech, tIdx) => (
                         <Chip
                           key={tIdx}

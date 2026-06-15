@@ -184,6 +184,23 @@ export const conceptualSchemas = {
       { name: "Cargos", fields: ["number", "weight", "pkg_height", "package_count", "package_type", "subcargo_indices"] }
     ]
   },
+  Invoice: {
+    description: "High-level visual blueprint of parsed standard billing and partner logistics invoices.",
+    sections: [
+      { name: "Invoice Details", fields: ["invoice_no", "invoice_date (YYYY-MM-DD)", "due_date (YYYY-MM-DD)", "currency (3-letter)"] },
+      { name: "Supplier & Buyer", fields: ["supplier_name", "supplier_vat_code", "buyer_name", "buyer_vat_code"] },
+      { name: "Line Items (Charges)", fields: ["description", "quantity", "unit_price", "vat_rate (percentage)", "total_price_net"] },
+      { name: "Totals & Tax Summary", fields: ["subtotal_net", "total_vat_amount", "grand_total_gross", "vat_breakdowns"] }
+    ]
+  },
+  "Credit Note": {
+    description: "High-level visual blueprint of negative adjustments and credits.",
+    sections: [
+      { name: "Credit Header", fields: ["credit_note_no", "date"] },
+      { name: "Supplier & Client", fields: ["supplier_vat", "client_vat", "company_names"] },
+      { name: "Adjustments", fields: ["original_reference_no", "total_credit_amount", "currency", "reason_comment"] }
+    ]
+  },
   "Service Invoice": {
     description: "High-level visual blueprint of parsed service and maintenance invoices.",
     sections: [
@@ -193,12 +210,13 @@ export const conceptualSchemas = {
       { name: "Vehicle Scopes", fields: ["transport_number (license plate)", "transport_vin (chassis)"] }
     ]
   },
-  "Credit Note": {
-    description: "High-level visual blueprint of negative adjustments and credits.",
+  "Mail Body": {
+    description: "High-level visual blueprint of parsed parameters from EML email stream bodies.",
     sections: [
-      { name: "Credit Header", fields: ["credit_note_no", "date"] },
-      { name: "Supplier & Client", fields: ["supplier_vat", "client_vat", "company_names"] },
-      { name: "Adjustments", fields: ["original_reference_no", "total_credit_amount", "currency", "reason_comment"] }
+      { name: "Email Header / Metadata", fields: ["sender_email", "recipient_email", "subject_line", "received_timestamp"] },
+      { name: "Body Content Blocks", fields: ["raw_content_text", "split_content_dividers", "mime_type"] },
+      { name: "Extracted Attachments", fields: ["file_name", "attachment_mime", "file_size_bytes"] },
+      { name: "Routing Parameters", fields: ["extracted_format_key", "routing_action", "validation_status"] }
     ]
   }
 };

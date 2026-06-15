@@ -24,12 +24,14 @@ const SchemaSection = ({ theme, activeTable, setActiveTable }) => {
       <Box
         sx={{
           display: "flex",
+          flexWrap: "wrap",
           borderRadius: 2,
           p: 0.5,
           mb: 3.5,
+          gap: { xs: 0.5, sm: 0 },
           backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
           border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)"}`,
-          width: "fit-content",
+          width: { xs: "100%", sm: "fit-content" },
         }}
       >
         {Object.keys(conceptualSchemas).map((key) => {
@@ -40,6 +42,7 @@ const SchemaSection = ({ theme, activeTable, setActiveTable }) => {
               onClick={() => setActiveTable(key)}
               size="small"
               sx={{
+                flex: { xs: "1 1 auto", sm: "initial" },
                 textTransform: "none",
                 fontWeight: isActive ? 800 : 600,
                 fontSize: "0.8rem",

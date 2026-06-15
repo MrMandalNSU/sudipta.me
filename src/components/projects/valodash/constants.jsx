@@ -13,12 +13,12 @@ import {
 } from "@mui/icons-material";
 
 export const features = [
-  { icon: <LeaderboardIcon />, title: "Team Leaderboards", desc: "Dynamic roster rankings computed from aggregated player performance across custom team structures." },
-  { icon: <AnalyticsIcon />, title: "Player Analytics", desc: "Per-player KDA, headshot %, win rate, and agent-specific performance breakdowns with trend lines." },
-  { icon: <HistoryIcon />, title: "Match History", desc: "Detailed round-by-round match breakdowns with map data, score timelines, and agent selections." },
-  { icon: <TrendingUpIcon />, title: "Rank Tracking", desc: "Historical MMR progression charts showing rank fluctuations across competitive seasons." },
-  { icon: <SecurityIcon />, title: "Discord Login", desc: "OAuth2-based authentication flow linking Discord profiles directly to Valorant game tags." },
-  { icon: <SyncIcon />, title: "Auto Sync", desc: "Scheduled cron workers pull match data hourly from Riot APIs without impacting frontend responsiveness." },
+  { icon: <LeaderboardIcon />, title: "Team Leaderboards", shortTitle: "Leaderboards", desc: "Dynamic roster rankings computed from aggregated player performance across custom team structures." },
+  { icon: <AnalyticsIcon />, title: "Player Analytics", shortTitle: "Analytics", desc: "Per-player KDA, headshot %, win rate, and agent-specific performance breakdowns with trend lines." },
+  { icon: <HistoryIcon />, title: "Match History", shortTitle: "History", desc: "Detailed round-by-round match breakdowns with map data, score timelines, and agent selections." },
+  { icon: <TrendingUpIcon />, title: "Rank Tracking", shortTitle: "Tracking", desc: "Historical MMR progression charts showing rank fluctuations across competitive seasons." },
+  { icon: <SecurityIcon />, title: "Discord Login", shortTitle: "Login", desc: "OAuth2-based authentication flow linking Discord profiles directly to Valorant game tags." },
+  { icon: <SyncIcon />, title: "Auto Sync", shortTitle: "Sync", desc: "Scheduled cron workers pull match data hourly from Riot APIs without impacting frontend responsiveness." },
 ];
 
 export const systemNodes = {

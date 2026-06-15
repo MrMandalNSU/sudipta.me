@@ -400,7 +400,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
       </DiagramBoard>
 
       {/* Table Detail Panel */}
-      <GlassCard sx={{ p: { xs: 2.5, sm: 3.5 }, minHeight: 320 }}>
+      <GlassCard sx={{ p: { xs: 2.5, sm: 3.5 }, minHeight: { xs: "auto", md: 320 } }}>
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5, color: "primary.main" }}>
             {activeTable} Table
@@ -411,7 +411,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
         </Box>
 
         {/* Fields */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 3, display: { xs: "none", md: "block" } }}>
           <Typography variant="caption" sx={{ fontWeight: 800, color: "text.secondary", textTransform: "uppercase", letterSpacing: "1px", display: "block", mb: 1.5 }}>
             Fields & Types
           </Typography>

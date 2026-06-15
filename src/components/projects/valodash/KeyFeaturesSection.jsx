@@ -16,24 +16,31 @@ const KeyFeaturesSection = ({ theme }) => {
         {features.map((f, i) => (
           <Grid key={i} size={{ xs: 12, sm: 6, lg: 4 }}>
             <GlassCard sx={{ p: 3, height: "100%" }}>
-              <Box
-                sx={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.1)",
-                  color: "primary.main",
-                  mb: 2,
-                }}
-              >
-                {f.icon}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.8, mb: 2 }}>
+                <Box
+                  sx={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 1.5,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.1)",
+                    color: "primary.main",
+                    flexShrink: 0,
+                  }}
+                >
+                  {f.icon}
+                </Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 800, lineHeight: 1.2 }}>
+                  <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+                    {f.title}
+                  </Box>
+                  <Box component="span" sx={{ display: { xs: "inline", sm: "none" } }}>
+                    {f.shortTitle || f.title}
+                  </Box>
+                </Typography>
               </Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 0.75 }}>
-                {f.title}
-              </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                 {f.desc}
               </Typography>

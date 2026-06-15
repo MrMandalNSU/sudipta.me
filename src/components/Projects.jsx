@@ -77,14 +77,18 @@ const Projects = ({ id }) => {
   const projects = [
     {
       title: "ValoDash",
-      type: "Full-Stack Web App",
+      type: "SaaS Analytics Platform",
       logo: "/project_logos/valodash_logo.svg",
       liveLink: "https://valodash.sudipta.xyz/",
       githubLink: "",
       detailsLink: "/projects/valodash",
       achievements: [
-        "Developed a full-stack analytics dashboard for custom Valorant teams, using Node.js, TypeScript, Next.js, Zod, Prisma, and PostgreSQL. Integrated Riot Games APIs to collect and process player profiles and historical match data, powering team leaderboards, comparative analytics, graphical analysis, and performance insights.",
-        "Implemented automated data refresh pipelines with scheduled cron jobs, maintaining up-to-date statistics and improving the reliability of backend data synchronization. Implemented a highly interactive data visualization UI.",
+        "Developed a SaaS Analytics Platform for custom Valorant teams, using Node.js, TypeScript, Next.js, Zod, Prisma, and PostgreSQL. Integrated Riot Games APIs to collect and process player profiles and historical match data, powering team leaderboards, comparative analytics, graphical analysis, and performance insights.",
+        "Engineered a cron scheduler and background worker service that executes staggered data ingestion updates to handle third-party API rate limits and refresh telemetry cache.",
+        "Integrated Discord OAuth2 authentication and architected a PostgreSQL database with relational tables via Prisma ORM, utilizing cascading integrity constraints and team-scoped roster isolation to ensure total data privacy.",
+        "Designed a multi-tiered leaderboard sorting algorithm (evaluating competitive MMR, ACS, and K/D ratios) and built a responsive UI optimized with micro-animations and touchscreen swiping for image previews.",
+        "The platform is adoped by more than 50 individual players and 10 teams. Valodash currently helping valorant teams to understand and organize their match data and analytics.",
+        "To see how I designed the project and visualized the use cases, click on the System Design button above.",
       ],
       technologies: [
         "Node.js",
@@ -95,6 +99,9 @@ const Projects = ({ id }) => {
         "PostgreSQL",
         "Riot Games API",
         "Cron Jobs",
+        "Rate Limit",
+        "Github Action",
+        "Caching Layer",
         "Data Visualization",
       ],
     },

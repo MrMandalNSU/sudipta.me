@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -10,8 +11,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  useMediaQuery,
-  useTheme as useMuiTheme,
   Menu,
   MenuItem,
   Avatar,
@@ -44,8 +43,8 @@ const Navbar = () => {
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
   const [resumeMenuAnchor, setResumeMenuAnchor] = useState(null);
   const { mode, toggleColorMode } = useTheme();
-  const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -70,30 +69,30 @@ const Navbar = () => {
   };
 
   const handleNavClick = (item) => {
-    switch (item) {
-      case "Intro":
-        scrollToSection("intro");
-        break;
-      case "Experience":
-        scrollToSection("experience");
-        break;
-      case "Agentic AI":
-        scrollToSection("agentic-ai");
-        break;
-      case "Projects":
-        scrollToSection("projects");
-        break;
-      case "CP":
-        scrollToSection("cp");
-        break;
-      case "Education":
-        scrollToSection("education");
-        break;
-      case "Gallery":
-        scrollToSection("gallery");
-        break;
-      default:
-        break;
+    const sectionIds = {
+      Intro: "intro",
+      Experience: "experience",
+      "Agentic AI": "agentic-ai",
+      Projects: "projects",
+      CP: "cp",
+      Education: "education",
+      Gallery: "gallery",
+    };
+    const targetId = sectionIds[item];
+    if (!targetId) return;
+
+    if (location.pathname === "/") {
+      scrollToSection(targetId);
+    } else {
+      navigate(`/#${targetId}`);
+    }
+  };
+
+  const handleBrandClick = () => {
+    if (location.pathname === "/") {
+      scrollToTop();
+    } else {
+      navigate("/");
     }
   };
 
@@ -337,7 +336,7 @@ const Navbar = () => {
       >
         <Toolbar sx={{ display: "flex" }}>
           <Button
-            onClick={scrollToTop}
+            onClick={handleBrandClick}
             sx={{
               textTransform: "none",
               fontSize: { xs: "1.1rem", md: "1.25rem" },

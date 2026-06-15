@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Container,
@@ -78,8 +79,9 @@ const Projects = ({ id }) => {
       title: "ValoDash",
       type: "Full-Stack Web App",
       logo: "/project_logos/valodash_logo.svg",
-      liveLink: "https://valo-dash.vercel.app/",
+      liveLink: "https://valodash.sudipta.xyz/",
       githubLink: "",
+      detailsLink: "/projects/valodash",
       achievements: [
         "Developed a full-stack analytics dashboard for custom Valorant teams, using Node.js, TypeScript, Next.js, Zod, Prisma, and PostgreSQL. Integrated Riot Games APIs to collect and process player profiles and historical match data, powering team leaderboards, comparative analytics, graphical analysis, and performance insights.",
         "Implemented automated data refresh pipelines with scheduled cron jobs, maintaining up-to-date statistics and improving the reliability of backend data synchronization. Implemented a highly interactive data visualization UI.",
@@ -231,6 +233,16 @@ const Projects = ({ id }) => {
                       </Box>
                     </Box>
                     <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
+                      {project.detailsLink && (
+                        <RouterLink to={project.detailsLink} style={{ textDecoration: "none" }}>
+                          <Chip
+                            icon={<CodeIcon fontSize="small" />}
+                            label="System Design"
+                            size="small"
+                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(129, 140, 248, 0.1)", color: "primary.main", border: "1px solid rgba(129, 140, 248, 0.3)", "&:hover": { backgroundColor: "rgba(129, 140, 248, 0.2)" } }}
+                          />
+                        </RouterLink>
+                      )}
                       {project.liveLink && (
                         <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none">
                           <Chip

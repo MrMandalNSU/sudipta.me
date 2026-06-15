@@ -123,11 +123,25 @@ const OverviewSection = ({ theme }) => {
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>sync rate</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>12 Hours</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>
+                    <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>12 Hours</Box>
+                    <Box component="span" sx={{ display: { xs: "inline", sm: "none" } }}>12H</Box>
+                  </Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>db models</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>10+ Tables</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>
+                    <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>10+</Box>
+                    <Box component="span" sx={{ display: { xs: "inline", sm: "none" } }}>10+</Box>
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>users</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>50+</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>teams</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>10+</Typography>
                 </Box>
               </Stack>
               <Button

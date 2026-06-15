@@ -10,6 +10,7 @@ const highlightJson = (obj) => {
   const lines = jsonString.split("\n");
 
   return lines.map((line, index) => {
+    // 1. Match key-value pairs (e.g. "key": "value" or "key": 123)
     const match = line.match(/^(\s*)"([^"]+)"(:\s*)(.*)$/);
     if (match) {
       const indent = match[1];
@@ -50,11 +51,31 @@ const highlightJson = (obj) => {
       );
     }
 
+    // 2. Match string elements inside arrays (e.g. "Jett", or "Jett")
+    const arrayStringMatch = line.match(/^(\s*)"([^"]+)"(,?)$/);
+    if (arrayStringMatch) {
+      const indent = arrayStringMatch[1];
+      const val = arrayStringMatch[2];
+      const comma = arrayStringMatch[3];
+      return (
+        <div key={index}>
+          {indent}
+          <span style={{ color: "#34D399" }}>"{val}"</span>
+          {comma && <span style={{ color: "#94A3B8" }}>{comma}</span>}
+        </div>
+      );
+    }
+
     return <div key={index}>{line}</div>;
   });
 };
 
 const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
+  const combinedTelemetry = {
+    request: workflows[activeWorkflow]?.payload,
+    response: workflows[activeWorkflow]?.responsePayload,
+  };
+
   return (
     <Box id="workflows" sx={{ scrollMarginTop: 120, mb: 4 }}>
       <SectionHeading theme={theme}>Project Workflows</SectionHeading>
@@ -206,9 +227,9 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                   fontSize: "0.68rem",
                 }}
               >
-                {activeWorkflow === "auth" && "Session JWT Schema (JSON)"}
-                {activeWorkflow === "enrollment" && "Roster Ingest Schema (JSON)"}
-                {activeWorkflow === "sync" && "Webhook Event Schema (JSON)"}
+                {activeWorkflow === "auth" && "Auth Telemetry (JSON)"}
+                {activeWorkflow === "enrollment" && "Enrollment Telemetry (JSON)"}
+                {activeWorkflow === "sync" && "Sync Telemetry (JSON)"}
               </Typography>
               <Box sx={{ display: "flex", gap: 0.5 }}>
                 <Box sx={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.2)" }} />
@@ -231,7 +252,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
               }}
             >
               <code>
-                {highlightJson(workflows[activeWorkflow]?.payload)}
+                {highlightJson(combinedTelemetry)}
               </code>
             </Box>
           </Box>

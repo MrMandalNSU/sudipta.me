@@ -208,12 +208,18 @@ export const workflows = {
     ],
     payload: {
       discordId: "3829104859013058",
-      username: "sudipta_mandal",
       jwtSession: {
-        sub: "usr_91",
         role: "ROSTER_ADMIN",
+        name: "Sudipta Mandal",
+        ign: "BayBeeNooby",
+        rank: "Ascendent 2",
         exp: 1718449600
       }
+    },
+    responsePayload: {
+      status: "SUCCESS",
+      userId: "usr_91",
+      playerId: "plyr_73"
     }
   },
   enrollment: {
@@ -230,12 +236,14 @@ export const workflows = {
     ],
     payload: {
       puuid: "riot_ap_9b8a7c6d5e4...",
-      gameName: "MrMandal",
-      tagLine: "NSU",
       roster: {
-        teamId: "team_21",
-        joinedAt: "2026-06-15T03:45Z"
+        teamId: "team_21"
       }
+    },
+    responsePayload: {
+      status: "SUCCESS",
+      tierName: "DIAMOND 3",
+      kd: 1.15
     }
   },
   sync: {
@@ -252,10 +260,12 @@ export const workflows = {
     ],
     payload: {
       event: "match.sync_webhook",
-      staggerMs: 2000,
-      syncFrequency: "12h",
-      processedMatches: 24,
-      cacheHits: 19
+      staggerMs: 2000
+    },
+    responsePayload: {
+      status: "SUCCESS",
+      manualSyncRemaining: 3,
+      lastSynced: "2026-06-15"
     }
   }
 };

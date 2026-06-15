@@ -203,9 +203,9 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
               <Typography variant="caption" sx={{ fontWeight: 800, color: "text.secondary", textTransform: "uppercase", letterSpacing: "1px", display: "block", mb: 1.5 }}>
                 Fields & Types
               </Typography>
-              <Grid container spacing={1}>
+              <Grid container spacing={1.5}>
                 {activeTableData.fields.map((field, i) => (
-                  <Grid key={field.name} size={{ xs: 12, sm: 6, md: 4 }}>
+                  <Grid key={field.name} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                     <Box
                       sx={{
                         p: 1.5,
@@ -215,10 +215,11 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
+                        gap: 1,
                       }}
                     >
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "monospace", fontSize: "0.82rem" }}>
+                      <Stack direction="row" alignItems="center" sx={{ minWidth: 0, flexWrap: "wrap", gap: 0.75 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "monospace", fontSize: "0.82rem", whiteSpace: "nowrap" }}>
                           {field.name}
                         </Typography>
                         {field.isKey && (
@@ -230,6 +231,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                               fontSize: "0.55rem",
                               fontWeight: 800,
                               borderRadius: 0.75,
+                              flexShrink: 0,
                               backgroundColor: field.isKey.includes("PK")
                                 ? "rgba(16, 185, 129, 0.15)"
                                 : field.isKey === "Unique"
@@ -244,7 +246,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                           />
                         )}
                       </Stack>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>
+                      <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "monospace", fontSize: "0.75rem", flexShrink: 0, ml: 1 }}>
                         {field.type}
                       </Typography>
                     </Box>

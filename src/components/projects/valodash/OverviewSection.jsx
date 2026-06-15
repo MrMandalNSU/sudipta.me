@@ -33,7 +33,15 @@ const OverviewSection = ({ theme }) => {
         <Grid size={{ xs: 12, md: 6 }}>
           <GlassCard sx={{ p: { xs: 3, sm: 4 }, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2.5, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row", md: "column", lg: "row" },
+                  alignItems: { xs: "flex-start", sm: "center", md: "flex-start", lg: "center" },
+                  gap: 2.5,
+                  mb: 3,
+                }}
+              >
                 <Box
                   component="img"
                   src="/project_logos/valodash_logo.svg"
@@ -60,8 +68,10 @@ const OverviewSection = ({ theme }) => {
                       position: "relative",
                       overflow: "hidden",
                       borderRadius: "4px",
-                      px: 0.5,
-                      mx: -0.5,
+                      pl: 0.5,
+                      pr: 2.5,
+                      ml: -0.5,
+                      mr: -2.5,
                       "&:hover .shimmer-shine": {
                         animation: `${shimmer} 0.8s ease-in-out`,
                       },
@@ -78,6 +88,7 @@ const OverviewSection = ({ theme }) => {
                         mb: 0.5,
                         color: theme.palette.mode === "light" ? "#0F1923" : "#ECE8E1",
                         display: "inline-block",
+                        fontSize: { xs: "1.75rem", sm: "2.125rem", md: "1.75rem", lg: "2.125rem" },
                       }}
                     >
                       Valo
@@ -116,7 +127,7 @@ const OverviewSection = ({ theme }) => {
 
             {/* Metadata Badges / Live Link */}
             <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 2, pt: 2, borderTop: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}` }}>
-              <Stack direction="row" spacing={2} sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2.5, fontFamily: "monospace", fontSize: "0.75rem" }}>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>stagger</Typography>
                   <Typography variant="body2" sx={{ fontWeight: 800 }}>2000ms</Typography>
@@ -143,7 +154,7 @@ const OverviewSection = ({ theme }) => {
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>teams</Typography>
                   <Typography variant="body2" sx={{ fontWeight: 800 }}>10+</Typography>
                 </Box>
-              </Stack>
+              </Box>
               <Button
                 href="https://valodash.sudipta.xyz/"
                 target="_blank"
@@ -240,7 +251,7 @@ const OverviewSection = ({ theme }) => {
                   borderColor: theme.palette.mode === "light" ? "rgba(16,185,129,0.12)" : "rgba(52,211,153,0.15)",
                 }
               ].map((group, gIdx) => (
-                <Grid key={gIdx} size={{ xs: 6, sm: 6 }}>
+                <Grid key={gIdx} size={{ xs: 12, sm: 6, md: 12, lg: 6 }}>
                   <Box sx={{
                     p: { xs: 1.5, sm: 2 },
                     height: "100%",

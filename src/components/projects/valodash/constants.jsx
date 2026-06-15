@@ -208,7 +208,7 @@ export const workflows = {
     ]
   },
   enrollment: {
-    title: "Player Enrollment Workflow",
+    title: "Player Enrollment",
     shortTitle: "Enrollment",
     icon: <SportsEsportsIcon />,
     description: "Registers and isolates competitive player identities across rosters.",

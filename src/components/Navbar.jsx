@@ -313,7 +313,7 @@ const Navbar = () => {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "95%", md: "95%", lg: "80%" },
+        width: { xs: "100%", sm: "95%", md: "95%", lg: "95%", xl: "80%" },
         transform: "translateX(-50%)",
         position: "fixed",
         top: { xs: 0, sm: 16 },
@@ -342,12 +342,12 @@ const Navbar = () => {
             onClick={handleBrandClick}
             sx={{
               textTransform: "none",
-              fontSize: { xs: "1.1rem", md: "1.25rem" },
+              fontSize: { xs: "1.1rem", lg: "1.25rem" },
               color: "inherit",
               display: "block",
-              order: { xs: 2, md: 1 },
-              ml: { xs: "auto", md: 0 },
-              mr: { xs: 0, md: "auto" },
+              order: { xs: 2, lg: 1 },
+              ml: { xs: "auto", lg: 0 },
+              mr: { xs: 0, lg: "auto" },
               whiteSpace: "nowrap",
               flexShrink: 0,
             }}
@@ -355,16 +355,16 @@ const Navbar = () => {
             Sudipta Mandal
           </Button>
 
-          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", order: 2 }}>
+          <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", order: 2 }}>
             {navItems.map((item) => (
               <Button
                 key={item}
                 sx={{
                   color: "inherit",
-                  mx: { md: 0, lg: 0.5 },
-                  px: { md: 0.5, lg: 2 },
+                  mx: { lg: 0.25, xl: 0.5 },
+                  px: { lg: 1.25, xl: 2 },
                   minWidth: "auto",
-                  fontSize: { md: "0.75rem", lg: "1rem" }
+                  fontSize: { lg: "0.875rem", xl: "1rem" }
                 }}
                 onClick={() => handleNavClick(item)}
               >
@@ -374,12 +374,12 @@ const Navbar = () => {
             <Button
               sx={{
                 color: "inherit",
-                ml: { md: 0.25, lg: 1 },
-                px: { md: 0.5, lg: 2 },
-                fontSize: { md: "0.75rem", lg: "1rem" }
+                ml: { lg: 0.5, xl: 1 },
+                px: { lg: 1.25, xl: 2 },
+                fontSize: { lg: "0.875rem", xl: "1rem" }
               }}
               onClick={handleResumeMenuOpen}
-              endIcon={<DescriptionIcon sx={{ fontSize: { md: "1rem", lg: "1.5rem" } }} />}
+              endIcon={<DescriptionIcon sx={{ fontSize: { lg: "1.25rem", xl: "1.5rem" } }} />}
             >
               Resume
             </Button>
@@ -399,8 +399,8 @@ const Navbar = () => {
             </Menu>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", order: { xs: 1, md: 3 } }}>
-            <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, md: 1 } }}>
+          <Box sx={{ display: "flex", alignItems: "center", order: { xs: 1, lg: 3 } }}>
+            <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, lg: 1 } }}>
               {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
             <IconButton
@@ -408,7 +408,7 @@ const Navbar = () => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ ml: 1, display: { md: "none" } }}
+              sx={{ ml: 1, display: { lg: "none" } }}
             >
               <MenuIcon />
             </IconButton>
@@ -425,7 +425,7 @@ const Navbar = () => {
           keepMounted: true,
         }}
         sx={{
-          display: { xs: "block", md: "none" },
+          display: { xs: "block", lg: "none" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: 280,

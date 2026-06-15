@@ -14,7 +14,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
 
       <Grid container spacing={3}>
         {/* Workflow Detail Panel */}
-        <Grid size={{ xs: 12, md: 9 }} sx={{ order: { xs: 2, md: 1 } }}>
+        <Grid size={{ xs: 12, lg: 9 }} sx={{ order: { xs: 2, lg: 1 } }}>
           <GlassCard sx={{ p: 3.5, height: "100%" }}>
             <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, display: "flex", alignItems: "center", gap: 1 }}>
               {React.cloneElement(workflows[activeWorkflow].icon, { color: "primary", sx: { fontSize: 22 } })}
@@ -71,13 +71,13 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
         </Grid>
 
         {/* Workflow Selector */}
-        <Grid size={{ xs: 12, md: 3 }} sx={{ order: { xs: 1, md: 2 } }}>
+        <Grid size={{ xs: 12, lg: 3 }} sx={{ order: { xs: 1, lg: 2 } }}>
           <Stack
-            direction={{ xs: "row", md: "column" }}
+            direction={{ xs: "row", lg: "column" }}
             spacing={1.5}
             sx={{
               width: "100%",
-              mb: { xs: 1, md: 0 }
+              mb: { xs: 1.5, lg: 0 }
             }}
           >
             {Object.entries(workflows).map(([key, flow]) => {
@@ -89,18 +89,18 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                   variant={isActive ? "contained" : "outlined"}
                   startIcon={React.cloneElement(flow.icon, { sx: { fontSize: 18 } })}
                   sx={{
-                    flex: { xs: "1 1 0px", md: "initial" },
-                    justifyContent: { xs: "center", md: "flex-start" },
+                    flex: { xs: "1 1 0px", lg: "initial" },
+                    justifyContent: { xs: "center", lg: "flex-start" },
                     textTransform: "none",
                     fontWeight: 700,
-                    py: { xs: 1.2, md: 1.5 },
-                    px: { xs: 1, md: 2.5 },
+                    py: { xs: 1.2, lg: 1.5 },
+                    px: { xs: 1, lg: 2.5 },
                     borderRadius: 2,
                     boxShadow: isActive ? "0 4px 14px rgba(79, 70, 229, 0.2)" : "none",
                     backgroundColor: isActive ? theme.palette.primary.main : "transparent",
                     borderColor: isActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
                     color: isActive ? "#FFF" : "text.secondary",
-                    fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.875rem" },
+                    fontSize: { xs: "0.75rem", sm: "0.85rem", lg: "0.875rem" },
                     whiteSpace: "nowrap",
                     minWidth: 0,
                     "&:hover": {
@@ -111,10 +111,10 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                     },
                   }}
                 >
-                  <Box component="span" sx={{ display: { xs: "inline", md: "none" } }}>
+                  <Box component="span" sx={{ display: { xs: "inline", lg: "none" } }}>
                     {flow.shortTitle}
                   </Box>
-                  <Box component="span" sx={{ display: { xs: "none", md: "inline" } }}>
+                  <Box component="span" sx={{ display: { xs: "none", lg: "inline" } }}>
                     {flow.title.split(" Flow")[0].split(" Engine")[0]}
                   </Box>
                 </Button>

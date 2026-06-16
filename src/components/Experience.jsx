@@ -89,7 +89,7 @@ const Experience = ({ id }) => {
       achievements: [
         "Architect and built a flexible, layout-aware document-processing system utilizing Laravel, pattern recognition, text analysis, and context mapping to accurately parse inconsistent logistic PDFs from multiple global partners.",
         "Designed custom extraction logic and robust fallback rules to seamlessly isolate tabular and irregular data from unstructured logistic documents, including orders, credit notes, and service invoices across multiple languages.",
-        "Engineered automated normalization pipelines that transformed raw, varied PDF outputs into highly structured JSON and CSV formats, ensuring format-agnostic data integrity for downstream workflows with 100% accuracy.",
+        "Engineered automated normalization pipelines that transformed raw, varied PDF outputs into highly structured JSON and CSV formats, ensuring format-agnostic data integrity for downstream workflows with near perfect accuracy (>99%).",
         "Leveraged agentic AI-assisted context engineering, pattern analysis, and agentic workflow automation to accelerate development workflows. Improved research and development engineering productivity by 50%.",
         "Collaborated closely with the CTO to optimize core data ingestion flows, significantly enhancing the parsing module’s performance, robustness, accuracy, and scalability to support increasing document volumes.",
       ],
@@ -115,7 +115,7 @@ const Experience = ({ id }) => {
       achievements: [
         "Built and maintained from scratch using Node.js, Strapi v5, PostgreSQL, and Redis. Deployed and managed production infrastructure with centralized logging, monitoring, and environment management across platforms.",
         "Designed and optimized 50+ relational database models and advanced multi-model filtering/query systems, improving large-scale data retrieval with caching and data indexing. Increased performance by 40%.",
-        "Implemented secure authentication and authorization features, including SMTP OTP verification, Google OAuth, Facebook OAuth, and JWT auth flow, improving login reliability and reducing authentication friction.",
+        "Implemented secure authentication and authorization features, including OTP verification, Google OAuth, Facebook OAuth, and JWT auth flow, improving login reliability and reducing authentication friction.",
         "Integrated complete SportsDB v1/v2 APIs, real-time live sports score functionality using WebSockets, and multiple third-party News APIs; optimized performance with Redis and Node cache strategies. Developed automated cron job schedulers and background workers that reduced API synchronization downtime by 30%.",
         "Boosted engineering productivity by 50% by architecting agentic AI workflows, automating documentation, and implementing advanced error logging and context-engineering strategies.",
       ],
@@ -128,7 +128,6 @@ const Experience = ({ id }) => {
         "Railway",
         "WebSocket",
         "OAuth",
-        "SMTP",
         "Database Design",
         "System Architecture",
         "CI/CD",

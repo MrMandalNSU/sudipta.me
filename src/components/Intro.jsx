@@ -194,7 +194,7 @@ const Intro = ({ id }) => {
                   }
                 }}
               >
-                5Y+ Experience <span>|</span> Laravel <span>|</span> Node.js <span>|</span> AWS <span>|</span> Context Engineering <span>|</span> Remote-First Engineer
+                5Y+ Experience <span>|</span> Laravel <span>|</span> Node.js <span>|</span> Next.js <span>|</span> AWS <span>|</span> Context Engineering <span>|</span> Remote-First Engineer
               </Typography>
               {/* Social Media Buttons */}
               <Box

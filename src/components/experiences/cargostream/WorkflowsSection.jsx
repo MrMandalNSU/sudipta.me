@@ -40,18 +40,17 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
 
   return (
     <Box id="workflows" sx={{ scrollMarginTop: 120, mb: 5 }}>
-      <SectionHeading theme={theme}>Pipeline Workflows</SectionHeading>
-      
+      <SectionHeading theme={theme}>Blueprints & Pipeline Workflows</SectionHeading>
+
       {/* Top Workflow Selector Tabs */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
-          borderBottom: `1px solid ${
-            theme.palette.mode === "light"
-              ? "rgba(0,0,0,0.08)"
-              : "rgba(255,255,255,0.08)"
-          }`,
+          borderBottom: `1px solid ${theme.palette.mode === "light"
+            ? "rgba(0,0,0,0.08)"
+            : "rgba(255,255,255,0.08)"
+            }`,
           mb: 4,
           gap: 1.5,
           overflowX: "auto",
@@ -84,7 +83,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
           {React.cloneElement(currentWorkflow.icon, { color: "primary", sx: { fontSize: 20 } })}
           {currentWorkflow.title}
         </Typography>
-        
+
         <Typography variant="body2" color="text.secondary" sx={{ mb: 4, lineHeight: 1.6 }}>
           {currentWorkflow.description}
         </Typography>

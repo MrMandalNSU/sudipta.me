@@ -96,29 +96,30 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
           
-          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Client UI</text>
-          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">User Device</text>
+          <rect x="15" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="70" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Client UI</text>
+          <text x="70" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">User Device</text>
           
-          <rect x="195" y="10" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <rect x="185" y="10" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
           <text x="250" y="40" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">BankID Relay</text>
           <text x="250" y="55" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Swedish E-ID</text>
 
-          <rect x="195" y="90" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <rect x="185" y="90" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
           <text x="250" y="120" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">OTP Handler</text>
           <text x="250" y="135" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">SMS/Email Token</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Auth Server</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Validate & JWT</text>
+          <rect x="375" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="430" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Auth Server</text>
+          <text x="430" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Validate & JWT</text>
 
           {/* Paths */}
-          <path d="M 115 55 Q 150 25 195 30" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 115 105 Q 150 135 195 130" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 305 35 Q 345 40 385 60" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 305 125 Q 345 120 385 100" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 385 80 H 125" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="4,4" fill="none" markerEnd="url(#arrow)" />
-          <text x="250" y="76" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">Verify & Session Issued</text>
+          <path d="M 125 55 Q 155 25 185 30" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 125 105 Q 155 135 185 130" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 35 Q 345 40 375 60" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 125 Q 345 120 375 100" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 375 80 H 310" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="4,4" fill="none" />
+          <path d="M 190 80 H 125" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="4,4" fill="none" markerEnd="url(#arrow)" />
+          <text x="250" y="83" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="7.5" fontFamily="monospace">Session JWT Issued</text>
         </svg>
       );
     case 1: // Trulioo KYC Compliance
@@ -130,30 +131,30 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
           
-          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Signup Form</text>
-          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Submit Profile</text>
+          <rect x="15" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="70" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Signup Form</text>
+          <text x="70" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Submit Profile</text>
           
-          <rect x="195" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <rect x="185" y="50" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
           <text x="250" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">KYC Manager</text>
           <text x="250" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">State Machine Buffer</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Trulioo API</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Verification Check</text>
+          <rect x="375" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="430" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Trulioo API</text>
+          <text x="430" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Verification Check</text>
 
           {/* Paths */}
-          <path d="M 115 80 H 195" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 125 80 H 185" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
           
-          <path d="M 305 70 H 385" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 385 90 H 315" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="3,3" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 70 H 375" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 375 90 H 315" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="3,3" fill="none" markerEnd="url(#arrow)" />
           
           {/* Retry loop */}
-          <path d="M 270 50 Q 250 10 230 50" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 265 50 Q 250 10 235 50" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
           <text x="250" y="25" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="7.5" fontFamily="monospace">Retry Loop (3x)</text>
 
           {/* Approval path */}
-          <path d="M 250 110 C 250 145, 65 145, 65 120" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="4,4" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 250 110 C 250 145, 70 145, 70 120" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="4,4" fill="none" markerEnd="url(#arrow)" />
           <text x="160" y="135" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">Unlock Account</text>
         </svg>
       );
@@ -166,24 +167,24 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
 
-          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Stripe Webhook</text>
-          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Events Dispatch</text>
+          <rect x="20" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="70" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Stripe Webhook</text>
+          <text x="70" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Events Dispatch</text>
 
-          <rect x="195" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Signature Validation</text>
+          <rect x="185" y="50" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="10.5" fontFamily="Inter, sans-serif">Signature Validation</text>
           <text x="250" y="95" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">HMAC Signature</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Database Sync</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Active Tier Update</text>
+          <rect x="380" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="430" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Database Sync</text>
+          <text x="430" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Active Tier Update</text>
 
           {/* Paths */}
-          <path d="M 115 80 H 195" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <text x="155" y="70" textAnchor="middle" fill={mutedColor} fontSize="8" fontFamily="monospace">Payload</text>
+          <path d="M 120 80 H 185" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <text x="152.5" y="70" textAnchor="middle" fill={mutedColor} fontSize="8" fontFamily="monospace">Payload</text>
           
-          <path d="M 305 80 H 385" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <text x="345" y="70" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">Valid</text>
+          <path d="M 315 80 H 380" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <text x="347.5" y="70" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">Valid</text>
         </svg>
       );
     case 3: // AWS Ingestion Pipeline (S&P Capital IQ)
@@ -195,30 +196,30 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
 
-          <rect x="15" y="50" width="90" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="60" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Node Cron</text>
-          <text x="60" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Job Scheduler</text>
+          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Node Cron</text>
+          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Job Scheduler</text>
 
-          <rect x="180" y="15" width="120" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="240" y="45" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">AWS Lambda (Node)</text>
-          <text x="240" y="60" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Chunk ISINs (100)</text>
+          <rect x="185" y="15" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="250" y="45" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">AWS Lambda (Node)</text>
+          <text x="250" y="60" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Chunk ISINs (100)</text>
 
-          <rect x="180" y="90" width="120" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="240" y="120" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">S&P Mnemonics</text>
-          <text x="240" y="135" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Finance / Calendar APIs</text>
+          <rect x="185" y="90" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="250" y="120" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">S&P Mnemonics</text>
+          <text x="250" y="135" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Finance & Calendars</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Eucaps Cache</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">MySQL Database</text>
+          <rect x="380" y="50" width="105" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="432.5" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Eucaps Cache</text>
+          <text x="432.5" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">MySQL Database</text>
 
           {/* Paths */}
-          <path d="M 105 80 Q 140 45 180 45" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 115 80 Q 150 45 185 45" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
           
-          <path d="M 240 75 V 90" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 250 90 V 75" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="3,3" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 245 75 V 90" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 255 90 V 75" stroke={primaryColor} strokeWidth="1.5" strokeDasharray="3,3" fill="none" markerEnd="url(#arrow)" />
 
-          <path d="M 300 45 Q 345 45 385 70" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <path d="M 300 120 Q 345 120 385 90" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 45 Q 350 45 380 70" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 120 Q 350 120 380 90" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
         </svg>
       );
     case 4: // GraphQL Calculations Engine
@@ -230,22 +231,22 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
 
-          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">MySQL Store</text>
-          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Raw Ingested Rows</text>
+          <rect x="15" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="70" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">MySQL Store</text>
+          <text x="70" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Raw Ingested Rows</text>
 
-          <rect x="195" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <rect x="185" y="50" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
           <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Aggregate Engine</text>
           <text x="250" y="95" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">LTM / YoY / QoQ</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">GraphQL API</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">DataLoader Caches</text>
+          <rect x="375" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="430" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">GraphQL API</text>
+          <text x="430" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">DataLoader Caches</text>
 
           {/* Paths */}
-          <path d="M 115 80 H 195" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 125 80 H 185" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
           
-          <path d="M 305 80 H 385" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 315 80 H 375" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
         </svg>
       );
     case 5: // HMAC Partner Gateway
@@ -257,22 +258,22 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
 
-          <rect x="15" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="65" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Partner API Request</text>
-          <text x="65" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Shared Keys Payload</text>
+          <rect x="15" y="50" width="115" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="72.5" y="77" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="10" fontFamily="Inter, sans-serif">Partner API Request</text>
+          <text x="72.5" y="93" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Shared Keys Payload</text>
 
-          <rect x="190" y="50" width="120" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">HMAC Filter Middleware</text>
-          <text x="250" y="95" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">SHA-256 Signature</text>
+          <rect x="180" y="50" width="140" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="10.5" fontFamily="Inter, sans-serif">HMAC Filter Middleware</text>
+          <text x="250" y="93" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">SHA-256 Signature</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Redis Limiter</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Sliding-Window Audit</text>
+          <rect x="370" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="425" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Redis Limiter</text>
+          <text x="425" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">Sliding-Window Audit</text>
 
           {/* Paths */}
-          <path d="M 115 80 H 190" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 130 80 H 180" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
           
-          <path d="M 310 80 H 385" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <path d="M 320 80 H 370" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
         </svg>
       );
     case 6: // OpenAI Content Generation & Compression
@@ -284,24 +285,24 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
             </marker>
           </defs>
 
-          <rect x="15" y="50" width="90" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="60" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">OpenAI Job</text>
-          <text x="60" y="95" textAnchor="middle" fill={mutedColor} fontSize="8.5" fontFamily="Inter, sans-serif">GPT Hashtags / DALL-E</text>
+          <rect x="15" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="70" y="77" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">OpenAI Job</text>
+          <text x="70" y="93" textAnchor="middle" fill={mutedColor} fontSize="8" fontFamily="Inter, sans-serif">GPT Tags & DALL-E</text>
 
-          <rect x="175" y="50" width="130" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="240" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="10.5" fontFamily="Inter, sans-serif">Intervention Image</text>
-          <text x="240" y="95" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">Crop & WebP Format</text>
+          <rect x="180" y="50" width="140" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="250" y="75" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="10.5" fontFamily="Inter, sans-serif">Intervention Image</text>
+          <text x="250" y="93" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">Crop & WebP Format</text>
 
-          <rect x="385" y="50" width="100" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="435" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">AWS S3</text>
-          <text x="435" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Watermarked WebP</text>
+          <rect x="375" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
+          <text x="430" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">AWS S3</text>
+          <text x="430" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Watermarked WebP</text>
 
           {/* Paths */}
-          <path d="M 105 80 H 175" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <text x="140" y="70" textAnchor="middle" fill={mutedColor} fontSize="8" fontFamily="monospace">Raw Image</text>
+          <path d="M 125 80 H 180" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <text x="152.5" y="70" textAnchor="middle" fill={mutedColor} fontSize="8" fontFamily="monospace">Raw Image</text>
           
-          <path d="M 305 80 H 385" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
-          <text x="345" y="70" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">S3 Push</text>
+          <path d="M 320 80 H 375" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />
+          <text x="347.5" y="70" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8" fontFamily="monospace">S3 Push</text>
         </svg>
       );
     default:

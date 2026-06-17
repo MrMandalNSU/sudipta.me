@@ -52,7 +52,7 @@ const microDiagramData = {
     { label: "Write MySQL Rows", sub: "Save verify entries" },
     { label: "Daily Deltas", sub: "Record date solves count" },
     { label: "Leaderboard Update", sub: "Refresh participant ranks" },
-    { label: "Redis Sync", sub: "Warm cache memory" }
+    { label: "Commit Logs", sub: "Write run statistics" }
   ],
   aggregator: [
     { label: "Fetch Batch Solves", sub: "Query database log" },
@@ -60,11 +60,11 @@ const microDiagramData = {
     { label: "Scoring Weight", sub: "Calculate difficulty scale" },
     { label: "Deduct Penalty", sub: "Late submission adjustment" },
     { label: "Sort Rankings", sub: "Sort solved count descending" },
-    { label: "Cache Leaderboard", sub: "Update Redis lookup" }
+    { label: "Update Rankings", sub: "Refresh leaderboard table" }
   ],
   dashboard: [
     { label: "Client Request", sub: "Dashboard page load" },
-    { label: "Query Cache", sub: "Verify Redis ranks" },
+    { label: "Query DB Ranks", sub: "Verify leaderboards" },
     { label: "Solve History", sub: "Pull daily delta arrays" },
     { label: "Grid Serializer", sub: "Format timeline dataset" },
     { label: "REST Response", sub: "Expose JSON objects" },
@@ -100,7 +100,7 @@ const microDiagramData = {
     { label: "Parse solve nodes", sub: "Parse XML solve count data" },
     { label: "Match local user", sub: "Link statistics to user" },
     { label: "Write mysql Row", sub: "Write daily solved record" },
-    { label: "Warm Cache", sub: "Signal Redis ranking compiler" }
+    { label: "Notify API", sub: "Refresh dashboard scores" }
   ]
 };
 

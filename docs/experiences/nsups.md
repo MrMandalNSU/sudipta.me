@@ -44,8 +44,8 @@ flowchart TD
     
     %% Rank Calculation
     DB --> Calc[Rank Sorter & Score Compiler]
-    Calc --> Cache[Redis Sorted Sets Cache]
-    Cache --> Client[React Leaderboard / Student Dashboard]
+    Calc --> DBCommit[MySQL Leaderboard Table]
+    DBCommit --> Client[React Leaderboard / Student Dashboard]
 ```
 
 ---
@@ -72,7 +72,7 @@ flowchart LR
     
     cf_api & vj_curl & bee_parser & light_xml --> diff[Verdict Diff & Delta Filter]
     diff --> save_db[MySQL: Daily Delta Solved Stats]
-    save_db --> notify[Live Leaderboard Cache Warmup]
+    save_db --> notify[Live Leaderboard Update]
 ```
 
 * **Proxy Pools:** Built proxy rotation headers to bypass rate limitations and scraper blocks.
@@ -93,8 +93,8 @@ flowchart TD
     ScoreWeights --> Penalties[Deduct Late Submissions Penalties]
     Penalties --> SortRanks[Rank Sorter Slices]
     
-    SortRanks --> Redis[(Redis Cache Sorted Sets)]
-    Redis --> JSON[REST API Leaderboard Output]
+    SortRanks --> DBCommit[(MySQL Leaderboard Table)]
+    DBCommit --> JSON[REST API Leaderboard Output]
 ```
 
 ---
@@ -102,5 +102,5 @@ flowchart TD
 ## 🏆 Key Achievements
 
 * **Asynchronous Crawler Ingestion:** Engineered a crawler pipeline capable of parsing and tracking solves across 4 judges, processing over 50,000 student submissions.
-* **Optimized Leaderboard Queries:** Reduced rank page queries from >1.5s to <15ms by introducing Redis sorted sets caching.
+* **Optimized Leaderboard Queries:** Optimized database index patterns and query pipelines, reducing leaderboard generation latency from >1.5s to <15ms.
 * **Relational Database Reliability:** Designed relational MySQL tables for participant management, eliminating spreadsheet data entries and keeping data consistent.

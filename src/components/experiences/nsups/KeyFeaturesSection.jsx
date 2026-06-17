@@ -28,13 +28,13 @@ const featureDetails = [
   },
   {
     challenge: "Compiling live scoreboard rankings dynamically based on problem weights and penalty indexes across thousands of rows without database locks.",
-    solution: "Built a Live Leaderboard Sorter calculating scores within batch boundaries. Caches rankings in Redis sorted sets, preventing redundant SQL database aggregations.",
+    solution: "Built a Live Leaderboard Sorter calculating scores within batch boundaries, storing rank indexes dynamically to prevent slow database queries.",
     metrics: [
       { label: "Sort Rank Time", value: "<15ms" },
-      { label: "Redis Cache Hit", value: "98.5%" },
+      { label: "Rank Accuracy", value: "100%" },
       { label: "Rank Updates", value: "Realtime" }
     ],
-    techStack: ["Redis Sorted Sets", "Live Score Compilers", "SQL Aggregations", "Cache Warming"]
+    techStack: ["Relational Indexing", "Live Score Compilers", "SQL Aggregations", "API Optimizations"]
   },
   {
     challenge: "Visualizing student participation metrics and historic activity histories dynamically without generating slow database index checks.",
@@ -145,8 +145,8 @@ const FeatureDiagram = ({ index, theme, primaryColor }) => {
           <text x="250" y="95" textAnchor="middle" fill={primaryColor} fontWeight="800" fontSize="8.5" fontFamily="monospace">Rank Compiler</text>
 
           <rect x="370" y="50" width="110" height="60" rx="8" fill={boxBg} stroke={strokeColor} strokeWidth="1.5" />
-          <text x="425" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">Redis Store</text>
-          <text x="425" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Sorted Sets Cache</text>
+          <text x="425" y="80" textAnchor="middle" fill={textColor} fontWeight="800" fontSize="11" fontFamily="Inter, sans-serif">MySQL Index</text>
+          <text x="425" y="95" textAnchor="middle" fill={mutedColor} fontSize="9" fontFamily="Inter, sans-serif">Active Ranks Table</text>
 
           {/* Paths */}
           <path d="M 130 80 H 180" stroke={primaryColor} strokeWidth="1.5" fill="none" markerEnd="url(#arrow)" />

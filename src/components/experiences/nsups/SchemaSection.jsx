@@ -184,7 +184,7 @@ const SchemaSection = ({ theme, activeTable, setActiveTable }) => {
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 800, lineHeight: 1.7 }}>
         Bootcamp records, crawler targets, solve tracking statistics, and user activities are mapped to structured schemas.
-        Below are interactive Entity-Relationship (ER) diagrams illustrating Eucaps' table scopes.
+        Below are interactive Entity-Relationship (ER) diagrams illustrating NSUPS' table scopes.
       </Typography>
 
       {/* Document Tab Switcher */}

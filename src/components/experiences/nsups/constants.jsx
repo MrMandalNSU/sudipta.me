@@ -46,9 +46,9 @@ export const systemNodes = {
   },
   database: {
     title: "Relational Schema Gateway",
-    shortTitle: "MySQL / Redis",
+    shortTitle: "MySQL Relational DB",
     icon: <DbIcon />,
-    description: "Maintains transactions for handles, submissions, daily deltas, and caches leaderboard scores for fast retrieval.",
+    description: "Maintains transactions for handles, submissions, and daily deltas, ensuring structural consistency.",
     role: "Stores structured entity states and coordinates high-speed active indices.",
   },
   aggregator: {
@@ -127,7 +127,7 @@ export const workflows = {
       { label: "Fetch Batch Bounds", text: "Loads start and end timestamps for the selected active bootcamp batch." },
       { label: "Sum Submissions", text: "Queries the submissions log to aggregate all accepted (AC) verdicts matching registered user handles." },
       { label: "Apply Multipliers", text: "Calculates rank points using platform scoring weights and deducts penalties for late submissions." },
-      { label: "Redis Cache Warmup", text: "Updates active rank indices in MySQL and refreshes the Redis cache to serve fast leaderboard endpoints." }
+      { label: "Live Rank Update", text: "Updates active rank indices in MySQL database and refreshes calculated leaderboard tables to serve fast user queries." }
     ],
     payload: {
       batchId: 4,
@@ -136,7 +136,7 @@ export const workflows = {
     },
     responsePayload: {
       totalStudentsRanked: 180,
-      redisWarmupStatus: "SUCCESS",
+      dbUpdateStatus: "SUCCESS",
       executionTimeMs: 22
     }
   },

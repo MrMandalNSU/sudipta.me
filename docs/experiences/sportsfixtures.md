@@ -54,7 +54,7 @@ The synchronization architecture consists of several scheduled cron workers regi
    - `sync-leagues` & `enrich-leagues`: Triggered sequentially on the 1st of every month, synchronizing details, badges, logos, and custom display tags.
    - `sync-teams`: Runs on the 1st of every month at 00:30 (completes within 2 hours, fetching team details and venues).
    - `sync-players`: Isolated to run on the 2nd of every month at 02:30 AM to avoid database write lockouts (syncs rosters, cutout pictures, positions, and details).
-   - `sync-events` & `sync-tv-events`: Scheduled to run **every 2 hours** to pull upcoming fixtures and update finished results.
+   - `sync-events` & `sync-tv-events`: Scheduled to run **every hour** to pull current events, upcoming fixtures, and update finished results.
 
 2. **Real-time Live Scores Scheduler**:
    - Executes a **30-second background fetch loop** checking active matches from SportsDB API.

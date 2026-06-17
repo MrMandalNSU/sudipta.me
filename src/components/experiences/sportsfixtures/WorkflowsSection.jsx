@@ -37,6 +37,18 @@ const WorkflowButton = styled(Button)(({ theme, active }) => ({
 
 const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
   const currentWorkflow = workflows[activeWorkflow];
+  const [activeSubFlow, setActiveSubFlow] = React.useState("otp");
+
+  React.useEffect(() => {
+    if (currentWorkflow?.subFlows) {
+      setActiveSubFlow(Object.keys(currentWorkflow.subFlows)[0]);
+    }
+  }, [activeWorkflow, currentWorkflow]);
+
+  const flowData = currentWorkflow?.subFlows ? currentWorkflow.subFlows[activeSubFlow] || Object.values(currentWorkflow.subFlows)[0] : currentWorkflow;
+  const steps = flowData?.steps || [];
+  const payload = flowData?.payload || {};
+  const responsePayload = flowData?.responsePayload || {};
 
   return (
     <Box id="workflows" sx={{ scrollMarginTop: 120, mb: 5 }}>
@@ -85,10 +97,52 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
           {currentWorkflow.description}
         </Typography>
 
+        {/* Sub-Flow Selector Tabs */}
+        {currentWorkflow.subFlows && (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1.5,
+              mb: 4,
+              borderBottom: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
+              pb: 2.5,
+              flexWrap: "wrap",
+            }}
+          >
+            {Object.entries(currentWorkflow.subFlows).map(([subKey, sub]) => {
+              const isActive = activeSubFlow === subKey;
+              return (
+                <Button
+                  key={subKey}
+                  size="small"
+                  variant={isActive ? "contained" : "outlined"}
+                  onClick={() => setActiveSubFlow(subKey)}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 2,
+                    fontWeight: 800,
+                    fontSize: "0.8rem",
+                    px: 3,
+                    py: 1,
+                    boxShadow: isActive ? "0 4px 14px rgba(99, 102, 241, 0.35)" : "none",
+                    borderColor: isActive ? "primary.main" : theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
+                    "&:hover": {
+                      borderColor: "primary.main",
+                      backgroundColor: isActive ? "primary.main" : theme.palette.mode === "light" ? "rgba(99, 102, 241, 0.04)" : "rgba(129, 140, 248, 0.08)",
+                    }
+                  }}
+                >
+                  {sub.title}
+                </Button>
+              );
+            })}
+          </Box>
+        )}
+
         {/* Steps Timeline */}
         <Box sx={{ position: "relative", pl: 3.5, borderLeft: `2px dashed ${theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)"}`, ml: 1.5, mb: 4 }}>
-          {currentWorkflow.steps.map((step, idx) => (
-            <Box key={idx} sx={{ mb: idx === currentWorkflow.steps.length - 1 ? 0 : 3.5, position: "relative" }}>
+          {steps.map((step, idx) => (
+            <Box key={idx} sx={{ mb: idx === steps.length - 1 ? 0 : 3.5, position: "relative" }}>
               {/* Timeline Dot */}
               <Box
                 sx={{
@@ -145,7 +199,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                   color: theme.palette.text.primary,
                 }}
               >
-                {JSON.stringify(currentWorkflow.payload, null, 2)}
+                {JSON.stringify(payload, null, 2)}
               </pre>
             </Paper>
           </Grid>
@@ -172,7 +226,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                   color: theme.palette.text.primary,
                 }}
               >
-                {JSON.stringify(currentWorkflow.responsePayload, null, 2)}
+                {JSON.stringify(responsePayload, null, 2)}
               </pre>
             </Paper>
           </Grid>

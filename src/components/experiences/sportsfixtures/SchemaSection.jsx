@@ -81,6 +81,42 @@ const tableRelations = {
   "Search Tracking": ["User", "League", "Team"]
 };
 
+const entityTaglines = {
+  "Sport": "Defines athletic catalogs (e.g. Football, Basketball) and active display states.",
+  "League": "Represents regional/global tournaments with badges, logos, and country linkages.",
+  "Country": "Stores country codes, localized names, flags, and related athletic divisions.",
+  "Team": "Captures sports teams roster metadata, primary brand colors, and home venues.",
+  "Venue": "Tracks stadium location details, timezone settings, and seating capacity.",
+  "Player": "Maps active sports players, field positions, and roster memberships.",
+  "Event": "Stores live match events, dates, scores, and status updates.",
+  "TV Event": "Links broadcaster details and live scheduling data to specific matches.",
+  "Finished/Upcoming Item Overrides": "Manages promotional tiles, custom card colors, and manual score overrides.",
+  "User": "Authenticates user registrations, OTP tokens, and account permission states.",
+  "User Favorite": "Bookmarks favorite leagues, sports, teams, and events for user dashboards.",
+  "Notification Preference": "Manages user-configured email notifications and digest frequencies.",
+  "Trending": "Calculates real-time trending scores and hot indicators for sports entities.",
+  "Search Tracking": "Logs search inputs, user device user-agents, and search filtering stats.",
+  "Navbar Config": "Admin-managed top navigation settings controlling menus and social redirects.",
+  "Logo Config": "Dynamic header/footer logo assets, size properties, and color branding variables.",
+  "Searchbar Config": "Configures search input suggestions, history limits, and placeholders.",
+  "Fixtures Results Config": "Controls date range scopes, pagination size, and live scoreboard flags.",
+  "Popular Competitions Config": "Manages order and visibility constraints for league tables.",
+  "News Section Config": "Configures article counts, categories, and scroll styles for home news.",
+  "Sync Status": "Displays execution status, history, and diagnostic logs for background synchronization workers.",
+  "Sports Grid Config": "Manages categories structure, card filters, and grid columns on the home page.",
+  "Notification System Setting": "Manages Firebase credentials and global push notification templates.",
+  "Finished Event Setting": "Manages query scope and archive depth for retrieving completed matches.",
+  "All Events Setting": "Controls calendar display thresholds and date-grouping settings.",
+  "Todays Highlights Setting": "Manages highlight slider controls, scroll parameters, and source leagues.",
+  "Upcoming Event Setting": "Configures display thresholds and filters for upcoming matches.",
+  "Top Live Setting": "Controls live refresh intervals and score flash behaviors.",
+  "Top League Small Config": "Configures list limit constraints and display icons for sidebar leagues.",
+  "Section Control": "Tracks visible status, reordering sequences, and brand feature colors for home sections.",
+  "Hero Config": "Manages landing page title headers, background media elements, and search display toggles.",
+  "Ad Creative & Placement": "Stores advertisements, script code insertions, campaign IDs, CPM values, and display placements.",
+  "Ticker Config": "Manages breaking news ticker scroll speeds, alert theme colors, active league scopes, and sync intervals."
+};
+
 const getKeyType = (field) => {
   const name = field.name.toLowerCase();
   const type = field.type.toLowerCase();
@@ -106,6 +142,188 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
     if (info && info.category && activeTab !== "ER Relationships") {
       setActiveTab(info.category);
     }
+  };
+
+  const renderTableCard = (entityName, fields) => {
+    const isSelected = selectedTable === entityName;
+    const totalFields = fields.length;
+    let pkCount = 0;
+    let fkCount = 0;
+    let ukCount = 0;
+    fields.forEach((f) => {
+      const keyType = getKeyType(f);
+      if (keyType === "PK") pkCount++;
+      else if (keyType === "FK") fkCount++;
+      else if (keyType === "UK") ukCount++;
+    });
+    const relations = tableRelations[entityName] || [];
+
+    return (
+      <Paper
+        variant="outlined"
+        onClick={() => setSelectedTable(entityName)}
+        sx={{
+          p: 2.2,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          borderRadius: 2.5,
+          backgroundColor: isSelected
+            ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.02)" : "rgba(129, 140, 248, 0.06)")
+            : (theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)"),
+          border: `1px solid ${isSelected ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)")}`,
+          cursor: "pointer",
+          transition: "all 0.2s ease",
+          "&:hover": {
+            borderColor: primaryColor,
+            transform: "translateY(-2px)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.02)",
+          }
+        }}
+      >
+        <Box>
+          <Typography variant="body2" sx={{ fontWeight: 800, mb: 1.5, display: "flex", alignItems: "center", gap: 1, color: isSelected ? "primary.main" : "text.primary" }}>
+            <BlockIcon color={isSelected ? "primary" : "action"} sx={{ fontSize: 16 }} />
+            {entityName} Entity
+          </Typography>
+          
+          {/* Table Description Tagline */}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 2,
+              fontSize: "0.82rem",
+              lineHeight: 1.5,
+              minHeight: 36,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis"
+            }}
+          >
+            {entityTaglines[entityName] || "No description available."}
+          </Typography>
+
+          {/* Table Metrics Summary */}
+          <Stack direction="row" flexWrap="wrap" gap={0.75} sx={{ mb: 1.5 }}>
+            <Chip
+              label={`${totalFields} Fields`}
+              size="small"
+              sx={{
+                height: 18,
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)",
+                color: "text.secondary",
+                borderRadius: 1
+              }}
+            />
+            {pkCount > 0 && (
+              <Chip
+                label="PK"
+                size="small"
+                sx={{
+                  height: 18,
+                  fontSize: "0.65rem",
+                  fontWeight: 800,
+                  backgroundColor: "rgba(16, 185, 129, 0.15)",
+                  color: "#10b981",
+                  borderRadius: 1
+                }}
+              />
+            )}
+            {fkCount > 0 && (
+              <Chip
+                label={`${fkCount} FK${fkCount > 1 ? "s" : ""}`}
+                size="small"
+                sx={{
+                  height: 18,
+                  fontSize: "0.65rem",
+                  fontWeight: 800,
+                  backgroundColor: "rgba(239, 68, 68, 0.15)",
+                  color: "#ef4444",
+                  borderRadius: 1
+                }}
+              />
+            )}
+            {ukCount > 0 && (
+              <Chip
+                label={`${ukCount} UK${ukCount > 1 ? "s" : ""}`}
+                size="small"
+                sx={{
+                  height: 18,
+                  fontSize: "0.65rem",
+                  fontWeight: 800,
+                  backgroundColor: "rgba(245, 158, 11, 0.15)",
+                  color: "#f59e0b",
+                  borderRadius: 1
+                }}
+              />
+            )}
+          </Stack>
+        </Box>
+
+        {/* Interactive Clickable Relationships */}
+        {relations.length > 0 && (
+          <Box
+            sx={{
+              mt: 1.5,
+              pt: 1.5,
+              borderTop: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)"}`
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 800,
+                color: "text.secondary",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                fontSize: "0.62rem",
+                display: "block",
+                mb: 1
+              }}
+            >
+              Relations
+            </Typography>
+            <Stack direction="row" flexWrap="wrap" gap={0.5}>
+              {relations.map((rel) => (
+                <Box
+                  key={rel}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Avoid triggering card parent select state
+                    handleTableSelect(rel);
+                  }}
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    px: 0.8,
+                    py: 0.2,
+                    borderRadius: 1,
+                    fontSize: "0.68rem",
+                    fontWeight: 700,
+                    border: `1px solid ${theme.palette.mode === "light" ? "rgba(79,70,229,0.12)" : "rgba(129,140,248,0.15)"}`,
+                    color: "primary.main",
+                    backgroundColor: theme.palette.mode === "light" ? "#fff" : "rgba(15,23,42,0.4)",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
+                      transform: "translateY(-1px)"
+                    }
+                  }}
+                >
+                  → {rel}
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+        )}
+      </Paper>
+    );
   };
 
   return (
@@ -139,7 +357,7 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
               />
             </Stack>
             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6, maxWidth: 850 }}>
-              {activeTableData.description}
+              {entityTaglines[activeTableKey] || activeTableData.description}
             </Typography>
           </Box>
         </Box>
@@ -649,69 +867,70 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
             {conceptualSchemas[activeTab].description}
           </Typography>
 
-          <Grid container spacing={3}>
-            {Object.entries(conceptualSchemas[activeTab].entities).map(([entityName, fields], idx) => {
-              const isSelected = selectedTable === entityName;
-              return (
-                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={idx}>
-                  <Paper
-                    variant="outlined"
-                    onClick={() => setSelectedTable(entityName)}
+          {activeTab === "CMS Configurations" ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 3,
+                overflowX: "auto",
+                pb: 2.5,
+                pt: 0.5,
+                px: 0.5,
+                scrollBehavior: "smooth",
+                // Webkit scrollbar styling for premium feel
+                "&::-webkit-scrollbar": {
+                  height: 8,
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
+                  borderRadius: 4,
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
+                  borderRadius: 4,
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.main,
+                  }
+                }
+              }}
+            >
+              {(() => {
+                const entitiesList = Object.entries(conceptualSchemas[activeTab].entities);
+                const columnChunks = [];
+                for (let i = 0; i < entitiesList.length; i += 2) {
+                  columnChunks.push(entitiesList.slice(i, i + 2));
+                }
+                return columnChunks.map((col, colIdx) => (
+                  <Box
+                    key={colIdx}
                     sx={{
-                      p: 2.2,
-                      height: "100%",
-                      borderRadius: 2.5,
-                      backgroundColor: isSelected
-                        ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.02)" : "rgba(129, 140, 248, 0.06)")
-                        : (theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)"),
-                      border: `1px solid ${isSelected ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)")}`,
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                      "&:hover": {
-                        borderColor: primaryColor,
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.02)",
-                      }
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 3,
+                      width: { xs: "280px", sm: "320px", md: "calc(33.333% - 16px)" },
+                      minWidth: { xs: "280px", sm: "320px", md: "calc(33.333% - 16px)" },
+                      flexShrink: 0
                     }}
                   >
-                    <Typography variant="body2" sx={{ fontWeight: 800, mb: 1.5, display: "flex", alignItems: "center", gap: 1, color: isSelected ? "primary.main" : "text.primary" }}>
-                      <BlockIcon color={isSelected ? "primary" : "action"} sx={{ fontSize: 16 }} />
-                      {entityName} Entity
-                    </Typography>
-                    
-                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                      {fields.slice(0, 3).map((f, fIdx) => (
-                        <Box
-                          key={fIdx}
-                          sx={{
-                            p: 1,
-                            borderRadius: 1.5,
-                            backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
-                            border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.03)"}`,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 0.2
-                          }}
-                        >
-                          <Typography variant="caption" sx={{ fontFamily: "monospace", color: "text.primary", fontWeight: 700 }}>
-                            {f.name}
-                          </Typography>
-                          <Typography variant="caption" sx={{ fontSize: "0.7rem", color: "text.secondary", fontFamily: "sans-serif" }}>
-                            {f.type}
-                          </Typography>
-                        </Box>
-                      ))}
-                      {fields.length > 3 && (
-                        <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center", fontStyle: "italic", mt: 0.5 }}>
-                          + {fields.length - 3} more fields (click to view)
-                        </Typography>
-                      )}
-                    </Box>
-                  </Paper>
+                    {col.map(([entityName, fields]) => (
+                      <Box key={entityName} sx={{ height: "100%" }}>
+                        {renderTableCard(entityName, fields)}
+                      </Box>
+                    ))}
+                  </Box>
+                ));
+              })()}
+            </Box>
+          ) : (
+            <Grid container spacing={3}>
+              {Object.entries(conceptualSchemas[activeTab].entities).map(([entityName, fields], idx) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={idx}>
+                  {renderTableCard(entityName, fields)}
                 </Grid>
-              );
-            })}
-          </Grid>
+              ))}
+            </Grid>
+          )}
         </GlassCard>
       )}
     </Box>

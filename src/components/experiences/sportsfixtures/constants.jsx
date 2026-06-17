@@ -83,26 +83,57 @@ export const systemNodes = {
 
 export const workflows = {
   auth: {
-    title: "OTP Sign-In & JWT Auth Workflow",
+    title: "OTP & OAuth Social Authentication Flow",
     shortTitle: "Auth Flow",
     icon: <LockIcon />,
-    description: "Validates email registrations, sends secure verification codes, and issues JWT authorizations.",
-    steps: [
-      { label: "Sign-in Request", text: "Client requests registration/sign-in by sending the email to `POST /api/auth/register`." },
-      { label: "OTP Generation", text: "Strapi controller generates a secure numeric OTP, setting expiration and database hashes." },
-      { label: "ZeptoMail Dispatch", text: "Mailer service sends the OTP code to the email (using ZeptoMail SMTP in production)." },
-      { label: "OTP Verification", text: "User submits verification code to `/api/auth/verify-otp`. System checks code expiry and issues JWT." }
-    ],
-    payload: {
-      email: "user@sportsfixtures.net",
-      code: "839401"
-    },
-    responsePayload: {
-      jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-      user: {
-        id: 42,
-        email: "user@sportsfixtures.net",
-        role: "Blogger"
+    description: "Validates email registrations via secure numeric OTP, or handles Google/Facebook OAuth provider redirects and callback code exchanges to issue JWT authorizations.",
+    subFlows: {
+      otp: {
+        title: "Email OTP Sign-In",
+        steps: [
+          { label: "Email OTP Submission", text: "User enters their email address and clicks 'Send OTP' on the sign-in screen." },
+          { label: "OTP Generation & Dispatch", text: "The backend server generates a cryptographically secure 6-digit verification code, stores it with an expiration timestamp (e.g., 10 minutes), and sends it to the user via Nodemailer/ZeptoMail." },
+          { label: "Verification Code Submission", text: "The user retrieves the code and submits it to the backend endpoint `POST /api/auth/verify-otp` along with their email address." },
+          { label: "JWT Issuance & Local Login", text: "The backend validates the code, sets the user status to 'confirmed', creates/updates the User record in PostgreSQL, generates a secure JWT token, and returns user details to the client." }
+        ],
+        payload: {
+          email: "user@sportsfixtures.net",
+          code: "839401"
+        },
+        responsePayload: {
+          jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          user: {
+            id: 42,
+            email: "user@sportsfixtures.net",
+            username: "sudipta_mandal",
+            provider: "local",
+            confirmed: true
+          }
+        }
+      },
+      oauth: {
+        title: "Google & Facebook OAuth Sign-In",
+        steps: [
+          { label: "Provider Selection & Redirect", text: "The user clicks 'Sign in with Google' or 'Sign in with Facebook'. The client redirects the user to the provider's OAuth consent screen with client ID and scope parameters." },
+          { label: "Authorization Code Callback", text: "The user logs in and grants consent. Google/Facebook redirects back to the client redirect URI (`http://localhost:5173/connect/google/redirect`) with an authorization code." },
+          { label: "Callback Token Exchange", text: "The client extracts the authorization code and POSTs it to the backend redirect handler `/api/connect/google/callback`." },
+          { label: "OAuth Verification & Profile Mapping", text: "The backend exchanges the auth code for an access token with Google/Facebook, fetches the user's profile metadata, registers or updates the user record in PostgreSQL, generates a JWT session token, and returns it to the client." }
+        ],
+        payload: {
+          provider: "google",
+          authorizationCode: "4/0AeaYSHC0q...",
+          redirectUri: "http://localhost:5173/connect/google/redirect"
+        },
+        responsePayload: {
+          jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          user: {
+            id: 42,
+            email: "user@sportsfixtures.net",
+            username: "sudipta_mandal",
+            provider: "google",
+            confirmed: true
+          }
+        }
       }
     }
   },
@@ -112,7 +143,7 @@ export const workflows = {
     icon: <SyncIcon />,
     description: "Scheduled background workers loading and normalizing sports datasets incrementally.",
     steps: [
-      { label: "Scheduler Trigger", text: "Monthly cron worker (or manual API call) triggers the target SportsDBSyncService method." },
+      { label: "Scheduler Trigger", text: "Monthly cron worker triggers sync for long-lived catalogs (leagues, teams, sports, players), while an hourly cron triggers event and TV event syncing to pull current fixtures." },
       { label: "Staggered Fetching", text: "Client requests API endpoints in staggered arrays to prevent rate limit lockout blocks." },
       { label: "Payload Normalization", text: "Raw JSON payloads are mapped to Strapi structure rules, correcting names (e.g. mapping Soccer to Football)." },
       { label: "Database Insert & Clear", text: "Updates records in Neon Postgres database and clears relevant caches in node-cache." }
@@ -252,7 +283,7 @@ export const conceptualSchemas = {
     }
   },
   "CMS Configurations": {
-    description: "CMS admin entities allowing dynamic control of dashboard elements, sliders, and placements.",
+    description: "CMS admin single-types allowing dynamic control of navigation, layouts, sections, and system states.",
     entities: {
       "Section Control": [
         { name: "sectionName", type: "string" },
@@ -283,6 +314,84 @@ export const conceptualSchemas = {
         { name: "backgroundImage", type: "media" },
         { name: "showSearchbar", type: "boolean" },
         { name: "videoAutoplay", type: "boolean" }
+      ],
+      "Navbar Config": [
+        { name: "sectionName", type: "string" },
+        { name: "logoText", type: "string" },
+        { name: "logoUrl", type: "string" },
+        { name: "backgroundColor", type: "string" },
+        { name: "textColor", type: "string" },
+        { name: "isSticky", type: "boolean" },
+        { name: "showLoginButton", type: "boolean" }
+      ],
+      "Logo Config": [
+        { name: "siteName", type: "string" },
+        { name: "siteTagline", type: "string" },
+        { name: "siteDescription", type: "text" },
+        { name: "logoWidth", type: "integer" },
+        { name: "logoHeight", type: "integer" },
+        { name: "primaryColor", type: "string" },
+        { name: "copyrightText", type: "string" }
+      ],
+      "Searchbar Config": [
+        { name: "placeholderText", type: "string" },
+        { name: "showTrendingTags", type: "boolean" },
+        { name: "maxSearchHistory", type: "integer" },
+        { name: "enableSuggestions", type: "boolean" }
+      ],
+      "Fixtures Results Config": [
+        { name: "defaultDateRangeDays", type: "integer" },
+        { name: "defaultPageSize", type: "integer" },
+        { name: "enableLiveFlash", type: "boolean" },
+        { name: "showBroadcasters", type: "boolean" }
+      ],
+      "Popular Competitions Config": [
+        { name: "maxCompetitionsShown", type: "integer" },
+        { name: "enableAutoOrdering", type: "boolean" },
+        { name: "showCountryFlags", type: "boolean" }
+      ],
+      "News Section Config": [
+        { name: "newsCountLimit", type: "integer" },
+        { name: "showThumbnails", type: "boolean" },
+        { name: "defaultNewsCategory", type: "string" },
+        { name: "enableInfiniteScroll", type: "boolean" }
+      ],
+      "Sync Status": [
+        { name: "lastSyncTime", type: "datetime" },
+        { name: "isSyncing", type: "boolean" },
+        { name: "syncProgress", type: "percent" }
+      ],
+      "Sports Grid Config": [
+        { name: "gridColumns", type: "integer" },
+        { name: "enableCategoryIcons", type: "boolean" }
+      ],
+      "Notification System Setting": [
+        { name: "sendGridApiKey", type: "string" },
+        { name: "enablePushNotifications", type: "boolean" }
+      ],
+      "Finished Event Setting": [
+        { name: "retentionDaysLimit", type: "integer" },
+        { name: "archiveBatchSize", type: "integer" }
+      ],
+      "All Events Setting": [
+        { name: "calendarRangeMonths", type: "integer" },
+        { name: "groupEventsByDate", type: "boolean" }
+      ],
+      "Todays Highlights Setting": [
+        { name: "autoplayIntervalMs", type: "integer" },
+        { name: "showVideoPlayer", type: "boolean" }
+      ],
+      "Upcoming Event Setting": [
+        { name: "maxUpcomingEvents", type: "integer" },
+        { name: "enableCountdowns", type: "boolean" }
+      ],
+      "Top Live Setting": [
+        { name: "refreshIntervalSeconds", type: "integer" },
+        { name: "soundAlertsEnabled", type: "boolean" }
+      ],
+      "Top League Small Config": [
+        { name: "maxLeagues", type: "integer" },
+        { name: "showIcons", type: "boolean" }
       ]
     }
   },
@@ -327,39 +436,87 @@ export const conceptualSchemas = {
 
 export const agenticAiLoops = [
   {
+    id: "context",
     icon: <CodeIcon />,
     title: "Context-Primed Development",
     subtitle: "Accelerated Code Production",
     desc: "By designing schema blueprints, endpoint specifications, and guides in advance, Sudipta created a structured context directory. AI coders leveraged this to generate matching routes, controllers, and services with 100% API compatibility.",
+    telemetryLogs: [
+      "[09:12:04] INFO: Scanning local context repository...",
+      "[09:12:05] LOAD: Primed 12 schema specs: Sport.json, League.json, TVEvent.json...",
+      "[09:12:06] PARSE: Mapped 54 relational attributes case-insensitively.",
+      "[09:12:07] AGENT: Bootstrapped Koa router endpoints and controller files.",
+      "[09:12:08] STATUS: Context-primed generation completed with 100% endpoint alignment."
+    ]
   },
   {
+    id: "validation",
     icon: <WebhookIcon />,
     title: "API Schema Validation Loop",
     subtitle: "Swagger & Middleware Alignment",
     desc: "An automated loop checking Koa route paths, request payload validation rules, and Swagger UI configurations to guarantee OpenAPI specs dynamically align with route endpoints without stale properties.",
+    telemetryLogs: [
+      "[10:05:30] VERIFY: Initiating OpenAPI schema alignment checker...",
+      "[10:05:31] COMPARE: Validation rules in Koa routes vs Swagger v3 JSON structure...",
+      "[10:05:33] CHECK: Enforcing OTP auth schema fields (email, code) constraints...",
+      "[10:05:34] SUCCESS: Swagger documentation is 100% synchronized with route middlewares.",
+      "[10:05:35] STATUS: Loop finished: 0 validation warnings."
+    ]
   },
   {
+    id: "normalization",
     icon: <CronIcon />,
     title: "JSON Normalization Loop",
     subtitle: "SportsDB Data Verification",
     desc: "Ingests raw API feeds from SportsDB, matching objects against JSON layouts in dry-run schedules. Resolves spelling mismatches (e.g. mapping Soccer to Football) and filters out incomplete payloads.",
+    telemetryLogs: [
+      "[11:15:00] CRON: Fetching raw JSON fixtures feed from SportsDB v2 API...",
+      "[11:15:02] PARSE: Retrieved 42 event objects. Validating fields...",
+      "[11:15:03] ENFORCE: Normalizing SportName 'Soccer' -> 'Football' (standardized).",
+      "[11:15:04] MAP: Home team 'Chelsea FC' matched with DB Team record id: 4328.",
+      "[11:15:05] WRITE: 42 records verified and structured. Neon DB write queued."
+    ]
   },
   {
+    id: "testing",
     icon: <BugIcon />,
     title: "Testing Automation Loop",
     subtitle: "Trace Log Diagnostics",
     desc: "Generates developer diagnostic traces recording database writes, WebSocket connection heartbeats, and auth callback steps. Traces are fed into debugging agents to solve logic errors.",
+    telemetryLogs: [
+      "[12:40:22] TEST: Triggering integration test runner (npm run test:api)...",
+      "[12:40:23] RUN: Testing JWT token authorization middleware...",
+      "[12:40:24] POST: /api/auth/verify-otp (status: 200 OK, latency: 38ms) - PASS.",
+      "[12:40:25] WS: Client handshake heartbeat connection active (socket.io) - PASS.",
+      "[12:40:27] DIAGNOSTIC: Test report compiled. 0 failures, 24 test cases passed."
+    ]
   },
   {
+    id: "devops",
     icon: <CloudIcon />,
     title: "AI-Driven DevOps",
     subtitle: "Infrastructure Provisioning",
     desc: "Automated setup logs on Railway, configuring custom headers, proxy trust middleware in Koa, database SSL constraints with Neon, and build pipelines with zero configuration errors.",
+    telemetryLogs: [
+      "[14:22:10] DEPLOY: Webhook received. Launching Railway deployment worker...",
+      "[14:22:12] ENGINE: Executing Docker multi-stage build. Node v20 runtime context...",
+      "[14:22:15] CONFIG: Configuring Neon PG database SSL connections dynamically.",
+      "[14:22:18] PROXY: Koa app trust-proxy headers verified.",
+      "[14:22:20] SERVER: Application health-check route GET /health returned 200 OK. DEPLOYED!"
+    ]
   },
   {
+    id: "logging",
     icon: <WebhookIcon />,
     title: "AI-Assisted Error Logging",
     subtitle: "Winston & Sentry Tracing",
     desc: "Custom error filters formatting Strapi database failures and WebSockets connection drops into readable trace lines, allowing AI systems to automatically diagnose integration bugs.",
+    telemetryLogs: [
+      "[15:01:05] ERROR: Winston logger captured DB Connection Error on Neon host.",
+      "[15:01:06] TRACE: Neon Postgres pool exhausted. Connection count: 20/20.",
+      "[15:01:07] AGENT: Analyzing error logs. Recommendation: Enable dynamic pooling.",
+      "[15:01:08] RESOLVE: Configured pool size constraints dynamically in database config.",
+      "[15:01:10] FIXED: Database connection re-established. Diagnostic resolved automatically."
+    ]
   },
 ];

@@ -460,7 +460,7 @@ export const agenticAiLoops = [
       "[09:12:04] INFO: Scanning local context repository...",
       "[09:12:05] LOAD: Primed 12 schema specs: Sport.json, League.json, TVEvent.json...",
       "[09:12:06] PARSE: Mapped 54 relational attributes case-insensitively.",
-      "[09:12:07] AGENT: Bootstrapped Koa router endpoints and controller files.",
+      "[09:12:07] AGENT: Bootstrapped Koa-based Strapi router endpoints and controller files.",
       "[09:12:08] STATUS: Context-primed generation completed with 100% endpoint alignment."
     ]
   },
@@ -469,7 +469,7 @@ export const agenticAiLoops = [
     icon: <WebhookIcon />,
     title: "API Schema Validation Loop",
     subtitle: "Swagger & Middleware Alignment",
-    desc: "An automated loop checking Koa route paths, request payload validation rules, and Swagger UI configurations to guarantee OpenAPI specs dynamically align with route endpoints without stale properties.",
+    desc: "An automated loop checking Koa/Strapi route paths, request payload validation rules, and Swagger UI configurations to guarantee OpenAPI specs dynamically align with route endpoints without stale properties.",
     telemetryLogs: [
       "[10:05:30] VERIFY: Initiating OpenAPI schema alignment checker...",
       "[10:05:31] COMPARE: Validation rules in Koa routes vs Swagger v3 JSON structure...",
@@ -511,7 +511,7 @@ export const agenticAiLoops = [
     icon: <CloudIcon />,
     title: "AI-Driven DevOps",
     subtitle: "Infrastructure Provisioning",
-    desc: "Automated setup logs on Railway, configuring custom headers, proxy trust middleware in Koa, database SSL constraints with Neon, and build pipelines with zero configuration errors.",
+    desc: "Automated setup logs on Railway, configuring custom headers, proxy trust middleware in Koa/Strapi, database SSL constraints with Neon, and build pipelines with zero configuration errors.",
     telemetryLogs: [
       "[14:22:10] DEPLOY: Webhook received. Launching Railway deployment worker...",
       "[14:22:12] ENGINE: Executing Docker multi-stage build. Node v20 runtime context...",

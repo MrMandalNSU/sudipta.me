@@ -7,7 +7,7 @@ import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
 const requestFlowSteps = [
   { key: "client", label: "Send Request", sub: "User Action" },
-  { key: "api", label: "Strapi Router", sub: "Koa Middlewares" },
+  { key: "api", label: "Strapi Router", sub: "Strapi/Koa Middlewares" },
   { key: "cache", label: "Query Cache", sub: "Redis / node-cache" },
   { key: "postgres", label: "PostgreSQL DB", sub: "Persistent Queries" },
   { key: "client", label: "Render Dashboard", sub: "Update UI Stats" },

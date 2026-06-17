@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Menu, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import { systemNodes } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
@@ -27,6 +28,19 @@ const SystemDesignSection = ({
   primaryColor
 }) => {
   const [activeMobileFlow, setActiveMobileFlow] = useState("request");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleSelect = (nodeKey) => {
+    setActiveSystemNode(nodeKey);
+    handleClose();
+  };
 
   useEffect(() => {
     if (activeSystemNode === "crons" || activeSystemNode === "sportsdb" || activeSystemNode === "websocket") {
@@ -56,53 +70,96 @@ const SystemDesignSection = ({
         Click any node to see its role in the request lifecycle.
       </Typography>
 
-      {/* Node Selector Chips */}
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 1,
-          mb: 3,
-          p: 1.5,
-          borderRadius: 2,
-          backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
-          border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)"}`,
-        }}
-      >
-        {Object.entries(systemNodes).map(([key, val]) => {
-          const isActive = activeSystemNode === key;
-          return (
-            <Button
-              key={key}
-              onClick={() => setActiveSystemNode(key)}
-              size="small"
-              sx={{
-                textTransform: "none",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                borderRadius: 1.5,
-                px: 2,
-                py: 0.6,
-                backgroundColor: isActive ? theme.palette.primary.main : "transparent",
-                color: isActive ? "#FFF" : "text.secondary",
-                border: `1px solid ${isActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
-                "&:hover": {
-                  backgroundColor: isActive ? theme.palette.primary.main : theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
-                  transform: "none",
-                  boxShadow: "none",
-                },
-              }}
-              startIcon={React.cloneElement(val.icon, { sx: { fontSize: 16 } })}
-            >
-              <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+      {/* Node Selector Dropdown */}
+      <Box sx={{ mb: 3 }}>
+        <Button
+          id="node-select-button"
+          aria-controls={open ? 'node-select-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          variant="outlined"
+          disableElevation
+          onClick={handleClick}
+          endIcon={<ArrowDropDownIcon />}
+          startIcon={React.cloneElement(systemNodes[activeSystemNode].icon, { sx: { fontSize: 18 } })}
+          sx={{
+            textTransform: "none",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            borderRadius: 2,
+            px: 2.5,
+            py: 1,
+            borderColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
+            color: "text.primary",
+            backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.8)" : "rgba(30,41,59,0.8)",
+            backdropFilter: "blur(8px)",
+            "&:hover": {
+              borderColor: primaryColor,
+              backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.04)" : "rgba(129,140,248,0.06)",
+            }
+          }}
+        >
+          Active Node: {systemNodes[activeSystemNode].title.split(" (")[0]}
+        </Button>
+        <Menu
+          id="node-select-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'node-select-button',
+          }}
+          PaperProps={{
+            sx: {
+              borderRadius: 2,
+              mt: 1,
+              minWidth: 260,
+              boxShadow: theme.palette.mode === "light"
+                ? "0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.08)"
+                : "0 10px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.5)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.95)" : "rgba(15,23,42,0.95)",
+              backdropFilter: "blur(12px)",
+              border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
+            }
+          }}
+        >
+          {Object.entries(systemNodes).map(([key, val]) => {
+            const isSelected = activeSystemNode === key;
+            return (
+              <MenuItem
+                key={key}
+                selected={isSelected}
+                onClick={() => handleSelect(key)}
+                sx={{
+                  py: 1.2,
+                  px: 2,
+                  fontSize: "0.8rem",
+                  fontWeight: isSelected ? 800 : 500,
+                  color: isSelected ? "primary.main" : "text.secondary",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  borderRadius: 1.5,
+                  mx: 0.5,
+                  my: 0.2,
+                  "&.Mui-selected": {
+                    backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.08)" : "rgba(129,140,248,0.16)",
+                    color: "primary.main",
+                    "&:hover": {
+                      backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.12)" : "rgba(129,140,248,0.2)",
+                    }
+                  },
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.03)",
+                  }
+                }}
+              >
+                {React.cloneElement(val.icon, { sx: { fontSize: 16 } })}
                 {val.title.split(" (")[0]}
-              </Box>
-              <Box component="span" sx={{ display: { xs: "inline", sm: "none" } }}>
-                {val.shortTitle || val.title.split(" (")[0]}
-              </Box>
-            </Button>
-          );
-        })}
+              </MenuItem>
+            );
+          })}
+        </Menu>
       </Box>
 
       {/* Node Detail Card */}

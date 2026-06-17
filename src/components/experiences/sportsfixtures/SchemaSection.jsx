@@ -63,6 +63,24 @@ const entityLookup = {
   }
 };
 
+// Setup relationships lookup mapping for dynamic buttons
+const tableRelations = {
+  "Sport": ["League", "User Favorite"],
+  "League": ["Sport", "Country", "Team", "Event", "User Favorite"],
+  "Country": ["League", "User Favorite"],
+  "Team": ["League", "Venue", "Player", "User Favorite"],
+  "Venue": ["Team"],
+  "Player": ["Team", "User Favorite"],
+  "Event": ["League", "TV Event", "Finished/Upcoming Item Overrides", "User Favorite"],
+  "TV Event": ["Event"],
+  "Finished/Upcoming Item Overrides": ["Event"],
+  "User": ["User Favorite", "Notification Preference"],
+  "User Favorite": ["User", "Sport", "League", "Team", "Country", "Event", "Player"],
+  "Notification Preference": ["User"],
+  "Trending": ["Sport", "League", "Team", "Country"],
+  "Search Tracking": ["User", "League", "Team"]
+};
+
 const getKeyType = (field) => {
   const name = field.name.toLowerCase();
   const type = field.type.toLowerCase();
@@ -78,6 +96,7 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
   
   const activeTableKey = tableKeyMapping[selectedTable] || selectedTable;
   const activeTableData = entityLookup[activeTableKey] || { category: "Unknown", description: "No description available", fields: [] };
+  const activeTableRelations = tableRelations[activeTableKey] || [];
 
   const handleTableSelect = (tableName) => {
     setSelectedTable(tableName);
@@ -129,7 +148,7 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
           Fields & Constraints
         </Typography>
         
-        <Grid container spacing={1.5}>
+        <Grid container spacing={1.5} sx={{ mb: activeTableRelations.length > 0 ? 3 : 0 }}>
           {activeTableData.fields.map((field, idx) => {
             const keyType = getKeyType(field);
             return (
@@ -182,6 +201,63 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
             );
           })}
         </Grid>
+
+        {/* Relations Section */}
+        {activeTableRelations.length > 0 && (
+          <Box
+            sx={{
+              p: 2,
+              mt: 2,
+              borderRadius: 2,
+              backgroundColor: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.04)" : "rgba(129, 140, 248, 0.08)",
+              border: `1px solid ${primaryColor}`,
+              boxShadow: `0 4px 12px ${theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)"}`,
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 800,
+                color: "text.secondary",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                display: "block",
+                mb: 1.2,
+                fontSize: "0.72rem"
+              }}
+            >
+              Relations for {activeTableKey}
+            </Typography>
+            <Stack direction="row" flexWrap="wrap" gap={1}>
+              {activeTableRelations.map((rel) => (
+                <Button
+                  key={rel}
+                  onClick={() => handleTableSelect(rel)}
+                  size="small"
+                  startIcon={<LinkIcon sx={{ fontSize: 14 }} />}
+                  sx={{
+                    textTransform: "none",
+                    fontWeight: 700,
+                    fontSize: "0.75rem",
+                    borderRadius: 1.5,
+                    px: 1.5,
+                    py: 0.4,
+                    border: `1px solid ${theme.palette.mode === "light" ? "rgba(79,70,229,0.15)" : "rgba(129,140,248,0.15)"}`,
+                    color: "primary.main",
+                    backgroundColor: theme.palette.mode === "light" ? "#fff" : "rgba(15,23,42,0.4)",
+                    "&:hover": {
+                      backgroundColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
+                      transform: "none",
+                      boxShadow: "none",
+                    },
+                  }}
+                >
+                  {rel}
+                </Button>
+              ))}
+            </Stack>
+          </Box>
+        )}
       </GlassCard>
 
       {/* Domain Category Switcher */}
@@ -250,12 +326,12 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
             <Box sx={{ overflowX: "auto", minWidth: 800 }}>
               <svg
                 width="100%"
-                viewBox="0 0 920 370"
+                viewBox="0 0 1300 800"
                 style={{ display: "block", maxWidth: "100%", height: "auto" }}
               >
                 <defs>
-                  <marker id="erArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                    <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill={primaryColor} />
+                  <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+                    <circle cx="5" cy="5" r="3.5" fill={primaryColor} />
                   </marker>
                   <filter id="glow-db">
                     <feGaussianBlur stdDeviation="3" result="blur" />
@@ -268,9 +344,9 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
 
                 {/* Subgraph Containers */}
                 {[
-                  { label: "Core Sports Data", x: 15, y: 15, w: 890, h: 160 },
-                  { label: "Matches & Overrides", x: 15, y: 190, w: 460, h: 160 },
-                  { label: "Analytics & User", x: 495, y: 190, w: 410, h: 160 }
+                  { label: "Core Sports Data", x: 20, y: 20, w: 980, h: 360 },
+                  { label: "Matches & Overrides", x: 20, y: 410, w: 730, h: 360 },
+                  { label: "Analytics & User", x: 780, y: 410, w: 500, h: 360 }
                 ].map((sg, sgIdx) => (
                   <g key={sgIdx}>
                     <rect
@@ -278,17 +354,17 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
                       y={sg.y}
                       width={sg.w}
                       height={sg.h}
-                      rx="8"
-                      fill={theme.palette.mode === "light" ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)"}
+                      rx="12"
+                      fill={theme.palette.mode === "light" ? "rgba(0,0,0,0.015)" : "rgba(255,255,255,0.015)"}
                       stroke={theme.palette.mode === "light" ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)"}
                       strokeWidth="1.5"
                     />
                     <text
-                      x={sg.x + 15}
-                      y={sg.y + 20}
+                      x={sg.x + 20}
+                      y={sg.y + 25}
                       fontWeight="800"
                       fill={theme.palette.text.secondary}
-                      fontSize="11"
+                      fontSize="12"
                       fontFamily="Inter, sans-serif"
                     >
                       {sg.label}
@@ -298,16 +374,32 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
 
                 {/* Connection Lines (Highlight when related to selectedTable) */}
                 {[
-                  { from: "Sport", to: "League", path: "M 150 77 H 200" }, // Sport -> League
-                  { from: "Country", to: "League", path: "M 255 110 V 105" }, // Country -> League
-                  { from: "League", to: "Team", path: "M 310 77 H 360" }, // League -> Team
-                  { from: "Venue", to: "Team", path: "M 415 110 V 105" }, // Venue -> Team
-                  { from: "Team", to: "Player", path: "M 470 77 H 520" }, // Team -> Player
-                  { from: "League", to: "Event", path: "M 255 105 V 220" }, // League -> Event (Core -> Matches)
-                  { from: "Event", to: "TV Event", path: "M 200 247 H 150" }, // Event -> TV Event
-                  { from: "Event", to: "OverrideItem", path: "M 310 247 H 340" }, // Event -> OverrideItem
-                  { from: "User", to: "UserFavorite", path: "M 630 247 H 670" }, // User -> UserFavorite
-                  { from: "User", to: "Notification", path: "M 575 275 V 307 H 670" }, // User -> Notification
+                  // Sport -> League
+                  { from: "Sport", to: "League", path: "M 240 112 H 265 V 166 H 290" },
+                  // Country -> League
+                  { from: "Country", to: "League", path: "M 480 184 H 500 V 282 H 480" },
+                  // League -> Team
+                  { from: "League", to: "Team", path: "M 480 112 H 505 V 166 H 530" },
+                  // Venue -> Team
+                  { from: "Venue", to: "Team", path: "M 720 184 H 740 V 282 H 720" },
+                  // Team -> Player
+                  { from: "Team", to: "Player", path: "M 720 112 H 745 V 166 H 770" },
+                  // League -> Event
+                  { from: "League", to: "Event", path: "M 290 112 H 275 V 602 H 290" },
+                  // Event -> TV Event
+                  { from: "Event", to: "TV Event", path: "M 290 512 C 265 512, 265 530, 240 530" },
+                  // Event -> OverrideItem
+                  { from: "Event", to: "OverrideItem", path: "M 480 512 H 530" },
+                  // User -> UserFavorite
+                  { from: "User", to: "UserFavorite", path: "M 1000 512 C 1025 512, 1025 530, 1050 530" },
+                  // User -> Notification
+                  { from: "User", to: "Notification", path: "M 905 600 V 690 H 1050" },
+                  // UserFavorite -> Event
+                  { from: "UserFavorite", to: "Event", path: "M 1100 460 V 390 H 385 V 460" },
+                  // UserFavorite -> Team
+                  { from: "UserFavorite", to: "Team", path: "M 1145 460 V 390 H 750 V 112 H 720" },
+                  // UserFavorite -> Player
+                  { from: "UserFavorite", to: "Player", path: "M 1190 460 V 390 H 865 V 180" }
                 ].map((line, lIdx) => {
                   const isRelated = activeTableKey === tableKeyMapping[line.from] || activeTableKey === tableKeyMapping[line.to];
                   return (
@@ -317,88 +409,228 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
                       stroke={isRelated ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)")}
                       strokeWidth={isRelated ? "2.5" : "1.5"}
                       fill="none"
-                      markerEnd="url(#erArrow)"
+                      markerEnd={isRelated ? "url(#dot)" : undefined}
                       style={{ transition: "all 0.2s ease" }}
                     />
                   );
                 })}
 
-                {/* Entities */}
+                {/* Table Cards */}
                 {[
-                  // Core Sports Data (y: 15 to 175)
-                  { id: "Sport", cx: 95, cy: 77, x: 40, y: 50, w: 110, h: 55, label: "Sport", sub: "PK: idSport", items: ["strSport", "displayName"] },
-                  { id: "League", cx: 255, cy: 77, x: 200, y: 50, w: 110, h: 55, label: "League", sub: "PK: idLeague", items: ["strLeague", "slug"] },
-                  { id: "Country", cx: 255, cy: 137, x: 200, y: 110, w: 110, h: 55, label: "Country", sub: "PK: code", items: ["name", "flagUrl32"] },
-                  { id: "Team", cx: 415, cy: 77, x: 360, y: 50, w: 110, h: 55, label: "Team", sub: "PK: idTeam", items: ["strTeam", "strColour1"] },
-                  { id: "Venue", cx: 415, cy: 137, x: 360, y: 110, w: 110, h: 55, label: "Venue", sub: "PK: idVenue", items: ["strVenue", "timezone"] },
-                  { id: "Player", cx: 575, cy: 77, x: 520, y: 50, w: 110, h: 55, label: "Player", sub: "PK: idPlayer", items: ["strPlayer", "strPosition"] },
+                  // Core Sports Data (y: 20 to 380)
+                  {
+                    id: "Sport", x: 50, y: 60, w: 190, h: 120,
+                    fields: [
+                      { n: "idSport", k: "PK" },
+                      { n: "strSport", k: "" },
+                      { n: "displayName", k: "" },
+                      { n: "slug", k: "UK" }
+                    ]
+                  },
+                  {
+                    id: "League", x: 290, y: 60, w: 190, h: 140,
+                    fields: [
+                      { n: "idLeague", k: "PK" },
+                      { n: "strLeague", k: "" },
+                      { n: "slug", k: "UK" },
+                      { n: "sportId", k: "FK" },
+                      { n: "countryCode", k: "FK" }
+                    ]
+                  },
+                  {
+                    id: "Country", x: 290, y: 230, w: 190, h: 120,
+                    fields: [
+                      { n: "code", k: "PK" },
+                      { n: "name", k: "" },
+                      { n: "flagUrl32", k: "" },
+                      { n: "slug", k: "UK" }
+                    ]
+                  },
+                  {
+                    id: "Team", x: 530, y: 60, w: 190, h: 140,
+                    fields: [
+                      { n: "idTeam", k: "PK" },
+                      { n: "strTeam", k: "" },
+                      { n: "slug", k: "UK" },
+                      { n: "leagueId", k: "FK" },
+                      { n: "venueId", k: "FK" }
+                    ]
+                  },
+                  {
+                    id: "Venue", x: 530, y: 230, w: 190, h: 120,
+                    fields: [
+                      { n: "idVenue", k: "PK" },
+                      { n: "strVenue", k: "" },
+                      { n: "timezone", k: "" },
+                      { n: "slug", k: "UK" }
+                    ]
+                  },
+                  {
+                    id: "Player", x: 770, y: 60, w: 190, h: 120,
+                    fields: [
+                      { n: "idPlayer", k: "PK" },
+                      { n: "strPlayer", k: "" },
+                      { n: "strPosition", k: "" },
+                      { n: "teamId", k: "FK" }
+                    ]
+                  },
 
-                  // Matches & Overrides (y: 190 to 350)
-                  { id: "Event", cx: 255, cy: 247, x: 200, y: 220, w: 110, h: 55, label: "Event", sub: "PK: idEvent", items: ["strEvent", "strStatus"] },
-                  { id: "TV Event", cx: 95, cy: 247, x: 40, y: 220, w: 110, h: 55, label: "TV Event", sub: "PK: idBroadcast", items: ["strChannel", "dateEvent"] },
-                  { id: "OverrideItem", cx: 395, cy: 247, x: 340, y: 220, w: 110, h: 55, label: "OverrideItem", sub: "PK: idEvent", items: ["item_type", "priority"] },
+                  // Matches & Overrides (y: 410 to 770)
+                  {
+                    id: "TV Event", x: 50, y: 460, w: 190, h: 140,
+                    fields: [
+                      { n: "idBroadcast", k: "PK" },
+                      { n: "eventId", k: "FK" },
+                      { n: "strChannel", k: "" },
+                      { n: "dateEvent", k: "" }
+                    ]
+                  },
+                  {
+                    id: "Event", x: 290, y: 460, w: 190, h: 160,
+                    fields: [
+                      { n: "idEvent", k: "PK" },
+                      { n: "strEvent", k: "" },
+                      { n: "intHomeScore", k: "" },
+                      { n: "intAwayScore", k: "" },
+                      { n: "dateEvent", k: "" },
+                      { n: "leagueId", k: "FK" }
+                    ]
+                  },
+                  {
+                    id: "OverrideItem", x: 530, y: 460, w: 190, h: 140,
+                    fields: [
+                      { n: "idEvent", k: "PK/FK" },
+                      { n: "item_type", k: "" },
+                      { n: "priority", k: "" },
+                      { n: "manual_override", k: "" }
+                    ]
+                  },
 
-                  // User & Analytics (y: 190 to 350)
-                  { id: "User", cx: 575, cy: 247, x: 520, y: 220, w: 110, h: 55, label: "User", sub: "PK: id", items: ["email", "username"] },
-                  { id: "UserFavorite", cx: 725, cy: 247, x: 670, y: 220, w: 110, h: 55, label: "UserFavorite", sub: "PK: id", items: ["entityType", "entityId"] },
-                  { id: "Notification", cx: 725, cy: 307, x: 670, y: 280, w: 110, h: 55, label: "Notification", sub: "PK: id", items: ["emailEnabled", "timezone"] },
-                ].map((ent, eIdx) => {
-                  const isSelected = activeTableKey === tableKeyMapping[ent.id];
-                  const fillBg = isSelected
-                    ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.15)")
-                    : (theme.palette.mode === "light" ? "rgba(255,255,255,0.95)" : "rgba(17,24,39,0.9)");
-                  const strokeColor = isSelected ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
-                  const strokeWidth = isSelected ? "2" : "1.2";
-                  
+                  // User & Analytics (y: 410 to 770)
+                  {
+                    id: "User", x: 810, y: 460, w: 190, h: 140,
+                    fields: [
+                      { n: "id", k: "PK" },
+                      { n: "email", k: "UK" },
+                      { n: "username", k: "" },
+                      { n: "confirmed", k: "" },
+                      { n: "blocked", k: "" }
+                    ]
+                  },
+                  {
+                    id: "UserFavorite", x: 1050, y: 460, w: 190, h: 140,
+                    fields: [
+                      { n: "id", k: "PK" },
+                      { n: "userId", k: "FK" },
+                      { n: "entityType", k: "" },
+                      { n: "entityId", k: "" }
+                    ]
+                  },
+                  {
+                    id: "Notification", x: 1050, y: 620, w: 190, h: 140,
+                    fields: [
+                      { n: "id", k: "PK" },
+                      { n: "userId", k: "FK" },
+                      { n: "emailEnabled", k: "" },
+                      { n: "timezone", k: "" }
+                    ]
+                  }
+                ].map((tbl) => {
+                  const isActive = activeTableKey === (tableKeyMapping[tbl.id] || tbl.id);
+                  const cardBg = isActive
+                    ? (theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.12)")
+                    : (theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(30, 41, 59, 0.85)");
+                  const cardStroke = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)");
+                  const cardStrokeWidth = isActive ? 2.5 : 1.2;
+                  const glowFilter = isActive ? "url(#glow-db)" : undefined;
+
                   return (
-                    <g key={eIdx} onClick={() => handleTableSelect(ent.id)} style={{ cursor: "pointer" }}>
+                    <g key={tbl.id} onClick={() => handleTableSelect(tbl.id)} style={{ cursor: "pointer" }}>
+                      {/* Table Rectangle */}
                       <rect
-                        x={ent.x}
-                        y={ent.y}
-                        width={ent.w}
-                        height={ent.h}
-                        rx="6"
-                        fill={fillBg}
-                        stroke={strokeColor}
-                        strokeWidth={strokeWidth}
-                        filter={isSelected ? "url(#glow-db)" : undefined}
+                        x={tbl.x}
+                        y={tbl.y}
+                        width={tbl.w}
+                        height={tbl.h}
+                        rx={10}
+                        fill={cardBg}
+                        stroke={cardStroke}
+                        strokeWidth={cardStrokeWidth}
+                        filter={glowFilter}
                         style={{ transition: "all 0.2s ease" }}
                       />
-                      {/* Entity Header */}
+
+                      {/* Table Header Banner */}
+                      <path
+                        d={`M ${tbl.x} ${tbl.y + 10} A 10 10 0 0 1 ${tbl.x + 10} ${tbl.y} L ${tbl.x + tbl.w - 10} ${tbl.y} A 10 10 0 0 1 ${tbl.x + tbl.w} ${tbl.y + 10} L ${tbl.x + tbl.w} ${tbl.y + 32} L ${tbl.x} ${tbl.y + 32} Z`}
+                        fill={isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.04)" : "rgba(255, 255, 255, 0.04)")}
+                        style={{ transition: "all 0.2s ease" }}
+                      />
+
+                      {/* Table Name Title */}
                       <text
-                        x={ent.cx}
-                        y={ent.y + 16}
-                        textAnchor="middle"
+                        x={tbl.x + 12}
+                        y={tbl.y + 21}
+                        fill={isActive ? "#FFF" : theme.palette.text.primary}
                         fontWeight="800"
-                        fill={isSelected ? primaryColor : theme.palette.text.primary}
-                        fontSize="10"
+                        fontSize="12.5"
                         fontFamily="Inter, sans-serif"
                       >
-                        {ent.label}
+                        {tbl.id}
                       </text>
-                      {/* PK indicator */}
-                      <text
-                        x={ent.cx}
-                        y={ent.y + 28}
-                        textAnchor="middle"
-                        fill={isSelected ? "primary.main" : theme.palette.text.secondary}
-                        fontWeight="700"
-                        fontSize="7.5"
-                        fontFamily="monospace"
-                      >
-                        {ent.sub}
-                      </text>
-                      {/* Fields */}
-                      <text
-                        x={ent.cx}
-                        y={ent.y + 40}
-                        textAnchor="middle"
-                        fill={theme.palette.text.secondary}
-                        fontSize="7.5"
-                        fontFamily="Inter, sans-serif"
-                      >
-                        {ent.items.join(" | ")}
-                      </text>
+
+                      {/* Fields List */}
+                      {tbl.fields.map((fld, fIdx) => {
+                        const badgeW = fld.k === "PK/FK" ? 42 : 28;
+                        const badgeX = tbl.x + tbl.w - badgeW - 12;
+                        const textX = badgeX + badgeW / 2;
+                        const badgeColor = fld.k.includes("PK")
+                          ? { bg: "rgba(16, 185, 129, 0.15)", text: "#10b981" }
+                          : fld.k.includes("UK")
+                            ? { bg: "rgba(245, 158, 11, 0.15)", text: "#f59e0b" }
+                            : { bg: "rgba(239, 68, 68, 0.15)", text: "#ef4444" };
+
+                        return (
+                          <g key={fIdx}>
+                            {/* Field Name */}
+                            <text
+                              x={tbl.x + 12}
+                              y={tbl.y + 52 + (fIdx * 18)}
+                              fill={theme.palette.text.secondary}
+                              fontSize="11"
+                              fontFamily="monospace"
+                              fontWeight={fld.k ? 600 : 400}
+                            >
+                              {fld.n}
+                            </text>
+
+                            {/* Key Badge */}
+                            {fld.k && (
+                              <g>
+                                <rect
+                                  x={badgeX}
+                                  y={tbl.y + 42 + (fIdx * 18)}
+                                  width={badgeW}
+                                  height={13}
+                                  rx={3}
+                                  fill={badgeColor.bg}
+                                />
+                                <text
+                                  x={textX}
+                                  y={tbl.y + 51 + (fIdx * 18)}
+                                  textAnchor="middle"
+                                  fill={badgeColor.text}
+                                  fontSize="8"
+                                  fontWeight="800"
+                                  fontFamily="Inter, sans-serif"
+                                >
+                                  {fld.k}
+                                </text>
+                              </g>
+                            )}
+                          </g>
+                        );
+                      })}
                     </g>
                   );
                 })}

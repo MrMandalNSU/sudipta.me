@@ -116,7 +116,7 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
   const isLight = theme.palette.mode === "light";
   const cardBg = isLight ? "rgba(255, 255, 255, 0.95)" : "rgba(30, 41, 59, 0.9)";
   const headerBg = isLight ? "rgba(0, 0, 0, 0.04)" : "rgba(255, 255, 255, 0.04)";
-  
+
   const nodeHeight = headerHeight + 8 + tbl.fields.length * 18 + 10;
 
   return (
@@ -163,7 +163,7 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
         const fieldY = tbl.y + headerHeight + 16 + idx * 18;
         const isPk = field.includes("(PK)");
         const isFk = field.includes("(FK)");
-        
+
         return (
           <g key={idx}>
             <text
@@ -190,9 +190,9 @@ const SchemaSection = ({ theme, activeTable, setActiveTable }) => {
   return (
     <Box id="database" sx={{ scrollMarginTop: 120, mb: 5 }}>
       <SectionHeading theme={theme}>Schema Mapping & Data Integrity</SectionHeading>
-      
+
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 800, lineHeight: 1.7 }}>
-        All ingested endpoints are mapped to strict schemas validating coordinates, financials, or authentication scopes. 
+        All ingested endpoints are mapped to strict schemas validating coordinates, financials, or authentication scopes.
         Below are interactive Entity-Relationship (ER) diagrams illustrating Eucaps' table scopes.
       </Typography>
 
@@ -255,7 +255,7 @@ const SchemaSection = ({ theme, activeTable, setActiveTable }) => {
             <Box sx={{ minWidth: 900 }}>
               <svg
                 width="100%"
-                viewBox="0 0 920 330"
+                viewBox="0 0 920 340"
                 style={{ display: "block", maxWidth: "100%", height: "auto" }}
               >
                 <defs>

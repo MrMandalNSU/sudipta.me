@@ -21,6 +21,15 @@ const syncFlowSteps = [
   { key: "client", label: "Live score flash", sub: "Active Socket update" },
 ];
 
+const authFlowSteps = [
+  { key: "client", label: "Select Authentication Method", sub: "Email OTP / Social OAuth click" },
+  { key: "oauth", label: "External Auth Handshake", sub: "Google / Facebook login consent" },
+  { key: "api", label: "Strapi Auth Callback", sub: "Exchange code / verify credentials" },
+  { key: "email", label: "ZeptoMail OTP Dispatch", sub: "Delivery of 6-digit local token" },
+  { key: "postgres", label: "Persist User Profile", sub: "Neon Postgres insert / query" },
+  { key: "client", label: "Issue Session JWT", sub: "Write to storage & login client" },
+];
+
 const SystemDesignSection = ({
   theme,
   activeSystemNode,
@@ -45,10 +54,13 @@ const SystemDesignSection = ({
   useEffect(() => {
     if (activeSystemNode === "crons" || activeSystemNode === "sportsdb" || activeSystemNode === "websocket") {
       setActiveMobileFlow("sync");
+    } else if (activeSystemNode === "oauth" || activeSystemNode === "email") {
+      setActiveMobileFlow("auth");
     } else if (
       activeSystemNode === "client" ||
       activeSystemNode === "api" ||
-      activeSystemNode === "cache"
+      activeSystemNode === "cache" ||
+      activeSystemNode === "postgres"
     ) {
       setActiveMobileFlow("request");
     }
@@ -222,7 +234,10 @@ const SystemDesignSection = ({
               { from: "sportsdb", to: "postgres", path: "M 820 240 L 820 180 L 645 180 L 645 90" },
               { from: "crons", to: "websocket", path: "M 580 265 L 100 265 L 100 180" },
               { from: "websocket", to: "client", path: "M 100 130 L 100 90" },
-              { from: "api", to: "websocket", path: "M 285 90 L 285 155 L 160 155" },
+              { from: "api", to: "websocket", path: "M 220 65 C 190 65, 190 155, 160 155" },
+              { from: "client", to: "oauth", path: "M 100 90 C 100 175, 220 175, 220 175" },
+              { from: "api", to: "oauth", path: "M 285 90 L 285 150" },
+              { from: "api", to: "email", path: "M 285 90 C 285 120, 457 120, 457 150" },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
@@ -253,6 +268,9 @@ const SystemDesignSection = ({
               { key: "postgres", type: "cylinder", x: 580, y: 20, w: 130, h: 70, cx: 645, cy: 55, label: "Neon Postgres DB", sub: "Relational database" },
               
               { key: "websocket", type: "process", x: 40, y: 130, w: 120, h: 50, rx: 8, cx: 100, cy: 155, label: "WebSocket Server", sub: "Socket.io Broadcaster" },
+              { key: "oauth", type: "process", x: 220, y: 150, w: 130, h: 50, rx: 8, cx: 285, cy: 175, label: "OAuth Providers", sub: "Google & Facebook" },
+              { key: "email", type: "process", x: 392, y: 150, w: 130, h: 50, rx: 8, cx: 457, cy: 175, label: "Email Service", sub: "ZeptoMail Provider" },
+              
               { key: "crons", type: "process", x: 580, y: 240, w: 130, h: 50, rx: 8, cx: 645, cy: 265, label: "Cron Schedulers", sub: "Sync Background Jobs" },
               { key: "sportsdb", type: "process", x: 760, y: 240, w: 120, h: 50, rx: 8, cx: 820, cy: 265, label: "SportsDB Service", sub: "Staggered API Client" },
             ].map((node, nIdx) => {
@@ -320,46 +338,50 @@ const SystemDesignSection = ({
               borderRadius: 2,
               p: 0.5,
               mb: 3,
+              gap: 0.5,
               backgroundColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.03)",
               border: `1px solid ${theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"}`,
+              flexWrap: "wrap",
             }}
           >
-            <Button
-              fullWidth
-              onClick={() => setActiveMobileFlow("request")}
-              size="small"
-              sx={{
-                textTransform: "none",
-                fontWeight: activeMobileFlow === "request" ? 800 : 600,
-                fontSize: "0.8rem",
-                borderRadius: 1.5,
-                py: 0.8,
-                backgroundColor: activeMobileFlow === "request" ? (theme.palette.mode === "light" ? "#FFF" : "rgba(255,255,255,0.08)") : "transparent",
-                color: activeMobileFlow === "request" ? "primary.main" : "text.secondary",
-              }}
-            >
-              Request & Caching Flow
-            </Button>
-            <Button
-              fullWidth
-              onClick={() => setActiveMobileFlow("sync")}
-              size="small"
-              sx={{
-                textTransform: "none",
-                fontWeight: activeMobileFlow === "sync" ? 800 : 600,
-                fontSize: "0.8rem",
-                borderRadius: 1.5,
-                py: 0.8,
-                backgroundColor: activeMobileFlow === "sync" ? (theme.palette.mode === "light" ? "#FFF" : "rgba(255,255,255,0.08)") : "transparent",
-                color: activeMobileFlow === "sync" ? "primary.main" : "text.secondary",
-              }}
-            >
-              Background Score Sync
-            </Button>
+            {["request", "sync", "auth"].map((flowKey) => {
+              const label = flowKey === "request"
+                ? "Request & Caching"
+                : flowKey === "sync"
+                  ? "Background Sync"
+                  : "User Auth Flow";
+              const isActive = activeMobileFlow === flowKey;
+              return (
+                <Button
+                  key={flowKey}
+                  fullWidth
+                  onClick={() => setActiveMobileFlow(flowKey)}
+                  size="small"
+                  sx={{
+                    flex: 1,
+                    minWidth: "100px",
+                    textTransform: "none",
+                    fontWeight: isActive ? 800 : 600,
+                    fontSize: "0.75rem",
+                    borderRadius: 1.5,
+                    py: 0.8,
+                    backgroundColor: isActive ? (theme.palette.mode === "light" ? "#FFF" : "rgba(255,255,255,0.08)") : "transparent",
+                    color: isActive ? "primary.main" : "text.secondary",
+                  }}
+                >
+                  {label}
+                </Button>
+              );
+            })}
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, pl: 1, pr: 1 }}>
-            {(activeMobileFlow === "request" ? requestFlowSteps : syncFlowSteps).map((step, idx, arr) => {
+            {(activeMobileFlow === "request"
+              ? requestFlowSteps
+              : activeMobileFlow === "sync"
+                ? syncFlowSteps
+                : authFlowSteps
+            ).map((step, idx, arr) => {
               const isActive = activeSystemNode === step.key;
               const isNotLast = idx < arr.length - 1;
               return (

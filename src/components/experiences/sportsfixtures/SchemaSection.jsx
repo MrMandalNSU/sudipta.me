@@ -492,7 +492,7 @@ const SchemaSection = ({ theme, activeTable: activeTab, setActiveTable: setActiv
           width: { xs: "100%", sm: "fit-content" },
         }}
       >
-        {["ER Relationships", ...Object.keys(conceptualSchemas)].map((categoryName) => {
+        {["ER Relationships", "Core Sports Data", "Live & Matches", "Analytics & User", "CMS Configurations"].map((categoryName) => {
           const isActive = activeTab === categoryName;
           return (
             <Button

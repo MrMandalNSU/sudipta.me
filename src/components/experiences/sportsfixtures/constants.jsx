@@ -16,6 +16,7 @@ import {
   CodeOutlined as CodeIcon,
   BugReportOutlined as BugIcon,
   CloudUploadOutlined as CloudIcon,
+  MailOutline as EmailIcon,
 } from "@mui/icons-material";
 
 const BoltIcon = LiveIcon;
@@ -57,6 +58,20 @@ export const systemNodes = {
     icon: <DatabaseIcon />,
     description: "Cloud-hosted relational PostgreSQL database with table indexes and relationship configurations.",
     role: "Persistently stores sports records, override configurations, stats, and preferences.",
+  },
+  oauth: {
+    title: "Social OAuth Providers (Google & Facebook APIs)",
+    shortTitle: "OAuth APIs",
+    icon: <LockIcon />,
+    description: "External social login providers. The client redirects users to consent screens, and the Strapi backend exchanges authorization codes for secure user profiles.",
+    role: "Authenticates social identities and issues authorization callbacks.",
+  },
+  email: {
+    title: "Email Dispatcher (ZeptoMail & Nodemailer)",
+    shortTitle: "Email Service",
+    icon: <EmailIcon />,
+    description: "Third-party email dispatch delivery client that delivers secure 6-digit numeric login codes (OTPs) directly to users' registration inboxes.",
+    role: "Delivers cryptographically secure OTP codes asynchronously.",
   },
   crons: {
     title: "Background Schedulers (Cron Workers)",

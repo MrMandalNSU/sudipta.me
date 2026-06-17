@@ -176,13 +176,14 @@ const Experience = ({ id }) => {
       ],
     },
     {
-      title: "Junior Developer",
+      title: "Junior Software Engineer",
       company: "NSUPS",
       companyLogo: "/nsups_logo.png",
       companyUrl: "https://nsups.org/",
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
+      detailsLink: "/experience/nsups",
       achievements: [
         "Implemented an automated crawler system to fetch and process data from multiple online judges for tracking users’ solve counts and submission activity.",
         "Developed and maintained backend services for the NSUPS Bootcamp participant management system using RESTful APIs and relational database design.",

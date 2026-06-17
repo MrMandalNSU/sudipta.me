@@ -16,6 +16,7 @@ import ValoDashDetail from "./components/projects/valodash/ValoDashDetail";
 import CargoStreamDetail from "./components/experiences/cargostream/CargoStreamDetail";
 import SportsFixturesDetail from "./components/experiences/sportsfixtures/SportsFixturesDetail";
 import EucapsDetail from "./components/experiences/eucaps/EucapsDetail";
+import NsupsDetail from "./components/experiences/nsups/NsupsDetail";
 
 
 // Scroll handler to reset scroll to top on route change, or scroll to section anchors (hashes) on the home page.
@@ -77,6 +78,7 @@ function App() {
         <Route path="/experience/cargostream" element={<CargoStreamDetail />} />
         <Route path="/experience/sportsfixtures" element={<SportsFixturesDetail />} />
         <Route path="/experience/eucaps" element={<EucapsDetail />} />
+        <Route path="/experience/nsups" element={<NsupsDetail />} />
       </Routes>
       <Footer />
     </ThemeProvider>

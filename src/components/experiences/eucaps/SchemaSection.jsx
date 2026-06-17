@@ -19,21 +19,22 @@ const schemasData = {
       { path: "M 120 132 V 160" }, // Exchange Metadata -> SME Identifiers
       { path: "M 210 205 H 230 V 70 H 250" }, // SME Identifiers -> Financial Mnemonics
       { path: "M 210 205 H 230 V 230 H 250" }, // SME Identifiers -> Event Calendar
-      { path: "M 210 205 H 230 V 235 H 470" }, // SME Identifiers -> Shareholder Structure
+      { path: "M 210 205 H 230 V 175 H 450 V 235 H 470" }, // SME Identifiers -> Shareholder Structure (routed through horizontal gap)
       { path: "M 430 70 H 470" }, // Financial Mnemonics -> LTM & YoY
       { path: "M 650 70 H 690" }, // LTM & YoY -> Company Ratios
       { path: "M 650 235 H 670 V 70 H 690" } // Shareholder Structure -> Company Ratios
     ]
   },
   "Pinpoint Estimates": {
-    description: "Database tables storing crowd forecasts, consensus eps metrics, prediction logs, and historical performance rankings.",
+    description: "Database tables storing crowd forecasts, consensus eps metrics, prediction logs, stock history, and accuracy rankings.",
     tables: [
       { title: "Prediction Audits", fields: ["audit_id (PK)", "isin (FK)", "user_hash_ip", "vote_timestamp", "quarter_ref"], x: 30, y: 10, w: 180 },
       { title: "Estimate Metadata", fields: ["isin (PK)", "estimate_quarter", "consensus_eps", "consensus_revenue"], x: 30, y: 180, w: 180 },
       { title: "Crowd Expectations", fields: ["isin (FK)", "user_prediction_eps", "user_prediction_revenue", "user_prediction_count"], x: 250, y: 10, w: 180 },
       { title: "Analyst Targets", fields: ["isin (FK)", "target_price", "consensus_rating (BUY/HOLD/SELL)", "broker_count"], x: 250, y: 180, w: 180 },
       { title: "Historical Performance", fields: ["isin (FK)", "actual_reported_eps", "actual_reported_revenue", "accuracy_score"], x: 470, y: 10, w: 180 },
-      { title: "Accuracy Rank", fields: ["rank_id (PK)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"], x: 470, y: 180, w: 180 }
+      { title: "Accuracy Rank", fields: ["rank_id (PK)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"], x: 470, y: 180, w: 180 },
+      { title: "Stock Price History", fields: ["isin (FK)", "price_date", "close_price", "open_price", "daily_volume"], x: 690, y: 10, w: 180 }
     ],
     connections: [
       { path: "M 120 150 V 180" }, // Prediction Audits -> Estimate Metadata
@@ -41,45 +42,71 @@ const schemasData = {
       { path: "M 210 225 H 250" }, // Estimate Metadata -> Analyst Targets
       { path: "M 430 70 H 470" }, // Crowd Expectations -> Historical Performance
       { path: "M 430 225 H 450 V 70 H 470" }, // Analyst Targets -> Historical Performance
-      { path: "M 560 132 V 180" } // Historical Performance -> Accuracy Rank
+      { path: "M 560 132 V 180" }, // Historical Performance -> Accuracy Rank
+      { path: "M 650 70 H 690" } // Historical Performance -> Stock Price History
     ]
   },
   "Inderes Media": {
-    description: "Search indices indexing Nordic listed company video presentations, reports, transcripts, summaries, and transcribing jobs.",
+    description: "Search indices indexing Nordic listed company video presentations, reports, transcripts, summaries, speaker maps, and transcribing jobs.",
     tables: [
       { title: "AI Transcribing Jobs", fields: ["job_id (PK)", "media_id (FK)", "whisper_model_version", "job_status", "completed_at"], x: 30, y: 10, w: 180 },
       { title: "Media Info", fields: ["media_id (PK)", "company_id", "title", "media_type"], x: 30, y: 180, w: 180 },
       { title: "Transcription & Summary", fields: ["media_id (FK)", "transcript_raw_text", "summary_paragraphs", "ai_keywords"], x: 250, y: 10, w: 180 },
       { title: "Assets", fields: ["media_id (FK)", "thumbnail_url_s3", "media_source_url", "is_indexed"], x: 250, y: 180, w: 180 },
       { title: "Search Index", fields: ["index_id (PK)", "media_id (FK)", "tokenized_lexeme", "term_frequency_score"], x: 470, y: 10, w: 180 },
-      { title: "Media Feedback", fields: ["feedback_id (PK)", "media_id (FK)", "total_views", "average_watch_time", "like_count"], x: 470, y: 180, w: 180 }
+      { title: "Media Feedback", fields: ["feedback_id (PK)", "media_id (FK)", "total_views", "average_watch_time", "like_count"], x: 470, y: 180, w: 180 },
+      { title: "Speaker Mapping", fields: ["speaker_id (PK)", "media_id (FK)", "speaker_name", "speaker_role", "time_stamp_segment"], x: 690, y: 10, w: 180 }
     ],
     connections: [
       { path: "M 120 150 V 180" }, // AI Transcribing Jobs -> Media Info
       { path: "M 210 225 H 230 V 70 H 250" }, // Media Info -> Transcription & Summary
       { path: "M 210 225 H 250" }, // Media Info -> Assets
       { path: "M 430 70 H 470" }, // Transcription & Summary -> Search Index
-      { path: "M 210 225 H 230 V 240 H 470" }, // Media Info -> Media Feedback
-      { path: "M 430 225 H 470" } // Assets -> Media Feedback
+      { path: "M 210 225 H 230 V 165 H 450 V 240 H 470" }, // Media Info -> Media Feedback (routed to avoid Assets card)
+      { path: "M 430 225 H 470" }, // Assets -> Media Feedback
+      { path: "M 430 70 H 450 V 165 H 670 V 70 H 690" } // Transcription & Summary -> Speaker Mapping (routed to avoid Search Index card)
     ]
   },
   "Partner API Auth": {
-    description: "Credential details mapping client HMAC secrets, JWT scopes, sliding rate Redis limits, contract billing details, and log whitelist IP coordinates.",
+    description: "Credential details mapping client HMAC secrets, JWT scopes, sliding rate Redis limits, contract billing details, token rotations, and log whitelist IP coordinates.",
     tables: [
       { title: "Authorized IP Whitelist", fields: ["ip_id (PK)", "partner_id (FK)", "ip_address", "description_label"], x: 30, y: 10, w: 190 },
       { title: "Credential Verification", fields: ["partner_id (PK)", "hmac_secret_key", "jwt_signing_key", "allowed_ip_whitelist"], x: 30, y: 180, w: 190 },
       { title: "Permission Scopes", fields: ["partner_id (FK)", "has_sp_access", "has_pinpoint_access", "has_inderes_access"], x: 260, y: 10, w: 180 },
       { title: "Sliding Rate Limits", fields: ["partner_id (FK)", "requests_last_hour", "hourly_cap", "daily_cap", "window_expiry"], x: 260, y: 180, w: 180 },
       { title: "Usage Log", fields: ["timestamp (ISO)", "api_endpoint", "request_bytes", "response_time_ms", "rate_limit_hits_today"], x: 480, y: 10, w: 180 },
-      { title: "Contract Billing Details", fields: ["contract_id (PK)", "partner_id (FK)", "billing_tier_name", "price_per_thousand_reqs"], x: 480, y: 180, w: 190 }
+      { title: "Contract Billing Details", fields: ["contract_id (PK)", "partner_id (FK)", "billing_tier_name", "price_per_thousand_reqs"], x: 480, y: 180, w: 190 },
+      { title: "Token Rotation Logs", fields: ["rotation_id (PK)", "partner_id (FK)", "rotated_token_hash", "rotated_at", "status_state"], x: 690, y: 10, w: 190 }
     ],
     connections: [
       { path: "M 125 132 V 180" }, // Whitelist -> Credential
       { path: "M 220 225 H 240 V 70 H 260" }, // Credential -> Scopes
       { path: "M 220 225 H 260" }, // Credential -> Limits
-      { path: "M 220 225 H 240 V 80 H 480" }, // Credential -> Log
+      { path: "M 220 225 H 240 V 155 H 460 V 80 H 480" }, // Credential -> Log (routed to avoid Scopes card)
       { path: "M 440 70 H 480" }, // Scopes -> Log
-      { path: "M 440 235 H 480" } // Limits -> Billing Details
+      { path: "M 440 235 H 480" }, // Limits -> Billing Details
+      { path: "M 220 225 H 240 V 155 H 675 V 70 H 690" } // Credential -> Token Rotation Logs (routed to avoid Limits and Billing cards)
+    ]
+  },
+  "Generative AI Batching": {
+    description: "Database configurations managing generative AI profiles pipelines, prompt versions, hashtag classifications, image processing queues, and S3 assets.",
+    tables: [
+      { title: "AI Batch Run", fields: ["batch_id (PK)", "started_at", "finished_at", "status_code", "records_processed_count"], x: 30, y: 10, w: 180 },
+      { title: "Company Profiles Ingested", fields: ["isin (FK)", "batch_id (FK)", "company_name", "ingestion_status"], x: 30, y: 180, w: 180 },
+      { title: "Curated Prompt Configuration", fields: ["prompt_id (PK)", "version_tag", "system_prompt_text", "temperature_setting", "is_active"], x: 250, y: 10, w: 195 },
+      { title: "DALL-E Image Jobs", fields: ["job_id (PK)", "isin (FK)", "prompt_id (FK)", "dalle_prompt_text", "raw_url_dalle", "job_status"], x: 250, y: 180, w: 195 },
+      { title: "GPT Hashtag Metadata", fields: ["hashtag_id (PK)", "isin (FK)", "batch_id (FK)", "generated_tag_text", "confidence_score"], x: 470, y: 10, w: 180 },
+      { title: "Image Compression Settings", fields: ["setting_id (PK)", "target_width", "target_height", "compression_quality", "watermark_path"], x: 470, y: 180, w: 190 },
+      { title: "S3 Upload Metadata", fields: ["upload_id (PK)", "isin (FK)", "s3_bucket_name", "s3_key_path", "asset_url_link", "file_size_bytes"], x: 690, y: 10, w: 180 }
+    ],
+    connections: [
+      { path: "M 120 150 V 180" }, // AI Batch Run -> Profiles Ingested
+      { path: "M 210 240 H 250" }, // Profiles Ingested -> DALL-E Image Jobs
+      { path: "M 347 150 V 180" }, // Prompt Config -> DALL-E Image Jobs
+      { path: "M 210 240 H 230 V 165 H 455 V 80 H 470" }, // Profiles Ingested -> GPT Hashtag (routed to avoid Prompt card)
+      { path: "M 445 250 H 470" }, // DALL-E Image Jobs -> Compression Settings
+      { path: "M 445 250 H 460 V 165 H 670 V 80 H 690" }, // DALL-E Image Jobs -> S3 Metadata (routed to avoid Hashtag card)
+      { path: "M 660 250 H 675 V 110 H 690" } // Compression Settings -> S3 Metadata (routed to avoid other paths)
     ]
   }
 };

@@ -190,7 +190,8 @@ export const conceptualSchemas = {
       { name: "Historical Performance", fields: ["actual_reported_eps", "actual_reported_revenue", "accuracy_score (0-100)"] },
       { name: "Analyst Targets", fields: ["isin (Foreign Key)", "target_price", "consensus_rating (BUY/HOLD/SELL)", "broker_count"] },
       { name: "Prediction Audits", fields: ["audit_id (Primary Key)", "isin (Foreign Key)", "user_hash_ip", "vote_timestamp", "quarter_ref"] },
-      { name: "Accuracy Rank", fields: ["rank_id (Primary Key)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"] }
+      { name: "Accuracy Rank", fields: ["rank_id (Primary Key)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"] },
+      { name: "Stock Price History", fields: ["isin (Foreign Key)", "price_date", "close_price", "open_price", "daily_volume"] }
     ]
   },
   "Inderes Media": {
@@ -201,7 +202,8 @@ export const conceptualSchemas = {
       { name: "Assets", fields: ["thumbnail_url_s3", "media_source_url", "is_indexed_for_search"] },
       { name: "AI Transcribing Jobs", fields: ["job_id (Primary Key)", "media_id (Foreign Key)", "whisper_model_version", "job_status", "completed_at"] },
       { name: "Search Index", fields: ["index_id (Primary Key)", "media_id (Foreign Key)", "tokenized_lexeme", "term_frequency_score"] },
-      { name: "Media Feedback", fields: ["feedback_id (Primary Key)", "media_id (Foreign Key)", "total_views", "average_watch_time", "like_count"] }
+      { name: "Media Feedback", fields: ["feedback_id (Primary Key)", "media_id (Foreign Key)", "total_views", "average_watch_time", "like_count"] },
+      { name: "Speaker Mapping", fields: ["speaker_id (Primary Key)", "media_id (Foreign Key)", "speaker_name", "speaker_role", "time_stamp_segment"] }
     ]
   },
   "Partner API Auth": {
@@ -212,7 +214,20 @@ export const conceptualSchemas = {
       { name: "Usage Log", fields: ["timestamp (ISO)", "api_endpoint", "request_bytes", "response_time_ms", "rate_limit_hits_today"] },
       { name: "Sliding Rate Limits", fields: ["partner_id (Foreign Key)", "requests_last_hour", "hourly_cap", "daily_cap", "window_expiry"] },
       { name: "Contract Billing Details", fields: ["contract_id (Primary Key)", "partner_id (Foreign Key)", "billing_tier_name", "price_per_thousand_reqs"] },
-      { name: "Authorized IP Whitelist", fields: ["ip_id (Primary Key)", "partner_id (Foreign Key)", "ip_address", "description_label"] }
+      { name: "Authorized IP Whitelist", fields: ["ip_id (Primary Key)", "partner_id (Foreign Key)", "ip_address", "description_label"] },
+      { name: "Token Rotation Logs", fields: ["rotation_id (Primary Key)", "partner_id (Foreign Key)", "rotated_token_hash", "rotated_at", "status_state"] }
+    ]
+  },
+  "Generative AI Batching": {
+    description: "Database configurations managing generative AI profiles pipelines, prompt versions, hashtag classifications, image processing queues, and S3 assets.",
+    sections: [
+      { name: "AI Batch Run", fields: ["batch_id (Primary Key)", "started_at", "finished_at", "status_code", "records_processed_count"] },
+      { name: "Company Profiles Ingested", fields: ["isin (Foreign Key)", "batch_id (Foreign Key)", "company_name", "ingestion_status"] },
+      { name: "Curated Prompt Configuration", fields: ["prompt_id (Primary Key)", "version_tag", "system_prompt_text", "temperature_setting", "is_active"] },
+      { name: "GPT Hashtag Metadata", fields: ["hashtag_id (Primary Key)", "isin (Foreign Key)", "batch_id (Foreign Key)", "generated_tag_text", "confidence_score"] },
+      { name: "DALL-E Image Jobs", fields: ["job_id (Primary Key)", "isin (Foreign Key)", "prompt_id (Foreign Key)", "dalle_prompt_text", "raw_url_dalle", "job_status"] },
+      { name: "Image Compression Settings", fields: ["setting_id (Primary Key)", "target_width", "target_height", "compression_quality", "watermark_path"] },
+      { name: "S3 Upload Metadata", fields: ["upload_id (Primary Key)", "isin (Foreign Key)", "s3_bucket_name", "s3_key_path", "asset_url_link", "file_size_bytes"] }
     ]
   }
 };

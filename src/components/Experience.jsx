@@ -112,6 +112,7 @@ const Experience = ({ id }) => {
       location: "Pattaya, Thailand · Remote",
       duration: "Oct 2025 - Jan 2026",
       type: "Contract, Project-Based",
+      detailsLink: "/experience/sportsfixtures",
       achievements: [
         "Built and maintained from scratch using Node.js, Strapi v5, PostgreSQL, and Redis. Deployed and managed production infrastructure with centralized logging, monitoring, and environment management across platforms.",
         "Designed and optimized 50+ relational database models and advanced multi-model filtering/query systems, improving large-scale data retrieval with caching and data indexing. Increased performance by 40%.",

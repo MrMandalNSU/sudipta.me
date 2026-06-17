@@ -145,8 +145,9 @@ const Experience = ({ id }) => {
       location: "Stockholm, Sweden · Remote",
       duration: "Dec 2021 - Sept 2025",
       type: "Full-time",
+      detailsLink: "/experience/eucaps",
       achievements: [
-        "Worked in technologies including Node JS, Laravel, Express JS, React JS, Next JS, AWS Amplify, Lambda, AWS S3 Bucket, Apollo Server, Apollo Client, GraphQL, MySQL, DynamoDB, PostgreSQL, REST API, Docker.",
+        "Worked in technologies including Node JS, Laravel, Express JS, React JS, Next JS, AWS Amplify, Lambda, AWS S3 Bucket, GraphQL, MySQL, DynamoDB, PostgreSQL, REST API, Docker.",
         "Created REST APIs for external 3rd party access using an existing database with JWT token authentication. Secured token by creating custom HMac encryptions, and made documentation using GitHub wiki.",
         "Worked with S&P financial data, mnemonics, YoY-Margin-LTM calculations, generated scalable backend structure for 200+ megabytes JSON data, created express API with GraphQL to make consumable for frontend.",
         "Implemented APIs from external sources and features from scratch including services from pinpoint, inderes.",

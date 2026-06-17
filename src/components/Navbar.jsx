@@ -387,6 +387,7 @@ const Navbar = () => {
               anchorEl={resumeMenuAnchor}
               open={Boolean(resumeMenuAnchor)}
               onClose={handleResumeMenuClose}
+              disableScrollLock
             >
               <MenuItem onClick={handleViewResume}>
                 <DescriptionIcon sx={{ mr: 1 }} />

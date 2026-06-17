@@ -504,6 +504,7 @@ const SystemDesignSection = ({
           anchorEl={anchorEl}
           open={openMenu}
           onClose={handleCloseMenu}
+          disableScrollLock
           PaperProps={{
             sx: {
               borderRadius: 1.5,

@@ -85,7 +85,7 @@ const Experience = ({ id }) => {
       location: "Vilnius, Lithuania · Remote",
       duration: "Nov 2025 - Present",
       type: "Full-time",
-      detailsLink: "/experience/cargostream",
+      detailsLink: "/experiences/cargostream",
       achievements: [
         "Architect and built a flexible, layout-aware document-processing system utilizing Laravel, pattern recognition, text analysis, and context mapping to accurately parse inconsistent logistic PDFs from multiple global partners.",
         "Designed custom extraction logic and robust fallback rules to seamlessly isolate tabular and irregular data from unstructured logistic documents, including orders, credit notes, and service invoices across multiple languages.",
@@ -112,7 +112,7 @@ const Experience = ({ id }) => {
       location: "Pattaya, Thailand · Remote",
       duration: "Oct 2025 - Jan 2026",
       type: "Contract, Project-Based",
-      detailsLink: "/experience/sportsfixtures",
+      detailsLink: "/experiences/sportsfixtures",
       achievements: [
         "Built and maintained from scratch using Node.js, Strapi v5, PostgreSQL, and Redis. Deployed and managed production infrastructure with centralized logging, monitoring, and environment management across platforms.",
         "Designed and optimized 50+ relational database models and advanced multi-model filtering/query systems, improving large-scale data retrieval with caching and data indexing. Increased performance by 40%.",
@@ -145,7 +145,7 @@ const Experience = ({ id }) => {
       location: "Stockholm, Sweden · Remote",
       duration: "Dec 2021 - Sept 2025",
       type: "Full-time",
-      detailsLink: "/experience/eucaps",
+      detailsLink: "/experiences/eucaps",
       achievements: [
         "Worked in technologies including Node JS, Laravel, Express JS, React JS, Next JS, AWS Amplify, Lambda, AWS S3 Bucket, GraphQL, MySQL, DynamoDB, PostgreSQL, REST API, Docker.",
         "Created REST APIs for external 3rd party access using an existing database with JWT token authentication. Secured token by creating custom HMac encryptions, and made documentation using GitHub wiki.",
@@ -183,7 +183,7 @@ const Experience = ({ id }) => {
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
       type: "Volunteer",
-      detailsLink: "/experience/nsups",
+      detailsLink: "/experiences/nsups",
       achievements: [
         "Implemented an automated crawler system to fetch and process data from multiple online judges for tracking users’ solve counts and submission activity.",
         "Developed and maintained backend services for the NSUPS Bootcamp participant management system using RESTful APIs and relational database design.",

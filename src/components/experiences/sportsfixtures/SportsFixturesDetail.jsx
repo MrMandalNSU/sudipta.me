@@ -59,7 +59,7 @@ const SportsFixturesDetail = () => {
       document.head.appendChild(canonicalLink);
     }
     const originalCanonical = canonicalLink.getAttribute('href');
-    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experience/sportsfixtures');
+    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experiences/sportsfixtures');
 
     // 4. Restore original tags when leaving the page (unmounting)
     return () => {

@@ -55,7 +55,7 @@ const EucapsDetail = () => {
       document.head.appendChild(canonicalLink);
     }
     const originalCanonical = canonicalLink.getAttribute('href');
-    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experience/eucaps');
+    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experiences/eucaps');
 
     // 4. Restore original tags when leaving the page (unmounting)
     return () => {

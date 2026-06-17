@@ -61,7 +61,7 @@ const CargoStreamDetail = () => {
       document.head.appendChild(canonicalLink);
     }
     const originalCanonical = canonicalLink.getAttribute('href');
-    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experience/cargostream');
+    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experiences/cargostream');
 
     // 4. Restore original tags when leaving the page (unmounting)
     return () => {

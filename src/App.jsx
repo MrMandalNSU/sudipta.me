@@ -75,10 +75,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/projects/valodash" element={<ValoDashDetail />} />
-        <Route path="/experience/cargostream" element={<CargoStreamDetail />} />
-        <Route path="/experience/sportsfixtures" element={<SportsFixturesDetail />} />
-        <Route path="/experience/eucaps" element={<EucapsDetail />} />
-        <Route path="/experience/nsups" element={<NsupsDetail />} />
+        <Route path="/experiences/cargostream" element={<CargoStreamDetail />} />
+        <Route path="/experiences/sportsfixtures" element={<SportsFixturesDetail />} />
+        <Route path="/experiences/eucaps" element={<EucapsDetail />} />
+        <Route path="/experiences/nsups" element={<NsupsDetail />} />
       </Routes>
       <Footer />
     </ThemeProvider>

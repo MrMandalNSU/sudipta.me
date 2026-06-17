@@ -55,7 +55,7 @@ const NsupsDetail = () => {
       document.head.appendChild(canonicalLink);
     }
     const originalCanonical = canonicalLink.getAttribute('href');
-    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experience/nsups');
+    canonicalLink.setAttribute('href', 'https://sudipta.xyz/experiences/nsups');
 
     // 4. Restore original tags when leaving the page (unmounting)
     return () => {

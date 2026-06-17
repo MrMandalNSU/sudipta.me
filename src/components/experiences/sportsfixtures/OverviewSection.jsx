@@ -13,6 +13,7 @@ const OverviewSection = ({ theme }) => {
     "Socket.io",
     "Railway",
     "ZeptoMail & SMTP",
+    "OAuth (Google/Facebook)",
     "Swagger / OpenAPI",
     "Nodemailer",
     "Cron Schedulers",

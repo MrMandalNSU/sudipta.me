@@ -1,61 +1,85 @@
 import React from "react";
-import { Box, Button, Typography, Divider } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 import { Schema as SchemaIcon } from "@mui/icons-material";
 
 const schemasData = {
   "S&P Financials": {
-    description: "Database configurations mapping institutional S&P mnemonic financial details, histories, and calendar dates.",
+    description: "Database configurations mapping institutional S&P mnemonic financial details, ratios, shareholder percentages, and calendar dates.",
     tables: [
-      { title: "SME Identifiers", fields: ["isin (PK)", "ticker", "company_name", "exchange_code"], x: 30, y: 75, w: 180 },
-      { title: "Financial Mnemonics", fields: ["isin (FK)", "total_revenue", "gross_profit", "ebitda", "net_income", "cash_from_ops"], x: 310, y: 20, w: 190 },
-      { title: "LTM & YoY Metrics", fields: ["isin (FK)", "ltm_revenue", "yoy_revenue_growth", "yoy_margin_expansion", "qoq_margin_prog"], x: 590, y: 40, w: 190 },
-      { title: "Event Calendar", fields: ["isin (FK)", "earnings_report_date", "agm_date", "ex_dividend_date"], x: 310, y: 190, w: 190 }
+      { title: "Exchange Metadata", fields: ["exchange_code (PK)", "exchange_name", "country_iso", "timezone_offset"], x: 30, y: 10, w: 180 },
+      { title: "SME Identifiers", fields: ["isin (PK)", "ticker", "company_name", "exchange_code (FK)"], x: 30, y: 160, w: 180 },
+      { title: "Financial Mnemonics", fields: ["isin (FK)", "total_revenue", "gross_profit", "ebitda", "net_income", "cash_from_ops"], x: 250, y: 10, w: 180 },
+      { title: "Event Calendar", fields: ["isin (FK)", "earnings_report_date", "agm_date", "ex_dividend_date"], x: 250, y: 195, w: 180 },
+      { title: "LTM & YoY Metrics", fields: ["isin (FK)", "ltm_revenue", "yoy_revenue_growth", "yoy_margin_expansion", "qoq_margin_prog"], x: 470, y: 10, w: 180 },
+      { title: "Shareholder Structure", fields: ["isin (FK)", "holder_name", "shares_held", "ownership_pct", "report_date"], x: 470, y: 175, w: 180 },
+      { title: "Company Ratios", fields: ["isin (FK)", "pe_ratio", "ev_ebitda", "net_profit_margin", "debt_equity_ratio"], x: 690, y: 10, w: 180 }
     ],
     connections: [
-      { path: "M 210 120 H 260 V 90 H 310" },
-      { path: "M 210 120 H 260 V 230 H 310" },
-      { path: "M 500 90 H 590" },
-      { path: "M 500 230 H 545 V 120 H 590" }
+      { path: "M 120 132 V 160" }, // Exchange Metadata -> SME Identifiers
+      { path: "M 210 205 H 230 V 70 H 250" }, // SME Identifiers -> Financial Mnemonics
+      { path: "M 210 205 H 230 V 230 H 250" }, // SME Identifiers -> Event Calendar
+      { path: "M 210 205 H 230 V 235 H 470" }, // SME Identifiers -> Shareholder Structure
+      { path: "M 430 70 H 470" }, // Financial Mnemonics -> LTM & YoY
+      { path: "M 650 70 H 690" }, // LTM & YoY -> Company Ratios
+      { path: "M 650 235 H 670 V 70 H 690" } // Shareholder Structure -> Company Ratios
     ]
   },
   "Pinpoint Estimates": {
-    description: "Database tables storing crowd forecasts, consensus eps metrics, and historical forecast performance mappings.",
+    description: "Database tables storing crowd forecasts, consensus eps metrics, prediction logs, and historical performance rankings.",
     tables: [
-      { title: "Estimate Metadata", fields: ["isin (PK)", "estimate_quarter", "consensus_eps", "consensus_revenue"], x: 40, y: 70, w: 180 },
-      { title: "Crowd Expectations", fields: ["isin (FK)", "user_prediction_eps", "user_prediction_revenue", "user_prediction_count"], x: 320, y: 25, w: 195 },
-      { title: "Historical Performance", fields: ["isin (FK)", "actual_reported_eps", "actual_reported_revenue", "accuracy_score"], x: 600, y: 70, w: 190 }
+      { title: "Prediction Audits", fields: ["audit_id (PK)", "isin (FK)", "user_hash_ip", "vote_timestamp", "quarter_ref"], x: 30, y: 10, w: 180 },
+      { title: "Estimate Metadata", fields: ["isin (PK)", "estimate_quarter", "consensus_eps", "consensus_revenue"], x: 30, y: 180, w: 180 },
+      { title: "Crowd Expectations", fields: ["isin (FK)", "user_prediction_eps", "user_prediction_revenue", "user_prediction_count"], x: 250, y: 10, w: 180 },
+      { title: "Analyst Targets", fields: ["isin (FK)", "target_price", "consensus_rating (BUY/HOLD/SELL)", "broker_count"], x: 250, y: 180, w: 180 },
+      { title: "Historical Performance", fields: ["isin (FK)", "actual_reported_eps", "actual_reported_revenue", "accuracy_score"], x: 470, y: 10, w: 180 },
+      { title: "Accuracy Rank", fields: ["rank_id (PK)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"], x: 470, y: 180, w: 180 }
     ],
     connections: [
-      { path: "M 220 125 H 270 V 80 H 320" },
-      { path: "M 220 125 H 600" },
-      { path: "M 515 80 H 555 V 125 H 600" }
+      { path: "M 120 150 V 180" }, // Prediction Audits -> Estimate Metadata
+      { path: "M 210 225 H 230 V 70 H 250" }, // Estimate Metadata -> Crowd Expectations
+      { path: "M 210 225 H 250" }, // Estimate Metadata -> Analyst Targets
+      { path: "M 430 70 H 470" }, // Crowd Expectations -> Historical Performance
+      { path: "M 430 225 H 450 V 70 H 470" }, // Analyst Targets -> Historical Performance
+      { path: "M 560 132 V 180" } // Historical Performance -> Accuracy Rank
     ]
   },
   "Inderes Media": {
-    description: "Search indices indexing Nordic listed company video presentations, reports, and podcasts.",
+    description: "Search indices indexing Nordic listed company video presentations, reports, transcripts, summaries, and transcribing jobs.",
     tables: [
-      { title: "Media Info", fields: ["media_id (PK)", "company_id", "title", "media_type"], x: 40, y: 70, w: 180 },
-      { title: "Transcription & Summary", fields: ["media_id (FK)", "transcript_raw_text", "summary_paragraphs", "ai_keywords"], x: 310, y: 25, w: 210 },
-      { title: "Assets", fields: ["media_id (FK)", "thumbnail_url_s3", "media_source_url", "is_indexed"], x: 600, y: 70, w: 190 }
+      { title: "AI Transcribing Jobs", fields: ["job_id (PK)", "media_id (FK)", "whisper_model_version", "job_status", "completed_at"], x: 30, y: 10, w: 180 },
+      { title: "Media Info", fields: ["media_id (PK)", "company_id", "title", "media_type"], x: 30, y: 180, w: 180 },
+      { title: "Transcription & Summary", fields: ["media_id (FK)", "transcript_raw_text", "summary_paragraphs", "ai_keywords"], x: 250, y: 10, w: 180 },
+      { title: "Assets", fields: ["media_id (FK)", "thumbnail_url_s3", "media_source_url", "is_indexed"], x: 250, y: 180, w: 180 },
+      { title: "Search Index", fields: ["index_id (PK)", "media_id (FK)", "tokenized_lexeme", "term_frequency_score"], x: 470, y: 10, w: 180 },
+      { title: "Media Feedback", fields: ["feedback_id (PK)", "media_id (FK)", "total_views", "average_watch_time", "like_count"], x: 470, y: 180, w: 180 }
     ],
     connections: [
-      { path: "M 220 125 H 265 V 80 H 310" },
-      { path: "M 220 125 H 600" },
-      { path: "M 520 80 H 560 V 125 H 600" }
+      { path: "M 120 150 V 180" }, // AI Transcribing Jobs -> Media Info
+      { path: "M 210 225 H 230 V 70 H 250" }, // Media Info -> Transcription & Summary
+      { path: "M 210 225 H 250" }, // Media Info -> Assets
+      { path: "M 430 70 H 470" }, // Transcription & Summary -> Search Index
+      { path: "M 210 225 H 230 V 240 H 470" }, // Media Info -> Media Feedback
+      { path: "M 430 225 H 470" } // Assets -> Media Feedback
     ]
   },
   "Partner API Auth": {
-    description: "Credential details mapping client HMAC secrets, JWT scopes, and external log analytics history.",
+    description: "Credential details mapping client HMAC secrets, JWT scopes, sliding rate Redis limits, contract billing details, and log whitelist IP coordinates.",
     tables: [
-      { title: "Credential Verification", fields: ["partner_id (PK)", "hmac_secret_key", "jwt_signing_key", "allowed_ip_whitelist"], x: 30, y: 70, w: 200 },
-      { title: "Permission Scopes", fields: ["partner_id (FK)", "has_sp_access", "has_pinpoint_access", "has_inderes_access"], x: 320, y: 25, w: 190 },
-      { title: "Usage Log", fields: ["log_id (PK)", "partner_id (FK)", "api_endpoint", "request_bytes", "rate_limit_hits"], x: 590, y: 60, w: 190 }
+      { title: "Authorized IP Whitelist", fields: ["ip_id (PK)", "partner_id (FK)", "ip_address", "description_label"], x: 30, y: 10, w: 190 },
+      { title: "Credential Verification", fields: ["partner_id (PK)", "hmac_secret_key", "jwt_signing_key", "allowed_ip_whitelist"], x: 30, y: 180, w: 190 },
+      { title: "Permission Scopes", fields: ["partner_id (FK)", "has_sp_access", "has_pinpoint_access", "has_inderes_access"], x: 260, y: 10, w: 180 },
+      { title: "Sliding Rate Limits", fields: ["partner_id (FK)", "requests_last_hour", "hourly_cap", "daily_cap", "window_expiry"], x: 260, y: 180, w: 180 },
+      { title: "Usage Log", fields: ["timestamp (ISO)", "api_endpoint", "request_bytes", "response_time_ms", "rate_limit_hits_today"], x: 480, y: 10, w: 180 },
+      { title: "Contract Billing Details", fields: ["contract_id (PK)", "partner_id (FK)", "billing_tier_name", "price_per_thousand_reqs"], x: 480, y: 180, w: 190 }
     ],
     connections: [
-      { path: "M 230 125 H 275 V 80 H 320" },
-      { path: "M 230 125 H 590" },
-      { path: "M 510 80 H 550 V 125 H 590" }
+      { path: "M 125 132 V 180" }, // Whitelist -> Credential
+      { path: "M 220 225 H 240 V 70 H 260" }, // Credential -> Scopes
+      { path: "M 220 225 H 260" }, // Credential -> Limits
+      { path: "M 220 225 H 240 V 80 H 480" }, // Credential -> Log
+      { path: "M 440 70 H 480" }, // Scopes -> Log
+      { path: "M 440 235 H 480" } // Limits -> Billing Details
     ]
   }
 };
@@ -70,7 +94,7 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
 
   return (
     <g key={tbl.title}>
-      {/* Card shadow rectangle */}
+      {/* Card shadow */}
       <rect
         x={tbl.x + 2}
         y={tbl.y + 2}
@@ -80,7 +104,7 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
         fill="rgba(0,0,0,0.15)"
         style={{ filter: "blur(2px)" }}
       />
-      {/* Main card */}
+      {/* Card border */}
       <rect
         x={tbl.x}
         y={tbl.y}
@@ -91,12 +115,11 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
         stroke={primaryColor}
         strokeWidth={1.5}
       />
-      {/* Banner */}
+      {/* Header */}
       <path
         d={`M ${tbl.x} ${tbl.y + 8} A 8 8 0 0 1 ${tbl.x + 8} ${tbl.y} L ${tbl.x + tbl.w - 8} ${tbl.y} A 8 8 0 0 1 ${tbl.x + tbl.w} ${tbl.y + 8} L ${tbl.x + tbl.w} ${tbl.y + headerHeight} L ${tbl.x} ${tbl.y + headerHeight} Z`}
         fill={headerBg}
       />
-      {/* Title */}
       <text
         x={tbl.x + 12}
         y={tbl.y + 20}
@@ -108,7 +131,7 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
         {tbl.title}
       </text>
 
-      {/* Fields */}
+      {/* Fields list */}
       {tbl.fields.map((field, idx) => {
         const fieldY = tbl.y + headerHeight + 16 + idx * 18;
         const isPk = field.includes("(PK)");
@@ -116,7 +139,6 @@ const renderTableCardInSvg = (tbl, theme, primaryColor) => {
         
         return (
           <g key={idx}>
-            {/* Field label */}
             <text
               x={tbl.x + 12}
               y={fieldY}

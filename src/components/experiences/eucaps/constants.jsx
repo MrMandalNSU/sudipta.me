@@ -176,7 +176,10 @@ export const conceptualSchemas = {
       { name: "SME Identifiers", fields: ["isin (Primary Key)", "ticker", "company_name", "exchange_code"] },
       { name: "Financial Mnemonics", fields: ["total_revenue", "gross_profit", "ebitda", "net_income", "cash_from_operations"] },
       { name: "LTM & YoY Metrics", fields: ["ltm_revenue", "yoy_revenue_growth", "yoy_margin_expansion", "qoq_margin_progression"] },
-      { name: "Event Calendar", fields: ["earnings_report_date (YYYY-MM-DD)", "agm_date", "ex_dividend_date"] }
+      { name: "Event Calendar", fields: ["earnings_report_date (YYYY-MM-DD)", "agm_date", "ex_dividend_date"] },
+      { name: "Shareholder Structure", fields: ["isin (Foreign Key)", "holder_name", "shares_held", "ownership_pct", "report_date"] },
+      { name: "Company Ratios", fields: ["isin (Foreign Key)", "pe_ratio", "ev_ebitda", "net_profit_margin", "debt_equity_ratio"] },
+      { name: "Exchange Metadata", fields: ["exchange_code (Primary Key)", "exchange_name", "country_iso", "timezone_offset"] }
     ]
   },
   "Pinpoint Estimates": {
@@ -184,7 +187,10 @@ export const conceptualSchemas = {
     sections: [
       { name: "Estimate Metadata", fields: ["isin", "estimate_quarter (Q1-Q4)", "analyst_consensus_eps", "analyst_consensus_revenue"] },
       { name: "Crowd Expectations", fields: ["user_prediction_eps", "user_prediction_revenue", "user_prediction_count"] },
-      { name: "Historical Performance", fields: ["actual_reported_eps", "actual_reported_revenue", "accuracy_score (0-100)"] }
+      { name: "Historical Performance", fields: ["actual_reported_eps", "actual_reported_revenue", "accuracy_score (0-100)"] },
+      { name: "Analyst Targets", fields: ["isin (Foreign Key)", "target_price", "consensus_rating (BUY/HOLD/SELL)", "broker_count"] },
+      { name: "Prediction Audits", fields: ["audit_id (Primary Key)", "isin (Foreign Key)", "user_hash_ip", "vote_timestamp", "quarter_ref"] },
+      { name: "Accuracy Rank", fields: ["rank_id (Primary Key)", "user_hash_ip", "total_votes_cast", "average_deviation_pct"] }
     ]
   },
   "Inderes Media": {
@@ -192,7 +198,10 @@ export const conceptualSchemas = {
     sections: [
       { name: "Media Info", fields: ["media_id (UUID)", "company_id", "title", "media_type (VIDEO/PODCAST/REPORT)"] },
       { name: "Transcription & Summary", fields: ["transcript_raw_text", "summary_paragraphs", "ai_generated_keywords"] },
-      { name: "Assets", fields: ["thumbnail_url_s3", "media_source_url", "is_indexed_for_search"] }
+      { name: "Assets", fields: ["thumbnail_url_s3", "media_source_url", "is_indexed_for_search"] },
+      { name: "AI Transcribing Jobs", fields: ["job_id (Primary Key)", "media_id (Foreign Key)", "whisper_model_version", "job_status", "completed_at"] },
+      { name: "Search Index", fields: ["index_id (Primary Key)", "media_id (Foreign Key)", "tokenized_lexeme", "term_frequency_score"] },
+      { name: "Media Feedback", fields: ["feedback_id (Primary Key)", "media_id (Foreign Key)", "total_views", "average_watch_time", "like_count"] }
     ]
   },
   "Partner API Auth": {
@@ -200,7 +209,10 @@ export const conceptualSchemas = {
     sections: [
       { name: "Credential Verification", fields: ["partner_id", "hmac_secret_key", "jwt_signing_key", "allowed_ip_whitelist"] },
       { name: "Permission Scopes", fields: ["has_sp_access (boolean)", "has_pinpoint_access (boolean)", "has_inderes_access (boolean)"] },
-      { name: "Usage Log", fields: ["timestamp (ISO)", "api_endpoint", "request_bytes", "response_time_ms", "rate_limit_hits_today"] }
+      { name: "Usage Log", fields: ["timestamp (ISO)", "api_endpoint", "request_bytes", "response_time_ms", "rate_limit_hits_today"] },
+      { name: "Sliding Rate Limits", fields: ["partner_id (Foreign Key)", "requests_last_hour", "hourly_cap", "daily_cap", "window_expiry"] },
+      { name: "Contract Billing Details", fields: ["contract_id (Primary Key)", "partner_id (Foreign Key)", "billing_tier_name", "price_per_thousand_reqs"] },
+      { name: "Authorized IP Whitelist", fields: ["ip_id (Primary Key)", "partner_id (Foreign Key)", "ip_address", "description_label"] }
     ]
   }
 };

@@ -161,8 +161,8 @@ const MicroDiagram = ({ activeNode, theme, primaryColor }) => {
         const cx = x + 60;
         const cy = y + 25;
 
-        const fillBg = theme.palette.mode === "light" 
-          ? "rgba(79,70,229,0.05)" 
+        const fillBg = theme.palette.mode === "light"
+          ? "rgba(79,70,229,0.05)"
           : "rgba(129,140,248,0.1)";
         const strokeColor = primaryColor;
         const strokeWidth = 1.8;
@@ -242,7 +242,7 @@ const SystemDesignSection = ({
       }}
     >
       <SectionHeading theme={theme}>System Design & Architecture</SectionHeading>
-      
+
       {/* ── PART 1: Macro System Design ── */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, letterSpacing: "0.5px", color: "text.primary", display: "flex", alignItems: "center", gap: 1 }}>
         <LayersIcon sx={{ fontSize: 18, color: "primary.main" }} />
@@ -253,12 +253,12 @@ const SystemDesignSection = ({
         Click any node below to highlight its path in the macro design.
       </Typography>
 
-      <DiagramBoard sx={{ mb: 4 }}>
+      <DiagramBoard sx={{ mb: 2 }}>
         {/* Macro Flowchart (Desktop View) */}
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 920 280"
+            viewBox="0 0 920 260"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -283,7 +283,7 @@ const SystemDesignSection = ({
               { from: "kyc", to: "payments", path: "M 335 65 H 390" },
               { from: "payments", to: "schema_mapping", path: "M 505 65 H 560" },
               { from: "schema_mapping", to: "data_processing", path: "M 675 65 H 740" },
-              
+
               { from: "sp_pipeline", to: "schema_mapping", path: "M 95 180 V 135 H 620 V 90" },
               { from: "pinpoint_estimates", to: "schema_mapping", path: "M 280 180 V 135 H 620 V 90" },
               { from: "inderes_media", to: "schema_mapping", path: "M 450 180 V 135 H 620 V 90" },
@@ -314,7 +314,7 @@ const SystemDesignSection = ({
               { key: "payments", type: "process", x: 390, y: 40, w: 115, h: 50, rx: 8, cx: 447.5, cy: 65, label: "Stripe Billing", sub: "Subscriptions" },
               { key: "schema_mapping", type: "cylinder", x: 560, y: 25, w: 115, h: 65, cx: 617.5, cy: 62, label: "MySQL / DynamoDB", sub: "Persisted Schema" },
               { key: "data_processing", type: "process", x: 740, y: 40, w: 120, h: 50, rx: 8, cx: 800, cy: 65, label: "GraphQL Server", sub: "LTM YoY/QoQ Calculations" },
-              
+
               { key: "sp_pipeline", type: "process", x: 35, y: 180, w: 120, h: 50, rx: 8, cx: 95, cy: 205, label: "S&P data ingestion", sub: "AWS Lambda Node" },
               { key: "pinpoint_estimates", type: "process", x: 220, y: 180, w: 120, h: 50, rx: 8, cx: 280, cy: 205, label: "Pinpoint estimates", sub: "Crowd Predictions" },
               { key: "inderes_media", type: "process", x: 390, y: 180, w: 120, h: 50, rx: 8, cx: 450, cy: 205, label: "Inderes Media", sub: "Transcripts & Index" },
@@ -480,7 +480,7 @@ const SystemDesignSection = ({
         </Box>
       </DiagramBoard>
 
-      <Divider sx={{ opacity: 0.08, my: 4 }} />
+      <Divider sx={{ opacity: 0.08, my: 2.5 }} />
 
       {/* ── PART 2: Micro System Design (Node Detail) ── */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, letterSpacing: "0.5px", color: "text.primary", display: "flex", alignItems: "center", gap: 1 }}>

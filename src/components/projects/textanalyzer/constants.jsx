@@ -234,13 +234,13 @@ export const workflows = {
 };
 
 export const snapshotsList = [
-  { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (1).webp", title: "Text Analyzer Dashboard" },
-  { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (2).webp", title: "Create Text Dialogue" },
+  { type: "mobile", src: "/screenshots/projects/textanalyzer/ta (1).webp", title: "Mobile Dashboard" },
+  { type: "mobile", src: "/screenshots/projects/textanalyzer/ta (2).webp", title: "Mobile Create Dialogue" },
   { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (3).webp", title: "Edit/Update Text Content" },
   { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (4).webp", title: "Delete Confirmation Dialogue" },
   { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (5).webp", title: "Lexical & Metric Analysis Panel" },
   { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (6).webp", title: "Session-based User Tracking" },
-  { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (7).webp", title: "Integrated Text Formatter View" },
-  { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (8).webp", title: "Interactive JSON Syntax Parser" },
-  { type: "desktop", src: "/screenshots/projects/textanalyzer/ta (9).webp", title: "Light Theme UI Layout" },
+  { type: "mobile", src: "/screenshots/projects/textanalyzer/ta (7).webp", title: "Mobile Formatter View" },
+  { type: "mobile", src: "/screenshots/projects/textanalyzer/ta (8).webp", title: "Mobile JSON Parser" },
+  { type: "mobile", src: "/screenshots/projects/textanalyzer/ta (9).webp", title: "Mobile Light Theme Layout" },
 ];

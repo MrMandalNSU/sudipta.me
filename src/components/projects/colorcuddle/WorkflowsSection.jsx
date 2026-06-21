@@ -4,9 +4,36 @@ import Grid from "@mui/material/Grid";
 import { workflows } from "./constants";
 import { GlassCard, SectionHeading } from "./styles";
 
+const stringifyCompact = (obj, indentLevel = 0) => {
+  const indent = "  ".repeat(indentLevel);
+  if (obj === null) return "null";
+  if (typeof obj === "string") return `"${obj}"`;
+  if (typeof obj !== "object") return String(obj);
+
+  if (Array.isArray(obj)) {
+    const isSimple = obj.every((x) => typeof x !== "object" || x === null);
+    if (isSimple) {
+      return "[" + obj.map((x) => typeof x === "string" ? `"${x}"` : String(x)).join(", ") + "]";
+    }
+    const parts = obj.map((x) => stringifyCompact(x, indentLevel + 1));
+    return "[\n" + parts.map((p) => "  ".repeat(indentLevel + 1) + p).join(",\n") + "\n" + indent + "]";
+  }
+
+  const keys = Object.keys(obj);
+  if (keys.length === 0) return "{}";
+
+  const parts = keys.map((k) => {
+    const v = obj[k];
+    const valStr = stringifyCompact(v, indentLevel + 1);
+    return `${indent}  "${k}": ${valStr}`;
+  });
+
+  return "{\n" + parts.join(",\n") + "\n" + indent + "}";
+};
+
 const highlightJson = (obj) => {
   if (!obj) return null;
-  const jsonString = JSON.stringify(obj, null, 2);
+  const jsonString = stringifyCompact(obj);
   const lines = jsonString.split("\n");
 
   return lines.map((line, index) => {
@@ -172,8 +199,17 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                     borderColor: isActive ? "transparent" : theme.palette.mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
                     color: isActive ? "#FFF" : "text.secondary",
                     fontSize: { xs: "0.75rem", sm: "0.85rem", lg: "0.875rem" },
-                    whiteSpace: "nowrap",
+                    whiteSpace: { xs: "nowrap", lg: "normal" },
+                    lineHeight: { xs: 1, lg: 1.3 },
+                    textAlign: { xs: "center", lg: "left" },
                     minWidth: 0,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    "& .MuiButton-startIcon": {
+                      flexShrink: 0,
+                      mr: { xs: 0.5, sm: 1 },
+                    },
                     "&:hover": {
                       backgroundColor: isActive ? theme.palette.primary.main : theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
                       borderColor: isActive ? "transparent" : theme.palette.primary.main,
@@ -186,7 +222,7 @@ const WorkflowsSection = ({ theme, activeWorkflow, setActiveWorkflow }) => {
                     {flow.shortTitle}
                   </Box>
                   <Box component="span" sx={{ display: { xs: "none", lg: "inline" } }}>
-                    {flow.title.split(" Flow")[0].split(" Engine")[0]}
+                    {flow.title.split(" Flow")[0].split(" Engine")[0].split(" Workflow")[0].split(" Compiler")[0]}
                   </Box>
                 </Button>
               );

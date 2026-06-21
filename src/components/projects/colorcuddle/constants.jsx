@@ -217,15 +217,15 @@ export const stateSchemas = {
 };
 
 export const snapshotsList = [
-  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (1).webp", title: "Easy Mode Gameplay" },
-  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (2).webp", title: "Hard Mode Console" },
-  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (3).webp", title: "Insane Mode Board" },
-  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (4).webp", title: "Victory Decryption Modal" },
+  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (1).webp", title: "Gameplay Page" },
+  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (2).webp", title: "Easy Mode Board" },
+  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (3).webp", title: "Hard Mode Board" },
+  { type: "desktop", src: "/screenshots/projects/colorcuddle/cc (4).webp", title: "Insane Mode Board" },
   { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (5).webp", title: "Mobile Console Dashboard" },
-  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (6).webp", title: "Easy Mode Grid" },
-  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (7).webp", title: "Hard Mode Logs" },
-  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (8).webp", title: "Insane Mode Padlock Screen" },
+  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (6).webp", title: "Mode Switch" },
+  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (7).webp", title: "Gameplay Logs" },
+  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (8).webp", title: "Winner Sharing Screen" },
   { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (9).webp", title: "Solved Permutation Modal" },
   { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (10).webp", title: "Tutorial Slide Guidelines" },
-  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (11).webp", title: "Local Statistics Tracker" }
+  { type: "mobile", src: "/screenshots/projects/colorcuddle/cc (11).webp", title: "About Credit Page" }
 ];

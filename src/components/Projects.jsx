@@ -129,7 +129,7 @@ const Projects = ({ id }) => {
     },
     {
       title: "Text Analyzer",
-      type: "Web App",
+      type: "Lexical Intelligence & Utility Suite",
       logo: "/project_logos/textanalyzer_logo.svg",
       liveLink: "https://text.sudipta.xyz/",
       githubLink: "",

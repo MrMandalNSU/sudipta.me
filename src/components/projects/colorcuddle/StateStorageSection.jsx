@@ -16,6 +16,12 @@ const mobileStatesList = [
     ]
   },
   {
+    id: "targetSequence",
+    fields: [
+      { n: "sequence[index]", k: "Secret" }
+    ]
+  },
+  {
     id: "grid",
     fields: [
       { n: "grid[row][slot]", k: "Matrix" }
@@ -28,9 +34,22 @@ const mobileStatesList = [
     ]
   },
   {
+    id: "flippedGrid",
+    fields: [
+      { n: "flipped[row][slot]", k: "Anim" }
+    ]
+  },
+  {
     id: "history",
     fields: [
       { n: "history[index]", k: "Logs" }
+    ]
+  },
+  {
+    id: "gameStatus",
+    fields: [
+      { n: "status", k: "State" },
+      { n: "isRevealing", k: "" }
     ]
   },
   {
@@ -124,7 +143,6 @@ const PairRelationsCollapse = ({ pair, activeTable, theme, primaryColor, setActi
 const StateStorageSection = ({ theme, activeTable, setActiveTable }) => {
   const primaryColor = theme.palette.mode === "light" ? "#4F46E5" : "#818CF8";
   const secondaryColor = theme.palette.mode === "light" ? "#06B6D4" : "#22D3EE";
-  const activeTableData = stateSchemas[activeTable];
 
   const chunks = [];
   for (let i = 0; i < mobileStatesList.length; i += 2) {
@@ -136,83 +154,12 @@ const StateStorageSection = ({ theme, activeTable, setActiveTable }) => {
       <SectionHeading theme={theme}>State & Local Storage</SectionHeading>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 700 }}>
         An interactive blueprint of Color Cuddle's React active states and local storage caching schemas.
-        Click any block to inspect its variable fields, types, and reactive dependencies.
+        Click any block to highlight its reactive connections.
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {/* Table Detail Panel */}
-        <Box sx={{ order: { xs: 1, md: 2 }, mb: { xs: 4, md: 0 } }}>
-          <GlassCard sx={{ p: { xs: 2.5, sm: 3.5 }, minHeight: { xs: "auto", md: 320 } }}>
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5, color: "primary.main" }}>
-                {activeTable === "localStorage" ? "Browser Local Storage Cache" : `${activeTable} State Variable`}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
-                {activeTableData.description}
-              </Typography>
-            </Box>
-
-            {/* Fields */}
-            <Box sx={{ mb: 3, display: { xs: "none", md: "block" } }}>
-              <Typography variant="caption" sx={{ fontWeight: 800, color: "text.secondary", textTransform: "uppercase", letterSpacing: "1px", display: "block", mb: 1.5 }}>
-                Fields & Types
-              </Typography>
-              <Grid container spacing={1.5}>
-                {activeTableData.fields.map((field) => (
-                  <Grid key={field.name} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 1.5,
-                        border: `1px solid ${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.04)" : "rgba(255, 255, 255, 0.04)"}`,
-                        backgroundColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.01)" : "rgba(255, 255, 255, 0.01)",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Stack direction="row" alignItems="center" sx={{ minWidth: 0, flexWrap: "wrap", gap: 0.75 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "monospace", fontSize: "0.82rem", whiteSpace: "nowrap" }}>
-                          {field.name}
-                        </Typography>
-                        {field.isKey && (
-                          <Chip
-                            label={field.isKey}
-                            size="small"
-                            sx={{
-                              height: 16,
-                              fontSize: "0.55rem",
-                              fontWeight: 800,
-                              borderRadius: 0.75,
-                              flexShrink: 0,
-                              backgroundColor: field.isKey.includes("PK") || field.isKey.includes("Key")
-                                ? "rgba(16, 185, 129, 0.15)"
-                                : field.isKey === "Matrix" || field.isKey === "Stats"
-                                  ? "rgba(245, 158, 11, 0.15)"
-                                  : "rgba(239, 68, 68, 0.15)",
-                              color: field.isKey.includes("PK") || field.isKey.includes("Key")
-                                ? "#10b981"
-                                : field.isKey === "Matrix" || field.isKey === "Stats"
-                                  ? "#f59e0b"
-                                  : "#ef4444",
-                            }}
-                          />
-                        )}
-                      </Stack>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "monospace", fontSize: "0.75rem", flexShrink: 0, ml: 1 }}>
-                        {field.type}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </GlassCard>
-        </Box>
-
         {/* State Dependency Diagram Board */}
-        <Box sx={{ order: { xs: 2, md: 1 }, mb: { xs: 0, md: 4 } }}>
+        <Box sx={{ mb: { xs: 0, md: 4 } }}>
           <DiagramBoard>
             {/* Desktop View SVG Dependency Diagram */}
             <Box sx={{ display: { xs: "none", md: "block" } }}>
@@ -240,12 +187,15 @@ const StateStorageSection = ({ theme, activeTable, setActiveTable }) => {
                 {/* Relations / Connector Lines */}
                 {[
                   { from: "selectedColors", to: "grid", path: "M 240 100 L 340 100" },
-                  { from: "selectedColors", to: "history", path: "M 140 170 L 140 330" },
+                  { from: "selectedColors", to: "targetSequence", path: "M 140 170 L 140 200" },
+                  { from: "targetSequence", to: "feedbackGrid", path: "M 240 250 L 340 245" },
                   { from: "grid", to: "feedbackGrid", path: "M 440 150 L 440 190" },
                   { from: "feedbackGrid", to: "history", path: "M 440 300 L 440 330" },
-                  { from: "localStorage", to: "selectedColors", path: "M 790 150 L 790 200" },
                   { from: "grid", to: "localStorage", path: "M 540 100 L 680 100" },
-                  { from: "feedbackGrid", to: "localStorage", path: "M 540 245 C 600 245, 620 275, 680 275" },
+                  { from: "feedbackGrid", to: "localStorage", path: "M 540 245 C 600 245, 620 130, 680 130" },
+                  { from: "feedbackGrid", to: "flippedGrid", path: "M 540 245 L 680 255" },
+                  { from: "feedbackGrid", to: "gameStatus", path: "M 540 245 C 600 245, 620 395, 680 395" },
+                  { from: "gameStatus", to: "localStorage", path: "M 900 395 C 930 395, 930 105, 900 105" },
                 ].map((rel, idx) => {
                   const isRelated = activeTable === rel.from || activeTable === rel.to;
                   const strokeColor = isRelated ? primaryColor : (theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)");
@@ -273,6 +223,10 @@ const StateStorageSection = ({ theme, activeTable, setActiveTable }) => {
                     fields: [{ n: "id", k: "Key" }, { n: "name", k: "" }, { n: "hex", k: "" }, { n: "bgClass", k: "" }]
                   },
                   {
+                    id: "targetSequence", x: 40, y: 200, w: 200, h: 100,
+                    fields: [{ n: "sequence", k: "Secret" }]
+                  },
+                  {
                     id: "grid", x: 340, y: 30, w: 200, h: 120,
                     fields: [{ n: "rowCount", k: "Dim" }, { n: "columnCount", k: "" }, { n: "slots", k: "" }]
                   },
@@ -287,6 +241,14 @@ const StateStorageSection = ({ theme, activeTable, setActiveTable }) => {
                   {
                     id: "localStorage", x: 680, y: 30, w: 220, h: 150,
                     fields: [{ n: "easy", k: "Stats" }, { n: "hard", k: "" }, { n: "insane", k: "" }, { n: "streaks", k: "" }]
+                  },
+                  {
+                    id: "flippedGrid", x: 680, y: 200, w: 220, h: 110,
+                    fields: [{ n: "flipped", k: "Anim" }]
+                  },
+                  {
+                    id: "gameStatus", x: 680, y: 340, w: 220, h: 110,
+                    fields: [{ n: "status", k: "State" }, { n: "isRevealing", k: "" }]
                   },
                 ].map((tbl) => {
                   const isActive = activeTable === tbl.id;

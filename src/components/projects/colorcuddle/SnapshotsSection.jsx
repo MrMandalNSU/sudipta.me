@@ -231,84 +231,13 @@ const SnapshotsSection = ({
           Mobile Viewports
         </Typography>
 
-        {/* Desktop View: Grid Layout */}
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <Grid container spacing={3} columns={10}>
-            {snapshotsList.filter(s => s.type === "mobile").map((item, idx) => {
-              const originalIndex = snapshotsList.findIndex(s => s.src === item.src);
-              return (
-                <Grid key={idx} size={{ xs: 5, md: 2 }}>
-                  <Box
-                    onClick={() => {
-                      setLightboxIndex(originalIndex);
-                      setLightboxOpen(true);
-                    }}
-                    sx={{
-                      cursor: "pointer",
-                      position: "relative",
-                      borderRadius: 3,
-                      overflow: "hidden",
-                      border: "3px solid rgba(255, 255, 255, 0.15)",
-                      background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
-                      boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      "&:hover": {
-                        transform: "translateY(-4px) scale(1.02)",
-                        boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.18)" : "0 12px 30px rgba(129, 140, 248, 0.18)",
-                        borderColor: "primary.main",
-                        "& .hover-overlay": { opacity: 1 },
-                      }
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src={item.src}
-                      alt={item.title}
-                      sx={{
-                        width: "100%",
-                        height: "auto",
-                        display: "block",
-                        aspectRatio: "383/851",
-                        objectFit: "cover"
-                      }}
-                    />
-                    {/* Hover Overlay */}
-                    <Box
-                      className="hover-overlay"
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "rgba(15, 23, 42, 0.65)",
-                        backdropFilter: "blur(4px)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        opacity: 0,
-                        transition: "opacity 0.3s ease",
-                        p: 1.5,
-                        textAlign: "center"
-                      }}
-                    >
-                      <Typography variant="caption" sx={{ color: "#fff", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.75rem" }}>
-                        {item.title}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
-
-        {/* Mobile View: Horizontal Scrollable/Swipable Row */}
+        {/* Mobile Viewports: Horizontal Scrollable Row */}
         <Box
           sx={{
-            display: { xs: "flex", md: "none" },
+            display: "flex",
             overflowX: "auto",
             gap: 2.5,
+            pt: 1.5,
             pb: 2.5,
             px: 0.5,
             scrollSnapType: "x mandatory",
@@ -336,7 +265,7 @@ const SnapshotsSection = ({
                   setLightboxOpen(true);
                 }}
                 sx={{
-                  flex: "0 0 170px",
+                  flex: { xs: "0 0 170px", md: "0 0 210px" },
                   scrollSnapAlign: "start",
                   cursor: "pointer",
                   position: "relative",
@@ -345,8 +274,10 @@ const SnapshotsSection = ({
                   border: "3px solid rgba(255, 255, 255, 0.15)",
                   background: theme.palette.mode === "light" ? "rgba(255,255,255,0.4)" : "rgba(15,23,42,0.4)",
                   boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   "&:hover": {
+                    transform: "translateY(-4px)",
+                    boxShadow: theme.palette.mode === "light" ? "0 12px 30px rgba(79, 70, 229, 0.18)" : "0 12px 30px rgba(129, 140, 248, 0.18)",
                     borderColor: "primary.main",
                   }
                 }}
@@ -372,7 +303,7 @@ const SnapshotsSection = ({
                     right: 0,
                     backgroundColor: "rgba(15, 23, 42, 0.72)",
                     backdropFilter: "blur(3px)",
-                    py: 1,
+                    py: 1.2,
                     px: 0.5,
                     textAlign: "center"
                   }}

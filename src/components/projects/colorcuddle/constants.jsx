@@ -168,7 +168,7 @@ export const stateSchemas = {
     fields: [
       { name: "feedbackGrid[row][slot]", type: "Array<Array<String>>", isKey: "Clue Map" }
     ],
-    relations: ["grid"]
+    relations: ["grid", "targetSequence", "flippedGrid", "gameStatus"]
   },
   history: {
     description: "Terminal logs array printed stdout on attempt evaluations.",
@@ -190,7 +190,29 @@ export const stateSchemas = {
       { name: "insane.wins", type: "Int" },
       { name: "insane.currentStreak", type: "Int" }
     ],
-    relations: ["StatsPanel"]
+    relations: ["StatsPanel", "gameStatus"]
+  },
+  targetSequence: {
+    description: "The secret shuffled 5-color marble sequence that the player is trying to guess.",
+    fields: [
+      { name: "sequence[index]", type: "Array<Color>", isKey: "Secret" }
+    ],
+    relations: ["selectedColors", "feedbackGrid"]
+  },
+  flippedGrid: {
+    description: "Grid matrix storing 3D rotation animation triggers for each slots.",
+    fields: [
+      { name: "flipped[row][slot]", type: "Array<Array<Boolean>>", isKey: "Anim" }
+    ],
+    relations: ["feedbackGrid"]
+  },
+  gameStatus: {
+    description: "The active status of the game loop: playing, won, or lost.",
+    fields: [
+      { name: "status", type: "String", isKey: "State" },
+      { name: "isRevealing", type: "Boolean" }
+    ],
+    relations: ["feedbackGrid", "localStorage"]
   }
 };
 

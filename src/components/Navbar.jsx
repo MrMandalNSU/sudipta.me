@@ -180,6 +180,7 @@ const Navbar = () => {
           />
           <Typography
             variant="h6"
+            component="p"
             sx={{
               fontWeight: 800,
               color: "text.primary",

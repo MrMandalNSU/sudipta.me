@@ -98,7 +98,7 @@ const TechCarousel = () => {
         <Track>
           {/* Render array twice for seamless loop */}
           {[...technologies, ...technologies].map((tech, index) => (
-            <TechItem key={index} variant="h6">
+            <TechItem key={index} variant="h6" component="p">
               {tech}
             </TechItem>
           ))}

@@ -77,7 +77,7 @@ const Footer = () => {
           {/* Left Side: Name, Icons, Subtitle */}
           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0.5 }}>
             <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1 }}>
+              <Typography variant="h6" component="p" sx={{ fontWeight: 700, lineHeight: 1 }}>
                 Sudipta Mandal
               </Typography>
               <Box sx={{ display: "flex", gap: 0.5 }}>

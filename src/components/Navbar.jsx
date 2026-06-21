@@ -167,7 +167,7 @@ const Navbar = () => {
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 1 }}>
           <Avatar
-            src="/sudipta_dp.png"
+            src="/sudipta_dp.webp"
             alt="Sudipta Mandal"
             sx={{
               width: 70,

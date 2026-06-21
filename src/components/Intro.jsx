@@ -16,7 +16,7 @@ import {
   Instagram,
 } from "@mui/icons-material";
 
-const PROFILE_PHOTO = "./sudipta_dp.png";
+const PROFILE_PHOTO = "./sudipta_dp.webp";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),

@@ -10,10 +10,8 @@ import {
   Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import {
-  School as SchoolIcon,
-  CalendarToday as CalendarIcon,
-} from "@mui/icons-material";
+import SchoolIcon from "@mui/icons-material/School";
+import CalendarIcon from "@mui/icons-material/CalendarToday";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -71,7 +69,7 @@ const Education = ({ id }) => {
       institution: "North South University (NSU)",
       degree: "BSc in Computer Science & Engineering",
       duration: "Class of 2021",
-      logo: "/education/nsu_logo.png",
+      logo: "/education/nsu_logo.webp",
       details: [
         "CGPA: 3.53/4.00 (88%+)",
         "CSE Major CGPA: 3.62/4.00 (90%+)",
@@ -83,7 +81,7 @@ const Education = ({ id }) => {
       institution: "BCIC College",
       degree: "Higher Secondary in Science",
       duration: "Class of 2015",
-      logo: "/education/bcic_logo.jpg",
+      logo: "/education/bcic_logo.webp",
       details: [
         "GPA 5.00/5.00"
       ],
@@ -93,7 +91,7 @@ const Education = ({ id }) => {
       institution: "Betagi Govt. High School",
       degree: "Secondary in Science",
       duration: "Class of 2013",
-      logo: "/education/bghs_logo.jpg",
+      logo: "/education/bghs_logo.webp",
       details: [
         "GPA 5.00/5.00"
       ],
@@ -148,7 +146,11 @@ const Education = ({ id }) => {
                       zIndex: 1,
                     }}
                   >
-                    <InstitutionLogo src={edu.logo} alt={`${edu.institution} logo`}>
+                    <InstitutionLogo 
+                      src={edu.logo} 
+                      alt={`${edu.institution} logo`}
+                      imgProps={{ width: 90, height: 90, loading: "lazy" }}
+                    >
                       <SchoolIcon />
                     </InstitutionLogo>
 

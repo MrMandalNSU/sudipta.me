@@ -8,10 +8,8 @@ import {
   useTheme as useMuiTheme,
 } from "@mui/material";
 import { styled, keyframes } from "@mui/material/styles";
-import {
-  ArrowBackIosNew as PrevIcon,
-  ArrowForwardIos as NextIcon,
-} from "@mui/icons-material";
+import PrevIcon from "@mui/icons-material/ArrowBackIosNew";
+import NextIcon from "@mui/icons-material/ArrowForwardIos";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -366,6 +364,7 @@ const Gallery = ({ id }) => {
               onLoad={handleImageLoad}
               onError={() => setIsLoaded(true)}
               style={imageStyle}
+              loading="lazy"
             />
 
             <LoadingOverlay

@@ -117,7 +117,6 @@ const SystemDesignSection = ({
   primaryColor
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [activeMobileFlow, setActiveMobileFlow] = useState("orders_blueprint");
   const [activeMacroNode, setActiveMacroNode] = useState("processing");
   const openMenu = Boolean(anchorEl);
 

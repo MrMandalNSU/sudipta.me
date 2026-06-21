@@ -27,8 +27,9 @@ const OverviewSection = ({ theme }) => {
             {/* Header with Logo & Title */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
               <Avatar
-                src="/cargo_stream_logo.png"
+                src="/cargo_stream_logo.svg"
                 alt="Cargo Stream Logo"
+                imgProps={{ width: 50, height: 50, loading: "lazy" }}
                 sx={{
                   width: 50,
                   height: 50,

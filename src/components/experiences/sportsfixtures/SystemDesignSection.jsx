@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Typography, Menu, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { systemNodes } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 

@@ -30,8 +30,9 @@ const OverviewSection = ({ theme }) => {
             {/* Header with Logo & Title */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
               <Avatar
-                src="/eucaps_logo.png"
+                src="/eucaps_logo.webp"
                 alt="Eucaps Logo"
+                imgProps={{ width: 50, height: 50, loading: "lazy" }}
                 sx={{
                   width: 50,
                   height: 50,

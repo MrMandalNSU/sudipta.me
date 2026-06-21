@@ -29,8 +29,9 @@ const OverviewSection = ({ theme }) => {
             {/* Header with Logo & Title */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
               <Avatar
-                src="/nsups_logo.png"
+                src="/nsups_logo.webp"
                 alt="NSUPS Logo"
+                imgProps={{ width: 50, height: 50, loading: "lazy" }}
                 sx={{
                   width: 50,
                   height: 50,

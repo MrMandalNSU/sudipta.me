@@ -132,7 +132,7 @@ const Projects = ({ id }) => {
       type: "Web App",
       logo: "/project_logos/textanalyzer_logo.svg",
       liveLink: "https://text.sudipta.xyz/",
-      githubLink: "https://github.com/MrMandalNSU/text-analyzer",
+      githubLink: "",
       detailsLink: "/projects/textanalyzer",
       achievements: [
         "Developed an online platform to analyze text data with auto-generated reports. Implemented CRUD for text, with each browser acting as a unique user. Ensured fast, lightweight analysis. Adopted by 10+ active users.",
@@ -149,6 +149,24 @@ const Projects = ({ id }) => {
         "Vite",
         "Material UI",
         "TDD"
+      ],
+    },
+    {
+      title: "DSE SME Data Scraper",
+      type: "Automation Script",
+      logo: "/project_logos/dsescript_logo.svg",
+      liveLink: "",
+      githubLink: "https://github.com/MrMandalNSU/dse-sme-data-scraper",
+      achievements: [
+        "Engineered an automated Node.js script tailored to reliably scrape daily SME company data from the Dhaka Stock Exchange (DSE).",
+        "Implemented data transformation logic to parse raw HTML tables and seamlessly export the extracted financial records into structured CSV files for downstream analysis.",
+      ],
+      technologies: [
+        "Node.js",
+        "JavaScript",
+        "Web Scraping",
+        "Data Parsing",
+        "CSV Export"
       ],
     },
     {
@@ -170,24 +188,6 @@ const Projects = ({ id }) => {
         "Prisma",
         "PostgreSQL",
         "Mantine UI"
-      ],
-    },
-    {
-      title: "DSE SME Data Scraper",
-      type: "Automation Script",
-      logo: "/project_logos/dsescript_logo.svg",
-      liveLink: "",
-      githubLink: "https://github.com/MrMandalNSU/dse-sme-data-scraper",
-      achievements: [
-        "Engineered an automated Node.js script tailored to reliably scrape daily SME company data from the Dhaka Stock Exchange (DSE).",
-        "Implemented data transformation logic to parse raw HTML tables and seamlessly export the extracted financial records into structured CSV files for downstream analysis.",
-      ],
-      technologies: [
-        "Node.js",
-        "JavaScript",
-        "Web Scraping",
-        "Data Parsing",
-        "CSV Export"
       ],
     },
   ];

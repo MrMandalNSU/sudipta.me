@@ -144,12 +144,12 @@ const Research = ({ id }) => {
                         <BusinessIcon />
                       </InstitutionLogo>
                       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", gap: 0.5 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                        <Typography variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                           {research.title}
                         </Typography>
                         <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
                           <Link href={research.institutionUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500 }}>
                               {research.institution} • {research.type}
                             </Typography>
                           </Link>

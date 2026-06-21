@@ -166,7 +166,7 @@ const Education = ({ id }) => {
                             mb: 0.5,
                           }}
                         >
-                          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, color: "text.primary", mb: 0.25, textAlign: "left" }}>
+                          <Typography variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, color: "text.primary", mb: 0.25, textAlign: "left" }}>
                             {edu.institution}
                           </Typography>
                           <Typography variant="body2" sx={{ color: "text.primary", mb: 0.25, textAlign: "left" }}>

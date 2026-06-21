@@ -396,6 +396,7 @@ const Gallery = ({ id }) => {
             <CaptionOverlay>
               <Typography
                 variant="h6"
+                component="p"
                 sx={{
                   fontWeight: 700,
                   color: "text.primary",

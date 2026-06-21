@@ -251,10 +251,10 @@ const Projects = ({ id }) => {
                             <CodeIcon />
                           </ProjectIconBox>
                           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
                               {project.type}
                             </Typography>
                           </Box>
@@ -273,10 +273,10 @@ const Projects = ({ id }) => {
                             <CodeIcon />
                           </ProjectIconBox>
                           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
                               {project.type}
                             </Typography>
                           </Box>
@@ -295,10 +295,10 @@ const Projects = ({ id }) => {
                             <CodeIcon />
                           </ProjectIconBox>
                           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
                               {project.type}
                             </Typography>
                           </Box>
@@ -316,10 +316,10 @@ const Projects = ({ id }) => {
                           <CodeIcon />
                         </ProjectIconBox>
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                          <Typography variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                             {project.title}
                           </Typography>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                          <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
                             {project.type}
                           </Typography>
                         </Box>
@@ -327,7 +327,7 @@ const Projects = ({ id }) => {
                     )}
                     <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
                       {project.detailsLink && (
-                        <RouterLink to={project.detailsLink} style={{ textDecoration: "none" }}>
+                        <RouterLink to={project.detailsLink} aria-label={`System Design details for ${project.title} project`} style={{ textDecoration: "none" }}>
                           <Chip
                             icon={<CodeIcon fontSize="small" />}
                             label="System Design"

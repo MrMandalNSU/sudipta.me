@@ -257,7 +257,7 @@ const AgenticAI = ({ id }) => {
                       <Avatar sx={{ backgroundColor: "rgba(79, 70, 229, 0.1)", width: 40, height: 40 }}>
                         {card.icon}
                       </Avatar>
-                      <Typography variant="h6" sx={{ fontWeight: 700, fontSize: "1.1rem", textAlign: "left" }}>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 700, fontSize: "1.1rem", textAlign: "left" }}>
                         {card.title}
                       </Typography>
                     </Box>

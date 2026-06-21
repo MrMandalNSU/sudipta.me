@@ -55,7 +55,7 @@ const OverviewSection = ({ theme }) => {
                 />
                 <Box>
                   <Link
-                    href="https://text-analyzer-sudipta.vercel.app/"
+                    href="https://text.sudipta.xyz/"
                     target="_blank"
                     rel="noopener noreferrer"
                     underline="none"
@@ -136,7 +136,7 @@ const OverviewSection = ({ theme }) => {
                 </Box>
               </Box>
               <Button
-                href="https://text-analyzer-sudipta.vercel.app/"
+                href="https://text.sudipta.xyz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="contained"

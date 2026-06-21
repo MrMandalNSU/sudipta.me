@@ -131,12 +131,15 @@ const Projects = ({ id }) => {
       title: "Text Analyzer",
       type: "Web App",
       logo: "/project_logos/textanalyzer_logo.svg",
-      liveLink: "https://text-analyzer-sudipta.vercel.app/",
+      liveLink: "https://text.sudipta.xyz/",
       githubLink: "https://github.com/MrMandalNSU/text-analyzer",
       detailsLink: "/projects/textanalyzer",
       achievements: [
         "Developed an online platform to analyze text data with auto-generated reports. Implemented CRUD for text, with each browser acting as a unique user. Ensured fast, lightweight analysis. Adopted by 10+ active users.",
         "Built an interactive UI, optimized analysis, and deployed using Node, Express, TS, React, Vite, MUI, and TDD.",
+        "Engineered an on-demand calculation caching engine storing regex-based lexical metrics (word/character counts, paragraph structures) in MongoDB, featuring automated cache invalidation upon document revisions.",
+        "Integrated a client-side syntax-highlighting JSON parser and formatting workspace with custom filter shortcuts (trimming double spacing, case adjustments, digit stripping) for developer usability.",
+        "Designed an anonymous browser sandboxing strategy via LocalStorage session tracking, isolating user CRUD scopes and workspace preferences with zero registration friction.",
       ],
       technologies: [
         "Node",

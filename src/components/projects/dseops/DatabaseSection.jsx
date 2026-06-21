@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, Button, Stack, Chip, Collapse } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { AltRoute as AltRouteIcon } from "@mui/icons-material";
+import AltRouteIcon from "@mui/icons-material/AltRoute";
 import { schemaTables } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 

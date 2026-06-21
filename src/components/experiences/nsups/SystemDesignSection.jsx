@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Typography, Menu, MenuItem, Paper, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { systemNodes } from "./constants";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 import LayersIcon from "@mui/icons-material/Layers";
@@ -125,7 +125,6 @@ const MicroDiagram = ({ activeNode, theme, primaryColor }) => {
         const x1 = 15 + idx * 150 + 120;
         const y1 = 65;
         const x2 = 15 + (idx + 1) * 150;
-        const y2 = 65;
         return (
           <path
             key={idx}

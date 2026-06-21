@@ -172,7 +172,7 @@ const Intro = ({ id }) => {
                 mb: { xs: 4, md: 0 },
               }}
             >
-              <ProfileImage src={PROFILE_PHOTO} alt="Profile" />
+              <ProfileImage src={PROFILE_PHOTO} alt="Profile" width={275} height={275} />
               <Typography
                 variant="body2"
                 sx={{

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
-import { Schema as SchemaIcon } from "@mui/icons-material";
+import SchemaIcon from "@mui/icons-material/Schema";
 
 const schemasData = {
   "S&P Financials": {

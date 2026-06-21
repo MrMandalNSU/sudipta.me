@@ -21,19 +21,17 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import DescriptionIcon from "@mui/icons-material/Description";
-import {
-  Person as PersonIcon,
-  Work as WorkIcon,
-  Code as CodeIcon,
-  EmojiEvents as EmojiEventsIcon,
-  School as SchoolIcon,
-  PhotoLibrary as PhotoLibraryIcon,
-  Close as CloseIcon,
-  LinkedIn as LinkedInIcon,
-  GitHub as GitHubIcon,
-  SmartToy as SmartToyIcon,
-  Science as ScienceIcon,
-} from "@mui/icons-material";
+import PersonIcon from "@mui/icons-material/Person";
+import WorkIcon from "@mui/icons-material/Work";
+import CodeIcon from "@mui/icons-material/Code";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import SchoolIcon from "@mui/icons-material/School";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import CloseIcon from "@mui/icons-material/Close";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+import ScienceIcon from "@mui/icons-material/Science";
 import { useTheme } from "../contexts/ThemeContext";
 import ResumeModal from "./ResumeModal";
 

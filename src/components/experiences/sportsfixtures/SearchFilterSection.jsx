@@ -99,7 +99,9 @@ const SearchFilterSection = ({ theme }) => {
     try {
       const regex = new RegExp(`\\b${q}\\b`, 'i');
       if (regex.test(team)) return 50;
-    } catch(e) {}
+    } catch {
+      // Ignore invalid regex tokens
+    }
     if (team.includes(q)) return 25;
     return 0;
   };

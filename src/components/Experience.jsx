@@ -17,13 +17,11 @@ import {
   Link,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import {
-  Work as WorkIcon,
-  LocationOn as LocationIcon,
-  CalendarToday as CalendarIcon,
-  Business as BusinessIcon,
-  ArrowForward as ArrowIcon,
-} from "@mui/icons-material";
+import WorkIcon from "@mui/icons-material/Work";
+import LocationIcon from "@mui/icons-material/LocationOn";
+import CalendarIcon from "@mui/icons-material/CalendarToday";
+import BusinessIcon from "@mui/icons-material/Business";
+import ArrowIcon from "@mui/icons-material/ArrowForward";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -80,7 +78,7 @@ const Experience = ({ id }) => {
     {
       title: "Senior Software Engineer",
       company: "Cargo Stream",
-      companyLogo: "/cargo_stream_logo.png",
+      companyLogo: "/cargo_stream_logo.svg",
       companyUrl: "https://cargostream.co/",
       location: "Vilnius, Lithuania · Remote",
       duration: "Nov 2025 - Present",
@@ -140,7 +138,7 @@ const Experience = ({ id }) => {
     {
       title: "Software Engineer I → II",
       company: "Eucaps AB",
-      companyLogo: "/eucaps_logo.png",
+      companyLogo: "/eucaps_logo.webp",
       companyUrl: "https://eucaps.com/",
       location: "Stockholm, Sweden · Remote",
       duration: "Dec 2021 - Sept 2025",
@@ -178,7 +176,7 @@ const Experience = ({ id }) => {
     {
       title: "Junior Software Engineer",
       company: "NSUPS",
-      companyLogo: "/nsups_logo.png",
+      companyLogo: "/nsups_logo.webp",
       companyUrl: "https://nsups.org/",
       location: "Dhaka, Bangladesh",
       duration: "Oct 2020 - Nov 2021",
@@ -231,7 +229,11 @@ const Experience = ({ id }) => {
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                      <CompanyLogo src={exp.companyLogo} alt={`${exp.company} logo`}>
+                      <CompanyLogo 
+                        src={exp.companyLogo} 
+                        alt={`${exp.company} logo`} 
+                        imgProps={{ width: 40, height: 40, loading: "lazy" }}
+                      >
                         <BusinessIcon />
                       </CompanyLogo>
                       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>

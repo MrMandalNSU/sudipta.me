@@ -217,6 +217,6 @@ export const workflows = {
 };
 
 export const snapshotsList = [
-  { type: "desktop", src: "/screenshots/projects/desops/do (2).png", title: "SME Analytics Dashboard" },
-  { type: "desktop", src: "/screenshots/projects/desops/do (1).png", title: "CSV Export & Historical Data Portal" },
+  { type: "desktop", src: "/screenshots/projects/desops/do (2).webp", title: "SME Analytics Dashboard" },
+  { type: "desktop", src: "/screenshots/projects/desops/do (1).webp", title: "CSV Export & Historical Data Portal" },
 ];

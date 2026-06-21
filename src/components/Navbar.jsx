@@ -152,6 +152,7 @@ const Navbar = () => {
         }}
       >
         <IconButton
+          aria-label="close drawer"
           onClick={handleDrawerToggle}
           sx={{
             position: "absolute",
@@ -167,6 +168,7 @@ const Navbar = () => {
           <Avatar
             src="/sudipta_dp.webp"
             alt="Sudipta Mandal"
+            imgProps={{ width: 70, height: 70, loading: "lazy" }}
             sx={{
               width: 70,
               height: 70,
@@ -284,6 +286,7 @@ const Navbar = () => {
 
         <Stack direction="row" spacing={2} justifyContent="center">
           <IconButton
+            aria-label="LinkedIn Profile"
             color="primary"
             component="a"
             href="https://www.linkedin.com/in/mrmandal/"
@@ -294,6 +297,7 @@ const Navbar = () => {
             <LinkedInIcon />
           </IconButton>
           <IconButton
+            aria-label="GitHub Profile"
             color="primary"
             component="a"
             href="https://github.com/MrMandalNSU/"
@@ -399,7 +403,7 @@ const Navbar = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", order: { xs: 1, lg: 3 } }}>
-            <IconButton color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, lg: 1 } }}>
+            <IconButton aria-label="toggle theme" color="inherit" onClick={toggleColorMode} sx={{ ml: { xs: 0, lg: 1 } }}>
               {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
             <IconButton

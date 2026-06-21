@@ -407,11 +407,11 @@ const Gallery = ({ id }) => {
               </Typography>
             </CaptionOverlay>
 
-            <NavButton onClick={handlePrev} sx={{ left: 16 }}>
+            <NavButton aria-label="previous slide" onClick={handlePrev} sx={{ left: 16 }}>
               <PrevIcon />
             </NavButton>
 
-            <NavButton onClick={handleNext} sx={{ right: 16 }}>
+            <NavButton aria-label="next slide" onClick={handleNext} sx={{ right: 16 }}>
               <NextIcon />
             </NavButton>
 
@@ -419,6 +419,8 @@ const Gallery = ({ id }) => {
               {images.map((_, idx) => (
                 <Dot
                   key={idx}
+                  role="button"
+                  aria-label={`Go to slide ${idx + 1}`}
                   active={idx === currentIndex ? 1 : 0}
                   onClick={() => {
                     goToSlide(idx);

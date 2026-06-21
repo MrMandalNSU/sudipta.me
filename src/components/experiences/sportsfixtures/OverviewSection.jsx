@@ -30,8 +30,9 @@ const OverviewSection = ({ theme }) => {
             {/* Header Logo & Title */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
               <Avatar
-                src="/sports_fixures_logo.avif"
+                src="/sports_fixures_logo.webp"
                 alt="Sports Fixtures Logo"
+                imgProps={{ width: 50, height: 50, loading: "lazy" }}
                 sx={{
                   width: 50,
                   height: 50,

@@ -40,6 +40,12 @@ const tasks = [
     width: 80,
     height: 80,
   },
+  {
+    input: join(PUBLIC_DIR, "sports_fixures_logo.avif"),
+    output: join(PUBLIC_DIR, "sports_fixures_logo.webp"),
+    width: 100,
+    height: 100,
+  },
   // Project Screenshots (Displayed on detail page, resize to max width 1200px)
   {
     input: join(PUBLIC_DIR, "screenshots", "projects", "desops", "do (1).png"),

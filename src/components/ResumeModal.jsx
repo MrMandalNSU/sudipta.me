@@ -58,6 +58,7 @@ const ResumeModal = ({ open, onClose }) => {
       >
         My Resume
         <IconButton
+          aria-label="close"
           onClick={onClose}
           size="small"
           sx={{

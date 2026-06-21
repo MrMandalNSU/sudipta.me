@@ -172,7 +172,7 @@ const Intro = ({ id }) => {
                 mb: { xs: 4, md: 0 },
               }}
             >
-              <ProfileImage src={PROFILE_PHOTO} alt="Profile" width={275} height={275} />
+              <ProfileImage src={PROFILE_PHOTO} alt="Profile" width={275} height={275} fetchPriority="high" />
               <Typography
                 variant="body2"
                 sx={{
@@ -239,6 +239,7 @@ const Intro = ({ id }) => {
                   <Twitter />
                 </IconButton> */}
                 <IconButton
+                  aria-label="LinkedIn Profile"
                   color="primary"
                   sx={{ fontSize: 40 }}
                   component="a"
@@ -249,6 +250,7 @@ const Intro = ({ id }) => {
                   <LinkedIn />
                 </IconButton>
                 <IconButton
+                  aria-label="GitHub Profile"
                   color="primary"
                   sx={{ fontSize: 40 }}
                   component="a"

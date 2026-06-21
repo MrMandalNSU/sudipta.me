@@ -81,10 +81,10 @@ const Footer = () => {
                 Sudipta Mandal
               </Typography>
               <Box sx={{ display: "flex", gap: 0.5 }}>
-                <IconButton size="small" color="primary" component="a" href="https://www.linkedin.com/in/mrmandal/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
+                <IconButton aria-label="LinkedIn Profile" size="small" color="primary" component="a" href="https://www.linkedin.com/in/mrmandal/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
                   <LinkedIn fontSize="small" />
                 </IconButton>
-                <IconButton size="small" color="primary" component="a" href="https://github.com/MrMandalNSU/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
+                <IconButton aria-label="GitHub Profile" size="small" color="primary" component="a" href="https://github.com/MrMandalNSU/" target="_blank" rel="noopener noreferrer" sx={{ p: 0.5 }}>
                   <GitHub fontSize="small" />
                 </IconButton>
               </Box>
@@ -99,7 +99,7 @@ const Footer = () => {
             <Typography variant="body2" color="text.secondary" sx={{ display: { xs: "none", sm: "block" } }}>
               Back to top
             </Typography>
-            <ScrollTopButton onClick={scrollToTop} size="small">
+            <ScrollTopButton aria-label="Scroll to top" onClick={scrollToTop} size="small">
               <ArrowUpIcon />
             </ScrollTopButton>
           </Box>

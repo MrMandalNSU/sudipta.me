@@ -108,8 +108,9 @@ const Projects = ({ id }) => {
       title: "ColorCuddle",
       type: "Interactive Web Game",
       logo: "/project_logos/colorcuddle_logo.svg",
-      liveLink: "https://color-cuddle.vercel.app/",
+      liveLink: "https://colorcuddle.sudipta.xyz/",
       githubLink: "",
+      detailsLink: "/projects/colorcuddle",
       achievements: [
         "Developed Color Cuddle Games, an interactive web-based game using Next.js, featuring low-latency gameplay, drag-and-drop gameplay mechanics, responsive UI, and full mobile compatibility across devices.",
         "Designed and implemented three difficulty levels with dynamic game logic, creating a progressive user experience while optimizing performance and accessibility for both desktop and mobile users.",

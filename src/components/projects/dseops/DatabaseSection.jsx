@@ -242,7 +242,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                 {[
                   { from: "daily_summaries", to: "public_transactions", path: "M 320 120 C 400 120, 400 90, 480 90" },
                   { from: "daily_summaries", to: "sblock_transactions", path: "M 320 160 C 400 160, 400 270, 480 270" },
-                  { from: "daily_summaries", to: "csv_files", path: "M 210 250 L 210 290" },
+                  { from: "daily_summaries", to: "csv_files", path: "M 210 250 L 210 275" },
                 ].map((rel, idx) => {
                   const isRelated = activeTable === rel.from || activeTable === rel.to;
                   const strokeColor = isRelated ? primaryColor : (theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)");
@@ -272,7 +272,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                     fields: [{ n: "date", k: "PK" }, { n: "spublic_total", k: "" }, { n: "total_trades", k: "" }, { n: "market_cap_equity", k: "" }, { n: "created_at", k: "" }]
                   },
                   {
-                    id: "csv_files", x: 100, y: 290, w: 220, h: 90,
+                    id: "csv_files", x: 100, y: 275, w: 220, h: 110,
                     fields: [{ n: "id", k: "PK" }, { n: "date", k: "Unique" }, { n: "storage_path", k: "" }]
                   },
                   {

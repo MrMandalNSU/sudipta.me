@@ -127,15 +127,11 @@ const OverviewSection = ({ theme }) => {
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2.5, fontFamily: "monospace", fontSize: "0.75rem" }}>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>schedule</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>Daily EOD</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>4H</Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>db tables</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>4 tables</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>deployment</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800 }}>Railway/Vercel</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800 }}>4+</Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>file storage</Typography>
@@ -162,6 +158,7 @@ const OverviewSection = ({ theme }) => {
                   />
                 }
                 sx={{
+                  ml: "auto",
                   height: 34,
                   fontWeight: 800,
                   fontSize: "0.78rem",

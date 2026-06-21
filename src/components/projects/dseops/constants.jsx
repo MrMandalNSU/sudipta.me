@@ -17,7 +17,7 @@ export const features = [
   { icon: <SyncIcon />, title: "Daily Auto Scraping", shortTitle: "Scraping", desc: "Automated daily scripts scrape End-of-Day (EOD) market statistics from Dhaka Stock Exchange (DSE) SME boards." },
   { icon: <StorageIcon />, title: "Supabase Database", shortTitle: "Database", desc: "Structured relational tables in Supabase PostgreSQL storing detailed transaction outputs and daily indicators." },
   { icon: <CloudUploadIcon />, title: "CSV Archival Storage", shortTitle: "Archival", desc: "Direct file upload streams that package historical daily statistics into CSV reports hosted on Cloud S3 buckets." },
-  { icon: <SearchIcon />, title: "Custom Search Queries", shortTitle: "Search", desc: "Interactive calendar selection and ticker lookup filters to query historical indices instantly." },
+  { icon: <SearchIcon />, title: "Interactive Ticker Tables", shortTitle: "Ticker Sorting", desc: "Interactive date calendars, ticker search filters, and multi-column sorting (by price, volume, change %, trades) to query records." },
   { icon: <TerminalIcon />, title: "Idempotent Syncs", shortTitle: "Idempotency", desc: "Engineered cascading database deletion guards to prevent duplicate listings on repeated scrapes." },
   { icon: <LanguageIcon />, title: "Premium Visual Portal", shortTitle: "Portal", desc: "Modern Next.js interface styled with custom CSS variables, glassmorphic layout assets, and HSL palettes." },
 ];
@@ -27,7 +27,7 @@ export const systemNodes = {
     title: "Client Portal (Next.js / React)",
     shortTitle: "Frontend",
     icon: <LanguageIcon />,
-    description: "Responsive Next.js React frontend utilizing pure Vanilla CSS. Displays daily market boards, sector performances, block trades, and calendars to filter and query records.",
+    description: "Responsive Next.js React frontend utilizing pure Vanilla CSS. Displays daily market boards, sector performances, block trades, and calendars to filter, sort, and query records.",
     role: "Fetches structured summaries and downloads CSV spreadsheets through public storage endpoints.",
   },
   api: {
@@ -198,7 +198,7 @@ export const workflows = {
       { label: "Select Date", text: "User chooses a target trading date via calendar widgets on the Next.js frontend." },
       { label: "GET Request", text: "Sends an API lookup call request: GET /api/market-data?date=YYYY-MM-DD." },
       { label: "SQL Fetch", text: "Express API queries PostgreSQL database tables for summaries and transactions matching the date." },
-      { label: "Dashboard Render", text: "Next.js renders dynamic card statistics (advances, declines, volumes) and populate block/public spreadsheets." },
+      { label: "Dashboard Render", text: "Next.js renders dynamic card statistics, populates public/block spreadsheets with interactive column-sorting filters, and displays CSV downloads." },
     ],
     payload: {
       clientAction: "fetch_daily_stats",

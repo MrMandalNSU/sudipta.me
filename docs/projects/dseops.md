@@ -61,7 +61,7 @@ flowchart TD
 1. **Client Portal (Next.js / TypeScript)**:
    - Built with Next.js App Router, with structural layouts styled using pure custom CSS Modules.
    - Provides users with interactive date filters and calendar tools to lookup daily stock transactions.
-   - Renders performance metrics, sector summaries, public listings, and block transaction spreadsheets.
+   - Renders performance metrics, sector summaries, public listings, and block transaction spreadsheets, featuring multi-column sorting (by ticker, open, close, volume, value, change %) for analytical indexing.
    - Streams historical stock archives directly through public Supabase Storage URIs.
 
 2. **Express.js API Server (Node.js)**:

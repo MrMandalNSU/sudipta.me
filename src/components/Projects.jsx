@@ -163,7 +163,7 @@ const Projects = ({ id }) => {
         "Implemented data persistence with Supabase PostgreSQL, incorporating cascading deletions to ensure idempotent daily updates and prevent duplicate database entries. Integrated AWS S3/Supabase Storage bucket uploads to generate, stream, and archive structured CSV data exports automatically.",
         "Created a daily automated cron job trigger (via cron-job.org) secured with shared secrets to execute the scraping workflow seamlessly at market close.",
         "Built a responsive, modern Next.js frontend portal utilizing pure Vanilla CSS variables, glassmorphism cards, and interactive calendar controls for querying historical records.",
-        "Enables sub-second analytics, block transaction tables, and direct CSV file downloads, streamlining financial archival processes for active researchers.",
+        "Enables sub-second analytics with interactive column sorting (by price, volume, change percentage, and trades) on both public and block transaction spreadsheets, streamlining financial archival processes for active researchers.",
       ],
       technologies: [
         "Node.js",

@@ -114,6 +114,9 @@ const Projects = ({ id }) => {
       achievements: [
         "Developed Color Cuddle Games, an interactive web-based game using Next.js, featuring low-latency gameplay, drag-and-drop gameplay mechanics, responsive UI, and full mobile compatibility across devices.",
         "Designed and implemented three difficulty levels with dynamic game logic, creating a progressive user experience while optimizing performance and accessibility for both desktop and mobile users.",
+        "Implemented dynamic 3D card flip animations and difficulty-adapted visual masking (such as padlocked attempts in Insane Mode) to deliver highly immersive feedback loops.",
+        "Built a localized diagnostic console emulator to output real-time evaluation logs and telemetry without interrupting window scroll stability on touchscreen viewports.",
+        "Created an adaptive Wordle-style share compiler that serializes attempt histories into formatted Unicode grid maps or locked log layouts directly to the clipboard.",
       ],
       technologies: [
         "Next.js",

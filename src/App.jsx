@@ -14,6 +14,7 @@ import Gallery from "./components/Gallery";
 import Footer from "./components/Footer";
 import ValoDashDetail from "./components/projects/valodash/ValoDashDetail";
 import ColorCuddleDetail from "./components/projects/colorcuddle/ColorCuddleDetail";
+import TextAnalyzerDetail from "./components/projects/textanalyzer/TextAnalyzerDetail";
 import CargoStreamDetail from "./components/experiences/cargostream/CargoStreamDetail";
 import SportsFixturesDetail from "./components/experiences/sportsfixtures/SportsFixturesDetail";
 import EucapsDetail from "./components/experiences/eucaps/EucapsDetail";
@@ -77,6 +78,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/projects/valodash" element={<ValoDashDetail />} />
         <Route path="/projects/colorcuddle" element={<ColorCuddleDetail />} />
+        <Route path="/projects/textanalyzer" element={<TextAnalyzerDetail />} />
         <Route path="/experiences/cargostream" element={<CargoStreamDetail />} />
         <Route path="/experiences/sportsfixtures" element={<SportsFixturesDetail />} />
         <Route path="/experiences/eucaps" element={<EucapsDetail />} />

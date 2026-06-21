@@ -133,6 +133,7 @@ const Projects = ({ id }) => {
       logo: "/project_logos/textanalyzer_logo.svg",
       liveLink: "https://text-analyzer-sudipta.vercel.app/",
       githubLink: "https://github.com/MrMandalNSU/text-analyzer",
+      detailsLink: "/projects/textanalyzer",
       achievements: [
         "Developed an online platform to analyze text data with auto-generated reports. Implemented CRUD for text, with each browser acting as a unique user. Ensured fast, lightweight analysis. Adopted by 10+ active users.",
         "Built an interactive UI, optimized analysis, and deployed using Node, Express, TS, React, Vite, MUI, and TDD.",

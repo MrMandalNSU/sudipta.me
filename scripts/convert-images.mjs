@@ -6,7 +6,7 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const GALLERY_DIR = join(__dirname, "..", "public", "screenshots", "projects", "colorcuddle");
+const GALLERY_DIR = join(__dirname, "..", "public", "screenshots", "projects", "textanalyzer");
 
 const MAX_WIDTH = 1200;
 const QUALITY = 80;

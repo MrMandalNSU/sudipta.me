@@ -90,17 +90,19 @@ function App() {
       <Navbar />
       <ScrollHandler />
       <Suspense fallback={null}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/projects/valodash" element={<ValoDashDetail />} />
-          <Route path="/projects/colorcuddle" element={<ColorCuddleDetail />} />
-          <Route path="/projects/textanalyzer" element={<TextAnalyzerDetail />} />
-          <Route path="/projects/dseops" element={<DseOpsDetail />} />
-          <Route path="/experiences/cargostream" element={<CargoStreamDetail />} />
-          <Route path="/experiences/sportsfixtures" element={<SportsFixturesDetail />} />
-          <Route path="/experiences/eucaps" element={<EucapsDetail />} />
-          <Route path="/experiences/nsups" element={<NsupsDetail />} />
-        </Routes>
+        <Box component="main">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/projects/valodash" element={<ValoDashDetail />} />
+            <Route path="/projects/colorcuddle" element={<ColorCuddleDetail />} />
+            <Route path="/projects/textanalyzer" element={<TextAnalyzerDetail />} />
+            <Route path="/projects/dseops" element={<DseOpsDetail />} />
+            <Route path="/experiences/cargostream" element={<CargoStreamDetail />} />
+            <Route path="/experiences/sportsfixtures" element={<SportsFixturesDetail />} />
+            <Route path="/experiences/eucaps" element={<EucapsDetail />} />
+            <Route path="/experiences/nsups" element={<NsupsDetail />} />
+          </Routes>
+        </Box>
       </Suspense>
       <Footer />
     </ThemeProvider>

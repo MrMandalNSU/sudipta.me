@@ -237,28 +237,10 @@ const Experience = ({ id }) => {
                         <BusinessIcon />
                       </CompanyLogo>
                       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                        {exp.detailsLink ? (
-                          <RouterLink to={exp.detailsLink} style={{ textDecoration: "none", color: "inherit" }}>
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontWeight: 700,
-                                lineHeight: 1.2,
-                                transition: "color 0.2s ease",
-                                "&:hover": {
-                                  color: "primary.main",
-                                }
-                              }}
-                            >
-                              {exp.title}
-                            </Typography>
-                          </RouterLink>
-                        ) : (
-                          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                            {exp.title}
-                          </Typography>
-                        )}
-                        <Link href={exp.companyUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary" }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                          {exp.title}
+                        </Typography>
+                        <Link href={exp.companyUrl} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: "text.secondary", display: "inline-flex", py: 0.75, pr: 2 }}>
                           <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                             {exp.company} • {exp.type}
                           </Typography>
@@ -267,7 +249,7 @@ const Experience = ({ id }) => {
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: { xs: "flex-start", sm: "center" }, gap: { xs: 1.5, sm: 3 }, textAlign: { xs: "left", sm: "right" } }}>
                       {exp.detailsLink && (
-                        <RouterLink to={exp.detailsLink} style={{ textDecoration: "none" }}>
+                        <RouterLink to={exp.detailsLink} style={{ textDecoration: "none", display: "inline-flex", padding: "8px 0" }}>
                           <Chip
                             icon={<ArrowIcon fontSize="small" />}
                             label="Detailed Overview"

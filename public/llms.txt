@@ -1,0 +1,25 @@
+# Sudipta Mandal - Senior Software Engineer & Researcher
+
+> Technical portfolio, project details, and professional experience of Sudipta Mandal.
+
+This file provides structured information about Sudipta's software engineering background, interactive projects, research work, and competitive programming achievements.
+
+## Primary Profiles
+
+- [Portfolio Website](https://sudipta.xyz/) - Interactive Single Page Application.
+- [LinkedIn Profile](https://www.linkedin.com/in/mrmandal/) - Professional history and networking.
+- [GitHub Profile](https://github.com/MrMandalNSU/) - Open-source repositories and contributions.
+
+## Active Projects
+
+- [ValoDash System Design](https://sudipta.xyz/projects/valodash) - SaaS Analytics Platform for Valorant teams.
+- [ColorCuddle Interactive Game](https://sudipta.xyz/projects/colorcuddle) - Web game and custom UI State System.
+- [Text Analyzer Lexical Suite](https://sudipta.xyz/projects/textanalyzer) - Lexical intelligence and utility sandbox.
+- [DSE Ops Analytics & Archive](https://sudipta.xyz/projects/dseops) - SaaS market scraper and transaction archive.
+
+## Professional Experience
+
+- [Cargo Stream Overview](https://sudipta.xyz/experiences/cargostream) - Senior Software Engineer (Vilnius, Lithuania · Remote).
+- [Sports Fixtures Overview](https://sudipta.xyz/experiences/sportsfixtures) - Senior Software Engineer (Contract, Project-Based).
+- [Eucaps AB Overview](https://sudipta.xyz/experiences/eucaps) - Software Engineer I & II (Stockholm, Sweden · Remote).
+- [NSUPS Volunteer Work](https://sudipta.xyz/experiences/nsups) - Junior Software Engineer (North South University Programming Society).

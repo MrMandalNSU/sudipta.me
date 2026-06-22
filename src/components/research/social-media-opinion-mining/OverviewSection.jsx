@@ -6,8 +6,194 @@ import {
   Language as LanguageIcon,
   OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
-import { contributionCards, headlineStats, paperMeta, researchChips } from "./constants";
+import {
+  contributionCards,
+  headlineStats,
+  keywordCloudTerms,
+  modelAccuracyTrend,
+  paperMeta,
+  polarityDistribution,
+  researchChips,
+} from "./constants";
 import { GlassCard, SectionHeading, StatCard } from "./styles";
+
+const DonutChart = ({ theme }) => {
+  let offset = 0;
+
+  return (
+    <GlassCard sx={{ p: 2.5, height: "100%" }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 0.5 }}>
+        Polarity Distribution
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 2 }}>
+        Labeled corpus split
+      </Typography>
+
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2.5, flexWrap: { xs: "wrap", sm: "nowrap" } }}>
+        <Box sx={{ width: 150, height: 150, position: "relative", flexShrink: 0 }}>
+          <svg viewBox="0 0 120 120" width="150" height="150" aria-label="Polarity distribution donut chart">
+            <circle
+              cx="60"
+              cy="60"
+              r="42"
+              fill="none"
+              stroke={theme.palette.mode === "light" ? "rgba(15,23,42,0.08)" : "rgba(255,255,255,0.08)"}
+              strokeWidth="16"
+            />
+            {polarityDistribution.map((segment) => {
+              const currentOffset = offset;
+              offset += segment.value;
+              return (
+                <circle
+                  key={segment.label}
+                  cx="60"
+                  cy="60"
+                  r="42"
+                  fill="none"
+                  stroke={segment.color}
+                  strokeWidth="16"
+                  pathLength="100"
+                  strokeDasharray={`${segment.value} ${100 - segment.value}`}
+                  strokeDashoffset={-currentOffset}
+                  strokeLinecap="round"
+                  transform="rotate(-90 60 60)"
+                />
+              );
+            })}
+          </svg>
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Typography variant="h5" sx={{ fontWeight: 900, lineHeight: 1 }}>
+              47.6%
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 800 }}>
+              Negative
+            </Typography>
+          </Box>
+        </Box>
+
+        <Stack spacing={1.2} sx={{ flex: 1, minWidth: 150 }}>
+          {polarityDistribution.map((segment) => (
+            <Box key={segment.label} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box sx={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: segment.color }} />
+                <Typography variant="body2" sx={{ fontWeight: 800 }}>
+                  {segment.label}
+                </Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 800 }}>
+                {segment.value}%
+              </Typography>
+            </Box>
+          ))}
+        </Stack>
+      </Box>
+    </GlassCard>
+  );
+};
+
+const AccuracyLineChart = ({ theme }) => {
+  const min = 76;
+  const max = 83;
+  const width = 232;
+  const height = 150;
+  const points = modelAccuracyTrend.map((point, index) => {
+    const x = 26 + index * 90;
+    const y = 116 - ((point.value - min) / (max - min)) * 82;
+    return { ...point, x, y };
+  });
+  const linePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const areaPoints = `26,126 ${linePoints} 206,126`;
+
+  return (
+    <GlassCard sx={{ p: 2.5, height: "100%" }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 0.5 }}>
+        MNB Accuracy Trend
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 2 }}>
+        Accuracy across TF-IDF n-gram ranges
+      </Typography>
+
+      <Box sx={{ width: "100%", overflow: "hidden" }}>
+        <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="170" aria-label="Model accuracy line chart" style={{ display: "block" }}>
+          <line x1="26" y1="126" x2="206" y2="126" stroke={theme.palette.mode === "light" ? "rgba(15,23,42,0.16)" : "rgba(255,255,255,0.16)"} />
+          <line x1="26" y1="28" x2="26" y2="126" stroke={theme.palette.mode === "light" ? "rgba(15,23,42,0.16)" : "rgba(255,255,255,0.16)"} />
+          <polygon points={areaPoints} fill={theme.palette.mode === "light" ? "rgba(79,70,229,0.1)" : "rgba(129,140,248,0.14)"} />
+          <polyline points={linePoints} fill="none" stroke={theme.palette.primary.main} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+          {points.map((point) => (
+            <g key={point.label}>
+              <circle cx={point.x} cy={point.y} r="6" fill={theme.palette.primary.main} stroke={theme.palette.mode === "light" ? "#fff" : "#0f172a"} strokeWidth="3" />
+              <text x={point.x} y={point.y - 13} textAnchor="middle" fontSize="10" fontWeight="800" fill={theme.palette.text.primary} fontFamily="Inter, sans-serif">
+                {point.value}%
+              </text>
+              <text x={point.x} y="144" textAnchor="middle" fontSize="10" fontWeight="700" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+                {point.label}
+              </text>
+            </g>
+          ))}
+        </svg>
+      </Box>
+    </GlassCard>
+  );
+};
+
+const KeywordCloud = ({ theme }) => {
+  const colors = ["primary.main", "secondary.main", "#10B981", "#EF4444", "#F59E0B", "text.primary"];
+
+  return (
+    <GlassCard sx={{ p: 2.5, height: "100%" }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 0.5 }}>
+        Research Theme Cloud
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 2 }}>
+        Conceptual themes, not corpus-frequency output
+      </Typography>
+
+      <Box
+        sx={{
+          minHeight: 156,
+          display: "flex",
+          alignContent: "center",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: 1,
+          p: 1,
+          borderRadius: 2,
+          backgroundColor: theme.palette.mode === "light" ? "rgba(15,23,42,0.03)" : "rgba(255,255,255,0.03)",
+        }}
+      >
+        {keywordCloudTerms.map((term, index) => (
+          <Box
+            key={term.label}
+            component="span"
+            sx={{
+              px: 1.1,
+              py: 0.45,
+              borderRadius: 1,
+              fontWeight: 900,
+              lineHeight: 1.2,
+              fontSize: `${0.66 + term.weight * 0.18}rem`,
+              color: colors[index % colors.length],
+              backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.64)" : "rgba(15,23,42,0.48)",
+              border: `1px solid ${theme.palette.mode === "light" ? "rgba(15,23,42,0.06)" : "rgba(255,255,255,0.08)"}`,
+            }}
+          >
+            {term.label}
+          </Box>
+        ))}
+      </Box>
+    </GlassCard>
+  );
+};
 
 const OverviewSection = ({ theme }) => {
   return (
@@ -108,6 +294,16 @@ const OverviewSection = ({ theme }) => {
               </GlassCard>
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <DonutChart theme={theme} />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <AccuracyLineChart theme={theme} />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <KeywordCloud theme={theme} />
         </Grid>
 
         {contributionCards.map((item) => (

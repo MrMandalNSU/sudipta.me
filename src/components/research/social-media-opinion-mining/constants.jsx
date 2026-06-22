@@ -34,6 +34,32 @@ export const headlineStats = [
   { value: "8", label: "Sentiment labels", helper: "From appreciation to hate categories" },
   { value: "0.92", label: "Cohen's kappa", helper: "Almost-perfect annotation agreement" },
   { value: "82.60%", label: "Best accuracy", helper: "MNB with unigram TF-IDF features" },
+  { value: "4", label: "Bangla annotators", helper: "Native speakers cross-validated labels" },
+];
+
+export const polarityDistribution = [
+  { label: "Negative", value: 47.6, color: "#EF4444" },
+  { label: "Neutral", value: 35.1, color: "#64748B" },
+  { label: "Positive", value: 17.3, color: "#10B981" },
+];
+
+export const modelAccuracyTrend = [
+  { label: "Unigram", value: 82.6 },
+  { label: "Bigram", value: 81.33 },
+  { label: "Trigram", value: 77.79 },
+];
+
+export const keywordCloudTerms = [
+  { label: "Bangla NLP", weight: 1.45 },
+  { label: "TF-IDF", weight: 1.25 },
+  { label: "Opinion Mining", weight: 1.38 },
+  { label: "Hate Speech", weight: 1.28 },
+  { label: "Annotation", weight: 1.12 },
+  { label: "MNB", weight: 1 },
+  { label: "Facebook", weight: 1.08 },
+  { label: "Corpus", weight: 1.18 },
+  { label: "Sentiment", weight: 1.3 },
+  { label: "Bangla Text", weight: 1.2 },
 ];
 
 export const contributionCards = [

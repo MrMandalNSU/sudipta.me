@@ -20,6 +20,7 @@ import {
   Article as ArticleIcon,
   Business as BusinessIcon,
   CalendarToday as CalendarIcon,
+  CheckCircleOutline as CheckCircleOutlineIcon,
   FactCheck as FactCheckIcon,
   Insights as InsightsIcon,
   Language as LanguageIcon,
@@ -30,6 +31,10 @@ import {
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background:
@@ -46,6 +51,9 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const ResearchCard = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 1,
+  isolation: "isolate",
   borderRadius: theme.spacing(2),
   backgroundColor:
     theme.palette.mode === "light"
@@ -54,12 +62,10 @@ const ResearchCard = styled(Box)(({ theme }) => ({
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
-  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
-  transition: "all 0.3s ease",
+  boxShadow: "none",
+  transition: "border-color 0.2s ease, background-color 0.2s ease",
   "@media (hover: hover)": {
     "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0 12px 24px rgba(79, 70, 229, 0.16)",
       border: `1px solid ${theme.palette.primary.main}`,
     },
   },
@@ -86,6 +92,7 @@ const stats = [
   { value: "8", label: "Sentiment labels" },
   { value: "0.92", label: "Cohen's kappa" },
   { value: "82.60%", label: "Best accuracy" },
+  { value: "4", label: "Bangla annotators" },
 ];
 
 const methodology = [
@@ -97,11 +104,12 @@ const methodology = [
 ];
 
 const achievements = [
-  "Created a privacy-conscious corpus of 11,006 Bangla Facebook comments from public posts, retaining reaction and reply metadata while excluding names and profile links.",
-  "Structured labels into positive, negative, and neutral polarity, then decomposed them into eight sentiment subcategories including gender-based, religious, political, personal hate, and sarcasm.",
-  "Coordinated annotation and cross-validation with native Bangla speakers, achieving a Cohen's kappa value of 0.92 for almost-perfect agreement.",
-  "Analyzed demographic and reaction patterns across public-figure groups, showing a substantially higher rate of gender-based and religious hate on female sample pages.",
-  "Benchmarked TF-IDF unigram, bigram, and trigram features across traditional ML classifiers, with Multinomial Naive Bayes reaching 82.60% accuracy.",
+  "Created a privacy-conscious corpus of 11,006 Bangla Facebook comments from public posts, retaining reaction and reply metadata while excluding names and profile links. The dataset was collected from multiple public-figure groups so the research could capture noisy, real-world social-media language instead of curated textbook Bangla.",
+  "Structured labels into positive, negative, and neutral polarity, then decomposed them into eight sentiment subcategories including gender-based, religious, political, personal hate, and sarcasm. This layered taxonomy made the corpus useful for both broad sentiment analysis and more specific online-harassment research.",
+  "Coordinated annotation and cross-validation with native Bangla speakers, achieving a Cohen's kappa value of 0.92 for almost-perfect agreement. The validation loop helped correct ambiguous comments, reduce labeling drift, and keep the final dataset reliable enough for supervised machine-learning experiments.",
+  "Analyzed demographic and reaction patterns across public-figure groups, showing a substantially higher rate of gender-based and religious hate on female sample pages. The exploratory analysis connected model-building with social insight by surfacing where hostile behavior appeared most concentrated.",
+  "Benchmarked TF-IDF unigram, bigram, and trigram features across traditional ML classifiers, with Multinomial Naive Bayes reaching 82.60% accuracy. The comparison established a practical baseline for Bangla opinion mining using lightweight, reproducible methods in Google Colab.",
+  "Published the work at ICCIT 2021 with a future direction toward expanding the dataset, improving coverage of noisy Bangla social-media language, and preparing reusable resources for safer online community research.",
 ];
 
 const technologies = [
@@ -115,11 +123,215 @@ const technologies = [
   "LaTeX",
 ];
 
+const polarityDistribution = [
+  { label: "Negative", value: 47.6, color: "#ef4444" },
+  { label: "Neutral", value: 35.1, color: "#64748b" },
+  { label: "Positive", value: 17.3, color: "#10b981" },
+];
+
+const accuracyTrend = [
+  { label: "Uni", value: 82.6 },
+  { label: "Bi", value: 81.33 },
+  { label: "Tri", value: 77.79 },
+];
+
+const LandingDonutChart = () => {
+  let offset = 0;
+
+  return (
+    <Box
+      sx={{
+        p: 1.8,
+        borderRadius: 1.5,
+        backgroundColor: "rgba(15,23,42,0.04)",
+        border: "1px solid rgba(148,163,184,0.16)",
+        height: "100%",
+      }}
+    >
+      <Typography variant="subtitle2" sx={{ fontWeight: 900, mb: 1, textAlign: "left" }}>
+        Polarity Split
+      </Typography>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "minmax(140px, 1fr) 150px", lg: "minmax(150px, 1fr) 160px" },
+          alignItems: "center",
+          gap: { xs: 1.5, sm: 2.5 },
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center", minWidth: 0 }}>
+          <Box sx={{ width: 106, height: 106, position: "relative", flexShrink: 0 }}>
+            <svg viewBox="0 0 100 100" width="106" height="106" aria-label="Research polarity split preview">
+            <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(148,163,184,0.2)" strokeWidth="14" />
+            {polarityDistribution.map((segment) => {
+              const currentOffset = offset;
+              offset += segment.value;
+              return (
+                <circle
+                  key={segment.label}
+                  cx="50"
+                  cy="50"
+                  r="34"
+                  fill="none"
+                  stroke={segment.color}
+                  strokeWidth="14"
+                  pathLength="100"
+                  strokeDasharray={`${segment.value} ${100 - segment.value}`}
+                  strokeDashoffset={-currentOffset}
+                  strokeLinecap="round"
+                  transform="rotate(-90 50 50)"
+                />
+              );
+            })}
+            </svg>
+            <Box sx={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+              <Typography variant="body2" sx={{ fontWeight: 900, lineHeight: 1 }}>47.6%</Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.62rem", fontWeight: 800 }}>Neg.</Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.8, minWidth: 0 }}>
+          {polarityDistribution.map((segment) => (
+            <Box
+              key={segment.label}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "minmax(0, 1fr) auto",
+                alignItems: "center",
+                columnGap: 1.2,
+                minWidth: 0,
+                px: 1,
+                py: 0.8,
+                borderRadius: 1,
+                backgroundColor: "rgba(129,140,248,0.08)",
+                border: "1px solid rgba(129,140,248,0.12)",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.65, minWidth: 0 }}>
+                <Box sx={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: segment.color, flexShrink: 0 }} />
+                <Typography variant="caption" sx={{ fontWeight: 900, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {segment.label}
+                </Typography>
+              </Box>
+              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 900, textAlign: "right" }}>
+                {segment.value}%
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const LandingAccuracyChart = () => {
+  const min = 76;
+  const max = 83;
+  const points = accuracyTrend.map((point, index) => {
+    const x = 44 + index * 136;
+    const y = 104 - ((point.value - min) / (max - min)) * 72;
+    return { ...point, x, y };
+  });
+  const linePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
+
+  return (
+    <Box
+      sx={{
+        p: 1.8,
+        borderRadius: 1.5,
+        backgroundColor: "rgba(15,23,42,0.04)",
+        border: "1px solid rgba(148,163,184,0.16)",
+        height: "100%",
+      }}
+    >
+      <Typography variant="subtitle2" sx={{ fontWeight: 900, mb: 1, textAlign: "left" }}>
+        MNB Accuracy
+      </Typography>
+      <svg viewBox="0 0 360 136" width="100%" height="150" aria-label="MNB accuracy preview chart" style={{ display: "block" }}>
+        <line x1="44" y1="112" x2="316" y2="112" stroke="rgba(148,163,184,0.22)" />
+        <polyline points={linePoints} fill="none" stroke="#818cf8" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        {points.map((point) => (
+          <g key={point.label}>
+            <circle cx={point.x} cy={point.y} r="4.5" fill="#818cf8" />
+            <text x={point.x} y={point.y - 11} textAnchor="middle" fontSize="10" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">
+              {point.value}%
+            </text>
+            <text x={point.x} y="130" textAnchor="middle" fontSize="10" fontWeight="800" fill="#94a3b8" fontFamily="Inter, sans-serif">
+              {point.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </Box>
+  );
+};
+
+const ActionButtons = ({ sx }) => (
+  <Grid container spacing={1.5} sx={sx}>
+    <Grid size={{ xs: 12, sm: 6 }}>
+      <Button
+        fullWidth
+        component={RouterLink}
+        to="/research/social-media-opinion-mining"
+        variant="contained"
+        startIcon={<ArticleIcon />}
+        sx={{
+          minHeight: 38,
+          borderRadius: 1.2,
+          fontWeight: 800,
+          textTransform: "none",
+          color: "#fff",
+          backgroundColor: "primary.main",
+          whiteSpace: "nowrap",
+          "& .MuiButton-startIcon": { color: "inherit" },
+          "&:hover": {
+            color: "#fff",
+            backgroundColor: "#3730A3",
+            boxShadow: "0 6px 16px rgba(79, 70, 229, 0.32)",
+          },
+        }}
+      >
+        Detailed Overview
+      </Button>
+    </Grid>
+    <Grid size={{ xs: 12, sm: 6 }}>
+      <Button
+        fullWidth
+        href="https://ieeexplore.ieee.org/document/9689860"
+        target="_blank"
+        rel="noopener noreferrer"
+        variant="outlined"
+        startIcon={<OpenInNewIcon />}
+        sx={{
+          minHeight: 38,
+          borderRadius: 1.2,
+          fontWeight: 800,
+          textTransform: "none",
+          backgroundColor: "rgba(255,255,255,0.03)",
+          whiteSpace: "nowrap",
+          "& .MuiButton-startIcon": { color: "inherit" },
+          "&:hover": {
+            color: "primary.main",
+            backgroundColor: "rgba(79,70,229,0.08)",
+            borderColor: "primary.main",
+          },
+        }}
+      >
+        View Publication
+      </Button>
+    </Grid>
+  </Grid>
+);
+
 const Research = ({ id }) => {
   return (
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 0,
         display: "flex",
         alignItems: "center",
@@ -185,9 +397,13 @@ const Research = ({ id }) => {
 
               <Grid container spacing={2.5}>
                 <Grid size={{ xs: 12, lg: 7 }}>
-                  <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.75, mb: 2 }}>
+                  <ActionButtons sx={{ display: { xs: "flex", lg: "none" }, mb: 2.2 }} />
+
+                  <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.75, mb: 2, textAlign: "left" }}>
                     <strong>Focus:</strong> A published thesis research project on Bangla Facebook opinion mining,
                     hate-speech patterns, annotation quality, and classic ML baselines for low-resource social-media text.
+                    The work connects dataset construction with social analysis, showing how annotated Bangla comments
+                    can support safer moderation tools, demographic insight, and reproducible NLP experimentation.
                   </Typography>
 
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mb: 2.5 }}>
@@ -214,12 +430,10 @@ const Research = ({ id }) => {
                     ))}
                   </Box>
 
-                  <Stack spacing={1.2}>
+                  <Stack spacing={1.2} sx={{ alignItems: "stretch", textAlign: "left" }}>
                     {achievements.map((achievement) => (
-                      <Box key={achievement} sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}>
-                        <Typography variant="body2" sx={{ color: "primary.main", mt: 0.15 }}>
-                          -
-                        </Typography>
+                      <Box key={achievement} sx={{ display: "flex", gap: 1.1, alignItems: "flex-start", textAlign: "left" }}>
+                        <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 17, mt: 0.25, flexShrink: 0 }} />
                         <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.65 }}>
                           {achievement}
                         </Typography>
@@ -229,9 +443,11 @@ const Research = ({ id }) => {
                 </Grid>
 
                 <Grid size={{ xs: 12, lg: 5 }}>
+                  <ActionButtons sx={{ display: { xs: "none", lg: "flex" }, mb: 2.5 }} />
+
                   <Grid container spacing={1.5} sx={{ mb: 2.5 }}>
                     {stats.map((stat) => (
-                      <Grid key={stat.label} size={{ xs: 6, sm: stat.value === "82.60%" ? 4 : 6, lg: 6 }}>
+                      <Grid key={stat.label} size={{ xs: 6, sm: 4, lg: 6 }}>
                         <Box
                           sx={{
                             p: 1.7,
@@ -271,27 +487,14 @@ const Research = ({ id }) => {
                     </Typography>
                   </Box>
 
-                  <Stack direction={{ xs: "column", sm: "row", lg: "column", xl: "row" }} spacing={1.2}>
-                    <Button
-                      component={RouterLink}
-                      to="/research/social-media-opinion-mining"
-                      variant="contained"
-                      startIcon={<ArticleIcon />}
-                      sx={{ borderRadius: 1.2, fontWeight: 800, textTransform: "none" }}
-                    >
-                      Detailed Overview
-                    </Button>
-                    <Button
-                      href="https://ieeexplore.ieee.org/document/9689860"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outlined"
-                      startIcon={<OpenInNewIcon />}
-                      sx={{ borderRadius: 1.2, fontWeight: 800, textTransform: "none" }}
-                    >
-                      View Publication
-                    </Button>
-                  </Stack>
+                  <Grid container spacing={1.5}>
+                    <Grid size={{ xs: 12 }}>
+                      <LandingDonutChart />
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                      <LandingAccuracyChart />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
 

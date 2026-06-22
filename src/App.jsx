@@ -21,6 +21,7 @@ const ValoDashDetail = lazy(() => import("./components/projects/valodash/ValoDas
 const ColorCuddleDetail = lazy(() => import("./components/projects/colorcuddle/ColorCuddleDetail"));
 const TextAnalyzerDetail = lazy(() => import("./components/projects/textanalyzer/TextAnalyzerDetail"));
 const DseOpsDetail = lazy(() => import("./components/projects/dseops/DseOpsDetail"));
+const SocialMediaOpinionMiningDetail = lazy(() => import("./components/research/social-media-opinion-mining/SocialMediaOpinionMiningDetail"));
 const CargoStreamDetail = lazy(() => import("./components/experiences/cargostream/CargoStreamDetail"));
 const SportsFixturesDetail = lazy(() => import("./components/experiences/sportsfixtures/SportsFixturesDetail"));
 const EucapsDetail = lazy(() => import("./components/experiences/eucaps/EucapsDetail"));
@@ -97,6 +98,7 @@ function App() {
             <Route path="/projects/colorcuddle" element={<ColorCuddleDetail />} />
             <Route path="/projects/textanalyzer" element={<TextAnalyzerDetail />} />
             <Route path="/projects/dseops" element={<DseOpsDetail />} />
+            <Route path="/research/social-media-opinion-mining" element={<SocialMediaOpinionMiningDetail />} />
             <Route path="/experiences/cargostream" element={<CargoStreamDetail />} />
             <Route path="/experiences/sportsfixtures" element={<SportsFixturesDetail />} />
             <Route path="/experiences/eucaps" element={<EucapsDetail />} />

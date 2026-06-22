@@ -14,6 +14,10 @@ import SchoolIcon from "@mui/icons-material/School";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background: theme.palette.mode === "light"
@@ -29,17 +33,34 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const EducationCard = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 1,
+  isolation: "isolate",
+  overflow: "hidden",
   borderRadius: theme.spacing(2),
   padding: theme.spacing(2),
   cursor: "default",
+  border: "1px solid transparent",
 
 
-  transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+  transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.25s ease, background-color 0.25s ease",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    pointerEvents: "none",
+    opacity: 0,
+    boxShadow: "inset 0 0 0 1px rgba(16, 185, 129, 0.35), inset 0 0 32px rgba(16, 185, 129, 0.13)",
+    transition: "opacity 0.25s ease",
+  },
   "@media (hover: hover)": {
     "&:hover": {
       transform: "translateY(-8px) scale(1.02)",
-      boxShadow: "0 12px 24px rgba(16, 185, 129, 0.2)",
       border: `1px solid ${theme.palette.success.main}`,
+      "&::after": {
+        opacity: 1,
+      },
     },
   },
   [theme.breakpoints.down("sm")]: {
@@ -103,6 +124,9 @@ const Education = ({ id }) => {
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 0,
         display: "flex",
         alignItems: "center",

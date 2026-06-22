@@ -17,6 +17,10 @@ import {
 } from "@mui/icons-material";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   margin: theme.spacing(4, "auto", 4, "auto"),
   padding: theme.spacing(2), // Reduce padding on mobile
   width: "100%",

@@ -3,6 +3,8 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {
   Article as ArticleIcon,
+  CheckCircleOutline as CheckCircleOutlineIcon,
+  Insights as InsightsIcon,
   Language as LanguageIcon,
   OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
@@ -195,6 +197,66 @@ const KeywordCloud = ({ theme }) => {
   );
 };
 
+const pipelinePreview = [
+  "Public comments",
+  "Native validation",
+  "TF-IDF features",
+  "Model baseline",
+];
+
+const PipelinePreview = ({ theme }) => (
+  <Box
+    sx={{
+      mt: "auto",
+      pt: { xs: 3, lg: 4 },
+      borderRadius: 2,
+    }}
+  >
+    <Box
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        backgroundColor: theme.palette.mode === "light" ? "rgba(15,23,42,0.03)" : "rgba(255,255,255,0.03)",
+        border: `1px solid ${theme.palette.mode === "light" ? "rgba(15,23,42,0.06)" : "rgba(255,255,255,0.08)"}`,
+      }}
+    >
+      <Typography variant="subtitle2" sx={{ fontWeight: 900, display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+        <InsightsIcon color="primary" fontSize="small" />
+        Research Snapshot
+      </Typography>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", md: "repeat(4, minmax(0, 1fr))" },
+          gap: 1,
+        }}
+      >
+        {pipelinePreview.map((step, index) => (
+          <Box
+            key={step}
+            sx={{
+              minWidth: 0,
+              px: 1,
+              py: 1,
+              borderRadius: 1.2,
+              backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.62)" : "rgba(15,23,42,0.34)",
+              border: `1px solid ${theme.palette.mode === "light" ? "rgba(79,70,229,0.1)" : "rgba(129,140,248,0.12)"}`,
+            }}
+          >
+            <Typography variant="caption" color="primary.main" sx={{ display: "block", fontWeight: 900, mb: 0.4 }}>
+              0{index + 1}
+            </Typography>
+            <Typography variant="caption" sx={{ display: "flex", alignItems: "flex-start", gap: 0.55, fontWeight: 800, lineHeight: 1.25 }}>
+              <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 13, mt: 0.05, flexShrink: 0 }} />
+              {step}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  </Box>
+);
+
 const OverviewSection = ({ theme }) => {
   return (
     <Box id="overview" sx={{ scrollMarginTop: 120, mb: 4 }}>
@@ -202,7 +264,7 @@ const OverviewSection = ({ theme }) => {
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, lg: 7 }}>
-          <GlassCard sx={{ p: { xs: 3, sm: 4 }, height: "100%" }}>
+          <GlassCard sx={{ p: { xs: 3, sm: 4 }, height: "100%", display: "flex", flexDirection: "column" }}>
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 3 }}>
               {researchChips.map((chip) => (
                 <Chip
@@ -260,6 +322,8 @@ const OverviewSection = ({ theme }) => {
                 Read Methodology
               </Button>
             </Stack>
+
+            <PipelinePreview theme={theme} />
           </GlassCard>
         </Grid>
 

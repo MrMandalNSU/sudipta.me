@@ -33,8 +33,8 @@ For the affected section/card:
 
 1. Isolate the section paint layer.
 2. Clip the outer glass container.
-3. Avoid large hover shadows/transforms on the big wrapper card.
-4. Keep hover feedback subtle, usually border-only or a small internal effect.
+3. Avoid large external hover shadows on the big wrapper card.
+4. Keep the hover motion if the section uses it, but pair it with border or internal glow feedback instead of an outside `boxShadow`.
 
 Example pattern:
 
@@ -56,14 +56,29 @@ const LargeCard = styled(Box)(({ theme }) => ({
   position: "relative",
   zIndex: 1,
   isolation: "isolate",
+  overflow: "hidden",
   borderRadius: theme.spacing(2),
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
   boxShadow: "none",
-  transition: "border-color 0.2s ease, background-color 0.2s ease",
+  transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, background-color 0.2s ease",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    pointerEvents: "none",
+    opacity: 0,
+    boxShadow: "inset 0 0 0 1px rgba(129, 140, 248, 0.35), inset 0 0 32px rgba(79, 70, 229, 0.14)",
+    transition: "opacity 0.25s ease",
+  },
   "@media (hover: hover)": {
     "&:hover": {
+      transform: "translateY(-8px) scale(1.02)",
       border: `1px solid ${theme.palette.primary.main}`,
+      "&::after": {
+        opacity: 1,
+      },
     },
   },
 }));
@@ -92,7 +107,7 @@ Avoid this combination on large landing cards:
 }
 ```
 
-Small repeated cards can still use hover lift/shadow. The issue is most visible on large glass wrappers near section boundaries.
+The transform is not the problem by itself. The risky part is pairing transformed glass surfaces with a large external `boxShadow`. Prefer `transform` plus border/internal glow. Small repeated cards can still use hover lift/shadow if they are safely contained and do not sit near section boundaries.
 
 ## Current Known Fix
 
@@ -103,7 +118,8 @@ The Research section fix used:
 - `isolation: "isolate"`
 - `overflow: "hidden"` on the outer `Paper`
 - `position: "relative"`, `zIndex: 1`, and `isolation: "isolate"` on the large card
-- removed the large card hover `transform` and `boxShadow`
-- kept border hover feedback only
+- keep or restore the large card hover `transform`
+- remove only the large external hover `boxShadow`
+- use border hover feedback and/or an internal `::after` glow
 
 If this bug reappears elsewhere, apply the same pattern to the nearest section-level `Paper` and large glass card wrapper.

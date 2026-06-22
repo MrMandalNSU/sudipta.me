@@ -21,6 +21,10 @@ import {
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background: theme.palette.mode === "light"
@@ -36,6 +40,10 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const CPCard = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 1,
+  isolation: "isolate",
+  overflow: "hidden",
   borderRadius: theme.spacing(2),
   backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
   backdropFilter: "blur(12px)",
@@ -43,13 +51,25 @@ const CPCard = styled(Box)(({ theme }) => ({
 
 
   border: "1px solid rgba(255, 255, 255, 0.1)",
-  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
-  transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+  boxShadow: "none",
+  transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.25s ease, background-color 0.25s ease",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    pointerEvents: "none",
+    opacity: 0,
+    boxShadow: "inset 0 0 0 1px rgba(245, 158, 11, 0.36), inset 0 0 32px rgba(245, 158, 11, 0.13)",
+    transition: "opacity 0.25s ease",
+  },
   "@media (hover: hover)": {
     "&:hover": {
       transform: "translateY(-8px) scale(1.02)",
-      boxShadow: "0 12px 24px rgba(245, 158, 11, 0.2)",
       border: `1px solid ${theme.palette.warning.main}`,
+      "&::after": {
+        opacity: 1,
+      },
     },
   },
   [theme.breakpoints.down("sm")]: {
@@ -116,6 +136,9 @@ const CompetitiveProgramming = ({ id }) => {
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 0,
         display: "flex",
         alignItems: "center",

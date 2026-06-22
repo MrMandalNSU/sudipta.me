@@ -19,6 +19,10 @@ import {
 const PROFILE_PHOTO = "./sudipta_dp.webp";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background: theme.palette.mode === "light"
@@ -44,6 +48,7 @@ const IntroCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(3),
   position: "relative",
   zIndex: 1,
+  isolation: "isolate",
   [theme.breakpoints.down("sm")]: {
     borderRadius: 0,
     borderLeft: "none",
@@ -71,6 +76,9 @@ const Intro = ({ id }) => {
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 16,
         pb: { xs: 0, sm: 4 },
         display: "flex",

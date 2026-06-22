@@ -21,7 +21,8 @@ import {
 
 export const paperMeta = {
   title: "Social Media Opinion Mining Based on Bangla Public Post of Facebook",
-  venue: "24th International Conference on Computer and Information Technology (ICCIT)",
+  venue:
+    "24th International Conference on Computer and Information Technology (ICCIT)",
   year: "2021",
   institution: "North South University",
   location: "Dhaka, Bangladesh",
@@ -29,12 +30,36 @@ export const paperMeta = {
 };
 
 export const headlineStats = [
-  { value: "11,006", label: "Bangla comments", helper: "Collected from public Facebook posts" },
-  { value: "3", label: "Polarity classes", helper: "Positive, negative, and neutral" },
-  { value: "8", label: "Sentiment labels", helper: "From appreciation to hate categories" },
-  { value: "0.92", label: "Cohen's kappa", helper: "Almost-perfect annotation agreement" },
-  { value: "82.60%", label: "Best accuracy", helper: "MNB with unigram TF-IDF features" },
-  { value: "4", label: "Bangla annotators", helper: "Native speakers cross-validated labels" },
+  {
+    value: "11,006",
+    label: "Bangla comments",
+    helper: "Collected from public Facebook posts",
+  },
+  {
+    value: "3",
+    label: "Polarity classes",
+    helper: "Positive, negative, and neutral",
+  },
+  {
+    value: "8",
+    label: "Sentiment labels",
+    helper: "From appreciation to hate categories",
+  },
+  {
+    value: "0.92",
+    label: "Cohen's kappa",
+    helper: "Almost-perfect annotation agreement",
+  },
+  {
+    value: "82.60%",
+    label: "Best accuracy",
+    helper: "MNB with unigram TF-IDF features",
+  },
+  {
+    value: "4",
+    label: "Bangla annotators",
+    helper: "Native speakers cross-validated labels",
+  },
 ];
 
 export const polarityDistribution = [
@@ -86,19 +111,60 @@ export const contributionCards = [
 ];
 
 export const datasetFacts = [
-  { icon: <PublicIcon />, title: "Source", desc: "Public Facebook posts from Bangla public figures and celebrities." },
-  { icon: <GroupsIcon />, title: "Samples", desc: "Actors, actresses, players, religious leaders, politicians, singers, and social influencers." },
-  { icon: <SecurityIcon />, title: "Privacy", desc: "Names and profile links were excluded; only comments plus reaction and reply counts were retained." },
-  { icon: <VerifiedIcon />, title: "Validation", desc: "Four native Bangla speakers annotated and cross-checked the dataset." },
+  {
+    icon: <PublicIcon />,
+    title: "Source",
+    desc: "Public Facebook posts from Bangla public figures and celebrities.",
+  },
+  {
+    icon: <GroupsIcon />,
+    title: "Samples",
+    desc: "Actors, actresses, players, religious leaders, politicians, singers, and social influencers.",
+  },
+  {
+    icon: <SecurityIcon />,
+    title: "Privacy",
+    desc: "Names and profile links were excluded; only comments plus reaction and reply counts were retained.",
+  },
+  {
+    icon: <VerifiedIcon />,
+    title: "Validation",
+    desc: "Four native Bangla speakers annotated and cross-checked the dataset.",
+  },
 ];
 
 export const annotationCategories = [
-  { category: "Positive", label: "Wishful thinking", count: 967, percent: "8.8%" },
+  {
+    category: "Positive",
+    label: "Wishful thinking",
+    count: 967,
+    percent: "8.8%",
+  },
   { category: "Positive", label: "Appreciation", count: 942, percent: "8.6%" },
-  { category: "Negative", label: "Gender-based hate", count: 525, percent: "4.8%" },
-  { category: "Negative", label: "Religious hate", count: 731, percent: "6.6%" },
-  { category: "Negative", label: "Political hate", count: 572, percent: "5.2%" },
-  { category: "Negative", label: "Personal hate", count: 1995, percent: "18.1%" },
+  {
+    category: "Negative",
+    label: "Gender-based hate",
+    count: 525,
+    percent: "4.8%",
+  },
+  {
+    category: "Negative",
+    label: "Religious hate",
+    count: 731,
+    percent: "6.6%",
+  },
+  {
+    category: "Negative",
+    label: "Political hate",
+    count: 572,
+    percent: "5.2%",
+  },
+  {
+    category: "Negative",
+    label: "Personal hate",
+    count: 1995,
+    percent: "18.1%",
+  },
   { category: "Negative", label: "Sarcasm", count: 1414, percent: "12.8%" },
   { category: "Neutral", label: "Neutral", count: 3860, percent: "35.1%" },
 ];
@@ -164,14 +230,62 @@ export const analysisFindings = [
 ];
 
 export const modelRows = [
-  { model: "Logistic Regression", unigram: "80.20", bigram: "77.37", trigram: "76.52", note: "Strong precision on trigram features" },
-  { model: "Decision Tree", unigram: "76.80", bigram: "79.07", trigram: "78.50", note: "Tree baseline for sparse TF-IDF vectors" },
-  { model: "Random Forest", unigram: "78.93", bigram: "79.77", trigram: "78.93", note: "Stable but not highest performing" },
-  { model: "Multinomial NB", unigram: "82.60", bigram: "81.33", trigram: "77.79", note: "Best overall accuracy on unigram features" },
-  { model: "KNN", unigram: "80.48", bigram: "80.91", trigram: "79.63", note: "Best trigram accuracy" },
-  { model: "Linear SVM", unigram: "76.80", bigram: "75.25", trigram: "74.82", note: "Lower recall than MNB and KNN" },
-  { model: "RBF SVM", unigram: "78.36", bigram: "76.52", trigram: "75.53", note: "Best bigram precision in the paper" },
-  { model: "XGBoost", unigram: "76.94", bigram: "76.66", trigram: "76.52", note: "Competitive but below MNB" },
+  {
+    model: "Logistic Regression",
+    unigram: "80.20",
+    bigram: "77.37",
+    trigram: "76.52",
+    note: "Strong precision on trigram features",
+  },
+  {
+    model: "Decision Tree",
+    unigram: "76.80",
+    bigram: "79.07",
+    trigram: "78.50",
+    note: "Tree baseline for sparse TF-IDF vectors",
+  },
+  {
+    model: "Random Forest",
+    unigram: "78.93",
+    bigram: "79.77",
+    trigram: "78.93",
+    note: "Stable but not highest performing",
+  },
+  {
+    model: "Multinomial NB",
+    unigram: "82.60",
+    bigram: "81.33",
+    trigram: "77.79",
+    note: "Best overall accuracy on unigram features",
+  },
+  {
+    model: "KNN",
+    unigram: "80.48",
+    bigram: "80.91",
+    trigram: "79.63",
+    note: "Best trigram accuracy",
+  },
+  {
+    model: "Linear SVM",
+    unigram: "76.80",
+    bigram: "75.25",
+    trigram: "74.82",
+    note: "Lower recall than MNB and KNN",
+  },
+  {
+    model: "RBF SVM",
+    unigram: "78.36",
+    bigram: "76.52",
+    trigram: "75.53",
+    note: "Best bigram precision in the paper",
+  },
+  {
+    model: "XGBoost",
+    unigram: "76.94",
+    bigram: "76.66",
+    trigram: "76.52",
+    note: "Competitive but below MNB",
+  },
 ];
 
 export const featureSizes = [
@@ -201,5 +315,5 @@ export const researchChips = [
   { icon: <AnalyticsIcon />, label: "Opinion Mining" },
   { icon: <AutoGraphIcon />, label: "TF-IDF" },
   { icon: <BarChartIcon />, label: "ML Benchmark" },
-  { icon: <SchoolIcon />, label: "North South University" },
+  //{ icon: <SchoolIcon />, label: "North South University" },
 ];

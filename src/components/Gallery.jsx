@@ -12,6 +12,10 @@ import PrevIcon from "@mui/icons-material/ArrowBackIosNew";
 import NextIcon from "@mui/icons-material/ArrowForwardIos";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background: theme.palette.mode === "light"
@@ -28,6 +32,8 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
 
 const CarouselContainer = styled(Box)(({ theme }) => ({
   position: "relative",
+  zIndex: 1,
+  isolation: "isolate",
   width: "100%",
   height: 500,
   borderRadius: theme.spacing(2),
@@ -329,6 +335,9 @@ const Gallery = ({ id }) => {
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 0,
         display: "flex",
         alignItems: "center",

@@ -18,6 +18,10 @@ import {
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   background: theme.palette.mode === "light"
@@ -33,6 +37,10 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const ExperienceCard = styled(Box)(({ theme, active, isdimmed }) => ({
+  position: "relative",
+  zIndex: 1,
+  isolation: "isolate",
+  overflow: "hidden",
   padding: theme.spacing(2),
   borderRadius: theme.spacing(2),
   height: "100%",
@@ -45,13 +53,21 @@ const ExperienceCard = styled(Box)(({ theme, active, isdimmed }) => ({
   border: active
     ? `1.5px solid ${theme.palette.primary.main}`
     : "1.5px solid rgba(255, 255, 255, 0.08)",
-  boxShadow: active
-    ? "0 12px 24px rgba(79, 70, 229, 0.2)"
-    : "0 4px 16px rgba(0, 0, 0, 0.05)",
+  boxShadow: "none",
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
-  transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
   transform: active ? "translateY(-6px) scale(1.01)" : "none",
+  transition: "transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    pointerEvents: "none",
+    opacity: active ? 1 : 0,
+    boxShadow: "inset 0 0 0 1px rgba(129, 140, 248, 0.35), inset 0 0 32px rgba(79, 70, 229, 0.14)",
+    transition: "opacity 0.25s ease",
+  },
   "& .MuiAvatar-root, & .MuiTypography-root, & .MuiChip-root, & svg, & img": {
     opacity: isdimmed ? 0.45 : 1,
     transition: "opacity 0.3s ease",
@@ -60,7 +76,9 @@ const ExperienceCard = styled(Box)(({ theme, active, isdimmed }) => ({
     "&:hover": {
       transform: "translateY(-6px) scale(1.01)",
       border: `1.5px solid ${theme.palette.primary.main}`,
-      boxShadow: `0 12px 24px rgba(79, 70, 229, 0.2)`,
+      "&::after": {
+        opacity: 1,
+      },
     },
   },
   [theme.breakpoints.down("sm")]: {
@@ -192,6 +210,9 @@ const AgenticAI = ({ id }) => {
     <Box
       id={id}
       sx={{
+        position: "relative",
+        zIndex: 0,
+        isolation: "isolate",
         mt: 0,
         display: "flex",
         alignItems: "center",

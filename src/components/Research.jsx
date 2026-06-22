@@ -54,6 +54,7 @@ const ResearchCard = styled(Box)(({ theme }) => ({
   position: "relative",
   zIndex: 1,
   isolation: "isolate",
+  overflow: "hidden",
   borderRadius: theme.spacing(2),
   backgroundColor:
     theme.palette.mode === "light"
@@ -63,10 +64,24 @@ const ResearchCard = styled(Box)(({ theme }) => ({
   WebkitBackdropFilter: "blur(12px)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   boxShadow: "none",
-  transition: "border-color 0.2s ease, background-color 0.2s ease",
+  transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, background-color 0.2s ease",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    pointerEvents: "none",
+    opacity: 0,
+    boxShadow: "inset 0 0 0 1px rgba(129, 140, 248, 0.35), inset 0 0 32px rgba(79, 70, 229, 0.14)",
+    transition: "opacity 0.25s ease",
+  },
   "@media (hover: hover)": {
     "&:hover": {
+      transform: "translateY(-8px) scale(1.02)",
       border: `1px solid ${theme.palette.primary.main}`,
+      "&::after": {
+        opacity: 1,
+      },
     },
   },
   [theme.breakpoints.down("sm")]: {
@@ -109,7 +124,8 @@ const achievements = [
   "Coordinated annotation and cross-validation with native Bangla speakers, achieving a Cohen's kappa value of 0.92 for almost-perfect agreement. The validation loop helped correct ambiguous comments, reduce labeling drift, and keep the final dataset reliable enough for supervised machine-learning experiments.",
   "Analyzed demographic and reaction patterns across public-figure groups, showing a substantially higher rate of gender-based and religious hate on female sample pages. The exploratory analysis connected model-building with social insight by surfacing where hostile behavior appeared most concentrated.",
   "Benchmarked TF-IDF unigram, bigram, and trigram features across traditional ML classifiers, with Multinomial Naive Bayes reaching 82.60% accuracy. The comparison established a practical baseline for Bangla opinion mining using lightweight, reproducible methods in Google Colab.",
-  "Published the work at ICCIT 2021 with a future direction toward expanding the dataset, improving coverage of noisy Bangla social-media language, and preparing reusable resources for safer online community research.",
+  "Published the work at ICCIT 2021 with a future direction toward expanding the dataset, improving coverage of noisy Bangla social-media language, and preparing reusable resources for safer online community research and moderation tooling.",
+  "Documented the full workflow in LaTeX with clear experiment tables, category definitions, and result analysis so the research could be reviewed, reproduced, and extended by future Bangla NLP researchers.",
 ];
 
 const technologies = [

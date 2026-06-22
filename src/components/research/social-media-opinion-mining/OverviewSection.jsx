@@ -3,6 +3,7 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {
   Article as ArticleIcon,
+  BarChart as BarChartIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
   Insights as InsightsIcon,
   Language as LanguageIcon,
@@ -302,14 +303,41 @@ const OverviewSection = ({ theme }) => {
               machine-learning benchmarks for Bangla opinion mining.
             </Typography>
 
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "repeat(3, minmax(0, 1fr))" },
+                gap: 1.5,
+                maxWidth: { xs: "100%", lg: 620 },
+              }}
+            >
               <Button
                 href={paperMeta.ieeeLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="contained"
                 startIcon={<OpenInNewIcon />}
-                sx={{ borderRadius: 1.2, fontWeight: 800, textTransform: "none" }}
+                sx={{
+                  borderRadius: 1.2,
+                  fontWeight: 800,
+                  minWidth: 0,
+                  width: "100%",
+                  minHeight: 42,
+                  textTransform: "none",
+                  color: "#fff",
+                  backgroundColor: "#4F46E5",
+                  whiteSpace: "nowrap",
+                  fontSize: { xs: "0.84rem", sm: "0.78rem", md: "0.875rem" },
+                  boxShadow: "none",
+                  transition: "transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease",
+                  "& .MuiButton-startIcon": { color: "inherit" },
+                  "&:hover": {
+                    color: "#fff",
+                    backgroundColor: "#3730A3",
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 18px rgba(79, 70, 229, 0.26)",
+                  },
+                }}
               >
                 View Publication
               </Button>
@@ -317,11 +345,37 @@ const OverviewSection = ({ theme }) => {
                 href="#methodology"
                 variant="outlined"
                 startIcon={<ArticleIcon />}
-                sx={{ borderRadius: 1.2, fontWeight: 800, textTransform: "none" }}
+                sx={{
+                  borderRadius: 1.2,
+                  fontWeight: 800,
+                  minWidth: 0,
+                  width: "100%",
+                  minHeight: 42,
+                  textTransform: "none",
+                  whiteSpace: "nowrap",
+                  fontSize: { xs: "0.84rem", sm: "0.78rem", md: "0.875rem" },
+                }}
               >
                 Read Methodology
               </Button>
-            </Stack>
+              <Button
+                href="#results"
+                variant="outlined"
+                startIcon={<BarChartIcon />}
+                sx={{
+                  borderRadius: 1.2,
+                  fontWeight: 800,
+                  minWidth: 0,
+                  width: "100%",
+                  minHeight: 42,
+                  textTransform: "none",
+                  whiteSpace: "nowrap",
+                  fontSize: { xs: "0.84rem", sm: "0.78rem", md: "0.875rem" },
+                }}
+              >
+                See Results
+              </Button>
+            </Box>
 
             <PipelinePreview theme={theme} />
           </GlassCard>

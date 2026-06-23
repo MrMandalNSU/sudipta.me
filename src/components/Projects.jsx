@@ -19,6 +19,7 @@ import {
   Code as CodeIcon,
   Language as LanguageIcon,
   GitHub as GitHubIcon,
+  SmartToy as SmartToyIcon,
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
@@ -28,9 +29,10 @@ const OuterPaper = styled(Paper)(({ theme }) => ({
   overflow: "hidden",
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
-  background: theme.palette.mode === "light"
-    ? "rgba(255, 255, 255, 0.4)"
-    : "rgba(15, 23, 42, 0.4)",
+  background:
+    theme.palette.mode === "light"
+      ? "rgba(255, 255, 255, 0.4)"
+      : "rgba(15, 23, 42, 0.4)",
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
   [theme.breakpoints.down("sm")]: {
     padding: 0,
@@ -46,14 +48,17 @@ const ProjectCard = styled(Box)(({ theme }) => ({
   isolation: "isolate",
   overflow: "hidden",
   borderRadius: theme.spacing(2),
-  backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.6)" : "rgba(30, 41, 59, 0.6)",
+  backgroundColor:
+    theme.palette.mode === "light"
+      ? "rgba(255, 255, 255, 0.6)"
+      : "rgba(30, 41, 59, 0.6)",
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
 
-
   border: "1px solid rgba(255, 255, 255, 0.1)",
   boxShadow: "none",
-  transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.25s ease, background-color 0.25s ease",
+  transition:
+    "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.25s ease, background-color 0.25s ease",
   "&::after": {
     content: '""',
     position: "absolute",
@@ -61,7 +66,8 @@ const ProjectCard = styled(Box)(({ theme }) => ({
     borderRadius: "inherit",
     pointerEvents: "none",
     opacity: 0,
-    boxShadow: "inset 0 0 0 1px rgba(129, 140, 248, 0.35), inset 0 0 32px rgba(79, 70, 229, 0.14)",
+    boxShadow:
+      "inset 0 0 0 1px rgba(129, 140, 248, 0.35), inset 0 0 32px rgba(79, 70, 229, 0.14)",
     transition: "opacity 0.25s ease",
   },
   "@media (hover: hover)": {
@@ -125,6 +131,36 @@ const Projects = ({ id }) => {
       ],
     },
     {
+      title: "AskSudipta",
+      type: "Portfolio RAG Assistant Backend",
+      logo: "/project_logos/chatbot_logo.svg",
+      liveLink: "",
+      githubLink: "",
+      detailsLink: "/projects/asksudipta",
+      tryAssistant: true,
+      achievements: [
+        "Developed a TypeScript and Express RAG backend that powers Sudipta's portfolio chatbot, exposing a protected chat API with Zod request validation and API-key authentication. The RAG bot is integrated directly in this portfolio, try out the assistant chat system.",
+        "Built a markdown ingestion pipeline that scans the portfolio knowledge base, normalizes text, creates heading-aware chunks, generates Gemini embeddings, and stores vectors in Supabase PostgreSQL with pgvector.",
+        "Implemented hybrid retrieval by combining vector similarity search with keyword alias matching, merging duplicate results, and returning source metadata for verified answer citations.",
+        "Engineered grounded prompt construction that compresses retrieved context, preserves source file references, injects authoritative computed facts, and instructs Gemini to avoid unsupported portfolio claims.",
+        "Optimized response latency with fast Gemini generation defaults, bounded output tokens, prompt compression, process-local embedding/retrieval/response caches, and deterministic work-experience duration calculation.",
+      ],
+      technologies: [
+        "Node.js",
+        "Express",
+        "TypeScript",
+        "Gemini API",
+        "Supabase",
+        "PostgreSQL",
+        "pgvector",
+        "Zod",
+        "RAG",
+        "Hybrid Retrieval",
+        "Prompt Engineering",
+        "Vitest",
+      ],
+    },
+    {
       title: "ColorCuddle",
       type: "Interactive Web Game",
       logo: "/project_logos/colorcuddle_logo.svg",
@@ -168,7 +204,7 @@ const Projects = ({ id }) => {
         "React",
         "Vite",
         "Material UI",
-        "TDD"
+        "TDD",
       ],
     },
     {
@@ -197,7 +233,7 @@ const Projects = ({ id }) => {
         "Vanilla CSS",
         "CSV Export",
         "Railway",
-        "Vercel"
+        "Vercel",
       ],
     },
     {
@@ -218,7 +254,7 @@ const Projects = ({ id }) => {
         "Node.js",
         "Prisma",
         "PostgreSQL",
-        "Mantine UI"
+        "Mantine UI",
       ],
     },
   ];
@@ -240,8 +276,24 @@ const Projects = ({ id }) => {
       <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 3 } }}>
         <OuterPaper elevation={3}>
           {/* Header Section */}
-          <Box sx={{ mb: { xs: 2, sm: 4 }, pt: { xs: 2, sm: 0 }, px: { xs: 2, sm: 0 }, textAlign: "center" }}>
-            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, color: "text.primary", fontSize: { xs: "1.75rem", sm: "2.125rem" } }} gutterBottom>
+          <Box
+            sx={{
+              mb: { xs: 2, sm: 4 },
+              pt: { xs: 2, sm: 0 },
+              px: { xs: 2, sm: 0 },
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              component="h2"
+              sx={{
+                fontWeight: 800,
+                color: "text.primary",
+                fontSize: { xs: "1.75rem", sm: "2.125rem" },
+              }}
+              gutterBottom
+            >
               Projects
             </Typography>
           </Box>
@@ -262,136 +314,339 @@ const Projects = ({ id }) => {
                     }}
                   >
                     {project.liveLink ? (
-                      <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ color: "inherit" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                      <Link
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="none"
+                        sx={{ color: "inherit" }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                            cursor: "pointer",
+                            "&:hover .project-title": { color: "primary.main" },
+                          }}
+                        >
                           <ProjectIconBox
                             src={project.logo}
                             alt={`${project.title} logo`}
                             sx={{
-                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                              backgroundColor: project.logo
+                                ? "transparent"
+                                : "rgba(79, 70, 229, 0.1)",
                             }}
                           >
                             <CodeIcon />
                           </ProjectIconBox>
-                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              textAlign: "left",
+                            }}
+                          >
+                            <Typography
+                              className="project-title"
+                              variant="h6"
+                              component="h3"
+                              sx={{
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                transition: "color 0.2s",
+                              }}
+                            >
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography
+                              variant="subtitle2"
+                              component="p"
+                              sx={{ fontWeight: 500, color: "text.secondary" }}
+                            >
                               {project.type}
                             </Typography>
                           </Box>
                         </Box>
                       </Link>
                     ) : project.githubLink ? (
-                      <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" underline="none" sx={{ color: "inherit" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                      <Link
+                        href={project.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="none"
+                        sx={{ color: "inherit" }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                            cursor: "pointer",
+                            "&:hover .project-title": { color: "primary.main" },
+                          }}
+                        >
                           <ProjectIconBox
                             src={project.logo}
                             alt={`${project.title} logo`}
                             sx={{
-                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                              backgroundColor: project.logo
+                                ? "transparent"
+                                : "rgba(79, 70, 229, 0.1)",
                             }}
                           >
                             <CodeIcon />
                           </ProjectIconBox>
-                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              textAlign: "left",
+                            }}
+                          >
+                            <Typography
+                              className="project-title"
+                              variant="h6"
+                              component="h3"
+                              sx={{
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                transition: "color 0.2s",
+                              }}
+                            >
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography
+                              variant="subtitle2"
+                              component="p"
+                              sx={{ fontWeight: 500, color: "text.secondary" }}
+                            >
                               {project.type}
                             </Typography>
                           </Box>
                         </Box>
                       </Link>
                     ) : project.detailsLink ? (
-                      <RouterLink to={project.detailsLink} style={{ textDecoration: "none", color: "inherit" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer", "&:hover .project-title": { color: "primary.main" } }}>
+                      <RouterLink
+                        to={project.detailsLink}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                            cursor: "pointer",
+                            "&:hover .project-title": { color: "primary.main" },
+                          }}
+                        >
                           <ProjectIconBox
                             src={project.logo}
                             alt={`${project.title} logo`}
                             sx={{
-                              backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                              backgroundColor: project.logo
+                                ? "transparent"
+                                : "rgba(79, 70, 229, 0.1)",
                             }}
                           >
                             <CodeIcon />
                           </ProjectIconBox>
-                          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                            <Typography className="project-title" variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2, transition: "color 0.2s" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              textAlign: "left",
+                            }}
+                          >
+                            <Typography
+                              className="project-title"
+                              variant="h6"
+                              component="h3"
+                              sx={{
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                transition: "color 0.2s",
+                              }}
+                            >
                               {project.title}
                             </Typography>
-                            <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                            <Typography
+                              variant="subtitle2"
+                              component="p"
+                              sx={{ fontWeight: 500, color: "text.secondary" }}
+                            >
                               {project.type}
                             </Typography>
                           </Box>
                         </Box>
                       </RouterLink>
                     ) : (
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1.5 }}
+                      >
                         <ProjectIconBox
                           src={project.logo}
                           alt={`${project.title} logo`}
                           sx={{
-                            backgroundColor: project.logo ? "transparent" : "rgba(79, 70, 229, 0.1)",
+                            backgroundColor: project.logo
+                              ? "transparent"
+                              : "rgba(79, 70, 229, 0.1)",
                           }}
                         >
                           <CodeIcon />
                         </ProjectIconBox>
-                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
-                          <Typography variant="h6" component="h3" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            textAlign: "left",
+                          }}
+                        >
+                          <Typography
+                            variant="h6"
+                            component="h3"
+                            sx={{ fontWeight: 700, lineHeight: 1.2 }}
+                          >
                             {project.title}
                           </Typography>
-                          <Typography variant="subtitle2" component="p" sx={{ fontWeight: 500, color: "text.secondary" }}>
+                          <Typography
+                            variant="subtitle2"
+                            component="p"
+                            sx={{ fontWeight: 500, color: "text.secondary" }}
+                          >
                             {project.type}
                           </Typography>
                         </Box>
                       </Box>
                     )}
-                    <Box sx={{ display: "flex", gap: 1.5, textAlign: { xs: "left", sm: "right" } }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 1.5,
+                        textAlign: { xs: "left", sm: "right" },
+                      }}
+                    >
                       {project.detailsLink && (
-                        <RouterLink to={project.detailsLink} aria-label={`System Design details for ${project.title} project`} style={{ textDecoration: "none" }}>
+                        <RouterLink
+                          to={project.detailsLink}
+                          aria-label={`System Design details for ${project.title} project`}
+                          style={{ textDecoration: "none" }}
+                        >
                           <Chip
                             icon={<CodeIcon fontSize="small" />}
                             label="System Design"
                             size="small"
-                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(129, 140, 248, 0.1)", color: "primary.main", border: "1px solid rgba(129, 140, 248, 0.3)", "&:hover": { backgroundColor: "rgba(129, 140, 248, 0.2)" } }}
+                            sx={{
+                              cursor: "pointer",
+                              fontWeight: 600,
+                              backgroundColor: "rgba(129, 140, 248, 0.1)",
+                              color: "primary.main",
+                              border: "1px solid rgba(129, 140, 248, 0.3)",
+                              "&:hover": {
+                                backgroundColor: "rgba(129, 140, 248, 0.2)",
+                              },
+                            }}
                           />
                         </RouterLink>
                       )}
                       {project.liveLink && (
-                        <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" underline="none">
+                        <Link
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="none"
+                        >
                           <Chip
                             icon={<LanguageIcon fontSize="small" />}
                             label="Live Link"
                             size="small"
-                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)", "&:hover": { backgroundColor: "rgba(16, 185, 129, 0.2)" } }}
+                            sx={{
+                              cursor: "pointer",
+                              fontWeight: 600,
+                              backgroundColor: "rgba(16, 185, 129, 0.1)",
+                              color: "#10b981",
+                              border: "1px solid rgba(16, 185, 129, 0.3)",
+                              "&:hover": {
+                                backgroundColor: "rgba(16, 185, 129, 0.2)",
+                              },
+                            }}
                           />
                         </Link>
                       )}
                       {project.githubLink && (
-                        <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" underline="none">
+                        <Link
+                          href={project.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="none"
+                        >
                           <Chip
                             icon={<GitHubIcon fontSize="small" />}
                             label="GitHub"
                             size="small"
-                            sx={{ cursor: "pointer", fontWeight: 600, backgroundColor: "rgba(255, 255, 255, 0.1)", color: "text.primary", border: "1px solid rgba(255, 255, 255, 0.2)", "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.2)" } }}
+                            sx={{
+                              cursor: "pointer",
+                              fontWeight: 600,
+                              backgroundColor: "rgba(255, 255, 255, 0.1)",
+                              color: "text.primary",
+                              border: "1px solid rgba(255, 255, 255, 0.2)",
+                              "&:hover": {
+                                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                              },
+                            }}
                           />
                         </Link>
+                      )}
+                      {project.tryAssistant && (
+                        <Chip
+                          icon={<SmartToyIcon fontSize="small" />}
+                          label="Try Assistant"
+                          size="small"
+                          onClick={() =>
+                            window.dispatchEvent(new Event("open-chatbot"))
+                          }
+                          sx={{
+                            cursor: "pointer",
+                            fontWeight: 600,
+                            backgroundColor: "rgba(6, 182, 212, 0.1)",
+                            color: "#06b6d4",
+                            border: "1px solid rgba(6, 182, 212, 0.3)",
+                            "&:hover": {
+                              backgroundColor: "rgba(6, 182, 212, 0.2)",
+                            },
+                          }}
+                        />
                       )}
                     </Box>
                   </Box>
 
-                  <Divider sx={{ mb: 2, borderColor: "rgba(255,255,255,0.1)" }} />
+                  <Divider
+                    sx={{ mb: 2, borderColor: "rgba(255,255,255,0.1)" }}
+                  />
 
                   <Box sx={{ mb: 2 }}>
                     <List sx={{ p: 0 }}>
                       {project.achievements.map((achievement, achIndex) => (
-                        <ListItem key={achIndex} sx={{ p: 0, pb: 1, alignItems: "flex-start" }}>
-                          <Typography variant="body2" sx={{ color: "primary.main", mr: 1, mt: 0.25 }}>
+                        <ListItem
+                          key={achIndex}
+                          sx={{ p: 0, pb: 1, alignItems: "flex-start" }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "primary.main", mr: 1, mt: 0.25 }}
+                          >
                             ✦
                           </Typography>
-                          <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
+                          <Typography
+                            variant="body2"
+                            color="text.primary"
+                            sx={{ lineHeight: 1.6 }}
+                          >
                             {achievement}
                           </Typography>
                         </ListItem>
@@ -399,7 +654,9 @@ const Projects = ({ id }) => {
                     </List>
                   </Box>
 
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 2 }}>
+                  <Box
+                    sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 2 }}
+                  >
                     {project.technologies.map((tech, techIndex) => (
                       <Chip
                         key={techIndex}
@@ -412,7 +669,9 @@ const Projects = ({ id }) => {
                           backgroundColor: "rgba(79, 70, 229, 0.1)",
                           color: "primary.main",
                           border: "none",
-                          "&:hover": { backgroundColor: "rgba(79, 70, 229, 0.2)" }
+                          "&:hover": {
+                            backgroundColor: "rgba(79, 70, 229, 0.2)",
+                          },
                         }}
                       />
                     ))}

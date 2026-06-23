@@ -78,6 +78,17 @@ const ChatBot = () => {
     sessionStorage.setItem("chat_is_expanded", isExpanded ? "true" : "false");
   }, [isExpanded]);
 
+  useEffect(() => {
+    const openChatbot = () => {
+      setChatState("open");
+      setShowHint(false);
+      sessionStorage.setItem("hide_chat_hint", "true");
+    };
+
+    window.addEventListener("open-chatbot", openChatbot);
+    return () => window.removeEventListener("open-chatbot", openChatbot);
+  }, []);
+
   const [messages, setMessages] = useState(() => {
     const savedMessages = sessionStorage.getItem("chat_history");
     return savedMessages
@@ -251,7 +262,7 @@ const ChatBot = () => {
 
       // Inline formatting parser (bold, links, and knowledge source file paths)
       const normalizedLine = trimmed.replace(/\\/g, "/");
-      const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\)|knowledge\/[a-zA-Z0-9_\-\/]+\.md)/g;
+      const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\)|knowledge\/[a-zA-Z0-9_/-]+\.md)/g;
       const parts = normalizedLine.split(regex);
       const content = parts.map((part, partIdx) => {
         if (part.startsWith("**") && part.endsWith("**")) {

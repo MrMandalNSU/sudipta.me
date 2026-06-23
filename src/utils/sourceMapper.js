@@ -81,6 +81,7 @@ export const mapSourceFileToName = (sourceFile) => {
   if (cleanPath.startsWith("knowledge/projects/")) {
     const slug = cleanPath.replace("knowledge/projects/", "").replace(".md", "");
     if (slug === "valodash") return "ValoDash";
+    if (slug === "asksudipta") return "AskSudipta";
     if (slug === "colorcuddle") return "ColorCuddle";
     if (slug === "dseops") return "DseOps";
     if (slug === "textanalyzer") return "TextAnalyzer";
@@ -103,4 +104,3 @@ export const mapSourceFileToName = (sourceFile) => {
   const fileName = cleanPath.split("/").pop();
   return fileName.replace(".md", "");
 };
-

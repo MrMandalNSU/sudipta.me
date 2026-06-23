@@ -22,6 +22,12 @@ import {
 
 export const features = [
   {
+    icon: <SmartToyIcon />,
+    title: "Floating Chatbot Frontend",
+    shortTitle: "Chat UI",
+    desc: "Implements the portfolio assistant in React and MUI with open, minimized, expanded, and mobile full-height states, suggested prompts, loading bubbles, and source cards.",
+  },
+  {
     icon: <ArticleIcon />,
     title: "Markdown Knowledge Ingestion",
     shortTitle: "Ingestion",
@@ -64,8 +70,15 @@ export const systemNodes = {
     title: "Portfolio Chatbot UI",
     shortTitle: "Chat UI",
     icon: <SmartToyIcon />,
-    description: "Floating React assistant inside the portfolio. It collects visitor questions, displays verified sources, and maps source files back to portfolio routes.",
-    role: "Visible demo surface for AskSudipta and the entry point for visitor questions.",
+    description: "Floating React and MUI assistant implemented in src/components/ChatBot.jsx. It manages closed, open, minimized, expanded, and mobile states; persists chat history in sessionStorage; renders suggested prompts; formats markdown-like assistant responses; and displays verified source cards.",
+    role: "Visible demo surface for AskSudipta, including source navigation back into portfolio routes and the Resume modal.",
+  },
+  session: {
+    title: "Browser Session State",
+    shortTitle: "Session",
+    icon: <MemoryIcon />,
+    description: "Session-scoped frontend persistence for chat_window_state, chat_history, chat_is_expanded, and hide_chat_hint. It keeps the assistant feeling continuous during a visit without introducing account storage.",
+    role: "Preserves the assistant's UI state and conversation history across route changes and refreshes in the current browser session.",
   },
   proxy: {
     title: "Vercel Chat Proxy",
@@ -109,9 +122,39 @@ export const systemNodes = {
     description: "Uses configurable Gemini generation models with retry handling for transient provider errors and fast defaults for portfolio Q&A.",
     role: "Generates the final natural-language answer from grounded context.",
   },
+  sourceMap: {
+    title: "Source Navigation Mapper",
+    shortTitle: "Sources",
+    icon: <HubIcon />,
+    description: "Maps returned knowledge source files to portfolio destinations: project detail routes, experience pages, research pages, home-section anchors, or the resume modal.",
+    role: "Turns RAG citations into clickable website navigation so answers are not isolated from the portfolio experience.",
+  },
 };
 
 export const workflows = {
+  frontend: {
+    title: "Frontend Chat UX Workflow",
+    shortTitle: "Frontend",
+    icon: <SmartToyIcon />,
+    description: "Controls the portfolio-facing assistant experience before and after the RAG API call.",
+    steps: [
+      { label: "Open Assistant", text: "The user opens the floating assistant manually, from the AskSudipta CTA, or through the open-chatbot browser event." },
+      { label: "Persist Session", text: "The component stores chat window state, expanded mode, hint dismissal, and chat history in sessionStorage for the current browsing session." },
+      { label: "Send Message", text: "Submitted text is appended as a user message and posted to the portfolio's same-origin /api/chat proxy." },
+      { label: "Render Answer", text: "Assistant text is formatted with headings, bullets, bold spans, links, and knowledge-source path links." },
+      { label: "Navigate Sources", text: "Verified source cards use sourceMapper to route users to project, experience, research, section-anchor, or resume destinations." },
+    ],
+    payload: {
+      component: "src/components/ChatBot.jsx",
+      state: ["closed", "open", "minimized", "expanded"],
+      storage: ["chat_window_state", "chat_history", "chat_is_expanded", "hide_chat_hint"],
+    },
+    responsePayload: {
+      ui: "assistant bubble + verified sources",
+      navigation: "source-aware route mapping",
+      ctaEvent: "open-chatbot",
+    },
+  },
   ingestion: {
     title: "Knowledge Ingestion Workflow",
     shortTitle: "Ingest",
@@ -142,7 +185,7 @@ export const workflows = {
     icon: <SmartToyIcon />,
     description: "Answers visitor questions from retrieved portfolio context and returns traceable sources.",
     steps: [
-      { label: "Visitor Asks", text: "The portfolio chatbot posts a message to the same-origin Vercel proxy." },
+      { label: "Visitor Asks", text: "The React chatbot posts a message from src/components/ChatBot.jsx to the same-origin Vercel proxy." },
       { label: "Protected Forward", text: "The proxy forwards the request to the Express backend with x-api-key and Bearer credentials." },
       { label: "Validate & Retrieve", text: "The backend validates the message, embeds the normalized query, and performs vector plus keyword retrieval." },
       { label: "Build Prompt", text: "Retrieved chunks are compressed, formatted with source metadata, and wrapped with strict grounding instructions." },
@@ -259,27 +302,33 @@ export const vectorNodes = {
 
 export const techGroups = [
   {
+    category: "Frontend",
+    icon: <SmartToyIcon sx={{ fontSize: 13 }} />,
+    items: ["React", "Material UI", "React Router", "sessionStorage"],
+    color: "primary.main",
+  },
+  {
     category: "Backend",
     icon: <ApiIcon sx={{ fontSize: 13 }} />,
     items: ["Node.js", "Express", "TypeScript", "Zod"],
-    color: "primary.main",
+    color: "secondary.main",
   },
   {
     category: "RAG Core",
     icon: <PsychologyIcon sx={{ fontSize: 13 }} />,
     items: ["Gemini", "Embeddings", "Prompt Builder", "Hybrid Retrieval"],
-    color: "secondary.main",
+    color: "success.main",
   },
   {
     category: "Storage",
     icon: <StorageIcon sx={{ fontSize: 13 }} />,
     items: ["Supabase", "PostgreSQL", "pgvector", "SQL RPC"],
-    color: "success.main",
+    color: "warning.main",
   },
   {
     category: "Security & Ops",
     icon: <SecurityIcon sx={{ fontSize: 13 }} />,
     items: ["API Keys", "Vercel Proxy", "Vitest", "Latency Caches"],
-    color: "warning.main",
+    color: "error.main",
   },
 ];

@@ -6,11 +6,13 @@ import { DiagramBoard, GlassCard, SectionHeading } from "./styles";
 
 const requestFlowSteps = [
   { key: "chatbot", label: "Visitor Question", sub: "React chatbot" },
+  { key: "session", label: "Session State", sub: "History + UI state" },
   { key: "proxy", label: "Vercel Proxy", sub: "Same-origin API" },
   { key: "api", label: "Express API", sub: "Zod + API key" },
   { key: "retrieval", label: "Hybrid Retrieval", sub: "Vector + keyword" },
   { key: "prompt", label: "Prompt Builder", sub: "Grounded context" },
   { key: "gemini", label: "Gemini Answer", sub: "Text + sources" },
+  { key: "sourceMap", label: "Source Navigation", sub: "Routes + resume" },
 ];
 
 const storageFlowSteps = [
@@ -33,24 +35,28 @@ const SystemDesignSection = ({ theme, activeSystemNode, setActiveSystemNode, pri
   }, [activeSystemNode]);
 
   const nodeDefs = [
-    { key: "chatbot", type: "process", x: 35, y: 60, w: 130, h: 58, label: "Chatbot UI", sub: "Portfolio" },
-    { key: "proxy", type: "process", x: 215, y: 60, w: 130, h: 58, label: "Vercel Proxy", sub: "/api/chat" },
-    { key: "api", type: "process", x: 395, y: 60, w: 130, h: 58, label: "Express API", sub: "Auth + Zod" },
-    { key: "retrieval", type: "decision", x: 605, y: 89, label: "Retrieve?", sub: "Hybrid" },
-    { key: "supabase", type: "storage", x: 395, y: 220, w: 150, h: 72, label: "Supabase", sub: "pgvector" },
-    { key: "prompt", type: "process", x: 690, y: 60, w: 130, h: 58, label: "Prompt", sub: "Context" },
-    { key: "gemini", type: "process", x: 800, y: 220, w: 130, h: 58, label: "Gemini", sub: "Answer" },
+    { key: "chatbot", type: "process", x: 45, y: 52, w: 160, h: 68, label: "Chatbot UI", sub: "Portfolio" },
+    { key: "session", type: "process", x: 45, y: 238, w: 160, h: 68, label: "Session State", sub: "sessionStorage" },
+    { key: "proxy", type: "process", x: 270, y: 52, w: 160, h: 68, label: "Vercel Proxy", sub: "/api/chat" },
+    { key: "api", type: "process", x: 495, y: 52, w: 160, h: 68, label: "Express API", sub: "Auth + Zod" },
+    { key: "retrieval", type: "decision", x: 720, y: 87, label: "Retrieve?", sub: "Hybrid" },
+    { key: "supabase", type: "storage", x: 500, y: 236, w: 185, h: 84, label: "Supabase", sub: "pgvector" },
+    { key: "prompt", type: "process", x: 870, y: 52, w: 165, h: 68, label: "Prompt", sub: "Context" },
+    { key: "sourceMap", type: "process", x: 870, y: 238, w: 185, h: 68, label: "Source Mapper", sub: "route resolver" },
+    { key: "gemini", type: "process", x: 1090, y: 143, w: 165, h: 68, label: "Gemini", sub: "Answer" },
   ];
 
   const lines = [
-    { from: "chatbot", to: "proxy", path: "M 165 89 L 215 89" },
-    { from: "proxy", to: "api", path: "M 345 89 L 395 89" },
-    { from: "api", to: "retrieval", path: "M 525 89 L 560 89" },
-    { from: "retrieval", to: "supabase", path: "M 605 134 L 605 256 L 545 256" },
-    { from: "supabase", to: "retrieval", path: "M 470 220 C 470 170, 560 170, 590 120", dashed: true },
-    { from: "retrieval", to: "prompt", path: "M 650 89 L 690 89" },
-    { from: "prompt", to: "gemini", path: "M 755 118 L 755 249 L 800 249" },
-    { from: "gemini", to: "chatbot", path: "M 865 220 C 865 330, 85 330, 85 118", dashed: true },
+    { from: "chatbot", to: "proxy", path: "M 205 86 L 270 86" },
+    { from: "chatbot", to: "session", path: "M 125 120 L 125 238", dashed: true },
+    { from: "proxy", to: "api", path: "M 430 86 L 495 86" },
+    { from: "api", to: "retrieval", path: "M 655 86 L 672 86" },
+    { from: "retrieval", to: "supabase", path: "M 720 132 L 720 278 L 685 278" },
+    { from: "supabase", to: "retrieval", path: "M 592 236 C 592 186, 660 166, 700 123", dashed: true },
+    { from: "retrieval", to: "prompt", path: "M 768 86 L 870 86" },
+    { from: "prompt", to: "gemini", path: "M 1035 86 C 1062 86, 1062 177, 1090 177" },
+    { from: "gemini", to: "sourceMap", path: "M 1090 177 C 1070 177, 1070 272, 1055 272", dashed: true },
+    { from: "sourceMap", to: "chatbot", path: "M 870 272 C 650 410, 125 410, 125 120", dashed: true },
   ];
 
   return (
@@ -135,7 +141,7 @@ const SystemDesignSection = ({ theme, activeSystemNode, setActiveSystemNode, pri
 
       <DiagramBoard sx={{ order: { xs: 2, md: 3 } }}>
         <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <svg width="100%" viewBox="0 0 960 350" style={{ display: "block", maxWidth: "100%", height: "auto" }}>
+          <svg width="100%" viewBox="0 0 1270 420" style={{ display: "block", maxWidth: "100%", height: "auto" }}>
             <defs>
               <marker id="asksudiptaArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                 <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill={primaryColor} />

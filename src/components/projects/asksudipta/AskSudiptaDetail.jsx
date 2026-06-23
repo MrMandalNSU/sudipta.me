@@ -25,7 +25,7 @@ const AskSudiptaDetail = () => {
   const [activeVectorNode, setActiveVectorNode] = useState("knowledge_chunks");
 
   useEffect(() => {
-    document.title = "AskSudipta - Portfolio RAG Assistant Backend | Sudipta Mandal";
+    document.title = "AskSudipta - Conversational RAG Intelligence | Sudipta Mandal";
 
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (!descriptionMeta) {
@@ -36,7 +36,7 @@ const AskSudiptaDetail = () => {
     const originalDesc = descriptionMeta.getAttribute("content");
     descriptionMeta.setAttribute(
       "content",
-      "Detailed breakdown of AskSudipta: the TypeScript, Express, Gemini, and Supabase pgvector RAG backend powering Sudipta Mandal's portfolio chatbot."
+      "Detailed breakdown of AskSudipta: the React chatbot frontend and TypeScript, Express, Gemini, and Supabase pgvector RAG backend powering Sudipta Mandal's portfolio assistant."
     );
 
     let canonicalLink = document.querySelector('link[rel="canonical"]');

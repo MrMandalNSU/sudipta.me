@@ -1,8 +1,8 @@
-# AskSudipta - Portfolio RAG Assistant Backend
+# AskSudipta - Conversational RAG Intelligence
 
-AskSudipta is the TypeScript RAG backend that powers the portfolio chatbot on Sudipta Mandal's website. It turns curated markdown knowledge into searchable vector records, retrieves grounded context for visitor questions, and returns concise answers with source references.
+AskSudipta is the full chat system that powers the portfolio assistant on Sudipta Mandal's website. The frontend is implemented directly in `src/components/ChatBot.jsx` with React and Material UI, while the backend is a TypeScript RAG service that turns curated markdown knowledge into searchable vector records, retrieves grounded context, and returns concise answers with source references.
 
-The project is intentionally framework-light: Node.js, Express, TypeScript, Supabase PostgreSQL with pgvector, Gemini embeddings and generation, Zod validation, and Vitest coverage.
+The project is intentionally framework-light: React, Material UI, React Router, Node.js, Express, TypeScript, Supabase PostgreSQL with pgvector, Gemini embeddings and generation, Zod validation, and Vitest coverage.
 
 ---
 
@@ -11,6 +11,8 @@ The project is intentionally framework-light: Node.js, Express, TypeScript, Supa
 ```mermaid
 flowchart TD
     User([Portfolio Visitor]) --> Chatbot[React Chatbot UI]
+    Chatbot --> State[sessionStorage UI State]
+    Chatbot --> SourceMap[sourceMapper Route Resolver]
     Chatbot --> Proxy[Vercel /api/chat Proxy]
     Proxy -->|API key headers| Api[Express Chat API]
     Api --> Auth{Valid request?}
@@ -32,9 +34,38 @@ flowchart TD
     Gemini --> Api
     Api -->|answer + sources| Proxy
     Proxy --> Chatbot
+    Chatbot --> Sources[Verified Source Cards]
+    Sources --> SourceMap
 ```
 
 Chat requests do not read markdown files directly. The runtime source of truth is the Supabase `knowledge_chunks` table populated by ingestion.
+
+---
+
+## Frontend Chat Experience
+
+The assistant frontend lives in `src/components/ChatBot.jsx` and is part of the AskSudipta project surface, not a separate demo shell.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Open: floating button or open-chatbot event
+    Open --> Minimized: desktop minimize
+    Minimized --> Open: restore
+    Open --> Expanded: desktop expand
+    Expanded --> Open: collapse
+    Open --> Closed: close
+```
+
+Frontend responsibilities:
+
+- Manages closed, open, minimized, expanded, and mobile full-height layouts.
+- Persists `chat_window_state`, `chat_history`, `chat_is_expanded`, and `hide_chat_hint` in `sessionStorage`.
+- Provides suggested questions for first-time chat sessions.
+- Sends messages to the same-origin `/api/chat` proxy.
+- Formats assistant responses with headings, bullets, bold text, links, and knowledge-source paths.
+- Displays verified source cards with match percentages.
+- Uses `sourceMapper` to route citations to project detail pages, experience pages, research pages, home-section anchors, or the resume modal.
 
 ---
 
@@ -82,6 +113,7 @@ sequenceDiagram
     participant LLM as Gemini
 
     Visitor->>UI: Ask a portfolio question
+    UI->>UI: Persist message and render loading state
     UI->>Proxy: POST /api/chat
     Proxy->>API: Forward message with API key
     API->>API: Validate body with Zod
@@ -92,7 +124,8 @@ sequenceDiagram
     Prompt->>LLM: Grounded prompt
     LLM-->>API: Answer text
     API-->>Proxy: Answer + source references
-    Proxy-->>UI: Render answer and verified sources
+    Proxy-->>UI: Render formatted answer and verified sources
+    UI->>UI: Map source files to portfolio routes
 ```
 
 The chat response shape includes an `answer` string and `sources` array with source file, title, chunk index, and similarity.

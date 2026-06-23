@@ -64,15 +64,16 @@ const OverviewSection = ({ theme }) => {
                     AskSudipta
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontWeight: 700, letterSpacing: "0.6px", textTransform: "uppercase" }}>
-                    Portfolio RAG Assistant Backend
+                    Conversational RAG Intelligence
                   </Typography>
                 </Box>
               </Box>
 
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.75, mb: 3 }}>
-                AskSudipta is the retrieval-augmented generation backend behind the portfolio assistant. It turns curated
-                portfolio markdown into vector-searchable knowledge, retrieves grounded context for visitor questions,
-                and returns concise answers with source references that map back to the website.
+                AskSudipta is the full chat system behind this portfolio: a React and MUI floating assistant in
+                src/components/ChatBot.jsx plus a TypeScript RAG backend. The frontend handles chat state, suggested
+                prompts, source cards, and route-aware citations while the backend retrieves grounded context and
+                generates concise answers.
               </Typography>
             </Box>
 
@@ -182,13 +183,13 @@ const OverviewSection = ({ theme }) => {
               The Challenge
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-              A portfolio chatbot needs to answer precise questions about projects, roles, research, and experience without
-              hallucinating details. Static markdown is easy to maintain, but it must become searchable, source-aware context
-              at runtime without reading files on every chat request.
+              A portfolio chatbot needs to feel native to the site while answering precise questions about projects,
+              roles, research, and experience without hallucinating details. The frontend has to stay compact,
+              responsive, source-aware, and persistent across the browsing session.
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2, lineHeight: 1.8 }}>
-              The hard part is balancing accuracy and speed: vector retrieval, keyword fallbacks, prompt size, provider
-              latency, and deterministic date calculations all need to cooperate inside a small production-minded backend.
+              The backend then has to balance accuracy and speed: vector retrieval, keyword fallbacks, prompt size,
+              provider latency, and deterministic date calculations all need to cooperate behind the UI.
             </Typography>
           </GlassCard>
         </Grid>
@@ -200,12 +201,12 @@ const OverviewSection = ({ theme }) => {
               The Solution
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2.5 }}>
-              AskSudipta separates ingestion-time indexing from chat-time answering:
+              AskSudipta separates the visitor-facing assistant from retrieval and generation:
             </Typography>
             <Stack spacing={2.5}>
               {[
-                { title: "Searchable Knowledge Base", desc: "Markdown is chunked with heading metadata, embedded with Gemini, and stored in Supabase pgvector." },
-                { title: "Grounded Runtime Path", desc: "The chat API retrieves context first, builds a source-rich prompt, and returns answer citations to the UI." },
+                { title: "Native Chat Frontend", desc: "The floating assistant uses MUI states, sessionStorage, suggested prompts, formatted answers, and source navigation." },
+                { title: "Grounded Runtime Path", desc: "The chat API retrieves context first, builds a source-rich prompt, and returns answer citations to the frontend." },
                 { title: "Deterministic Facts", desc: "Experience-duration questions use typed date ranges before generation, keeping arithmetic outside the LLM." },
               ].map((item) => (
                 <Stack key={item.title} direction="row" spacing={1.5} alignItems="flex-start">

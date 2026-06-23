@@ -3,6 +3,7 @@ import { Box, Container, Divider, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import OverviewSection from "./OverviewSection";
+import RagFlowSection from "./RagFlowSection";
 import SystemDesignSection from "./SystemDesignSection";
 import WorkflowsSection from "./WorkflowsSection";
 import VectorStoreSection from "./VectorStoreSection";
@@ -11,6 +12,7 @@ import { MobileTocChip, TocLink } from "./styles";
 
 const tocSections = [
   { id: "overview", label: "Overview" },
+  { id: "rag-flow", label: "RAG Flow" },
   { id: "architecture", label: "System Design" },
   { id: "workflows", label: "Project Workflows" },
   { id: "database", label: "Vector Store" },
@@ -20,6 +22,7 @@ const tocSections = [
 const AskSudiptaDetail = () => {
   const theme = useTheme();
   const [activeSection, setActiveSection] = useState("overview");
+  const [activeRagNode, setActiveRagNode] = useState("vectorSearch");
   const [activeSystemNode, setActiveSystemNode] = useState("retrieval");
   const [activeWorkflow, setActiveWorkflow] = useState("chat");
   const [activeVectorNode, setActiveVectorNode] = useState("knowledge_chunks");
@@ -177,6 +180,14 @@ const AskSudiptaDetail = () => {
 
           <Box sx={{ flex: 1, minWidth: 0, pt: 4 }}>
             <OverviewSection theme={theme} />
+            <Divider sx={{ opacity: 0.06, mb: 4 }} />
+
+            <RagFlowSection
+              theme={theme}
+              activeRagNode={activeRagNode}
+              setActiveRagNode={setActiveRagNode}
+              primaryColor={primaryColor}
+            />
             <Divider sx={{ opacity: 0.06, mb: 4 }} />
 
             <SystemDesignSection

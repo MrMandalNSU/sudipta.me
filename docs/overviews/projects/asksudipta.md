@@ -42,6 +42,34 @@ Chat requests do not read markdown files directly. The runtime source of truth i
 
 ---
 
+## RAG Flow
+
+This is the core two-lane flow from authored knowledge to grounded answers:
+
+```mermaid
+flowchart TD
+    subgraph Indexing [Knowledge Indexing]
+      A[Markdown files in knowledge/] --> B[Ingestion command]
+      B --> C[Heading-aware chunking]
+      C --> D[Gemini embeddings]
+      D --> E[PostgreSQL pgvector]
+    end
+
+    subgraph Answering [Question Answering]
+      F[User question] --> G[Question embedding]
+      G --> H[Vector similarity search]
+      H --> I[Prompt builder]
+      I --> J[Gemini generation]
+      J --> K[Answer with sources]
+    end
+
+    E -.retrieved context.-> H
+```
+
+The detail page implements this as an interactive section with clickable nodes for each indexing and answering step.
+
+---
+
 ## Frontend Chat Experience
 
 The assistant frontend lives in `src/components/ChatBot.jsx` and is part of the AskSudipta project surface, not a separate demo shell.

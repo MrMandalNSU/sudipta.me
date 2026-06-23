@@ -52,6 +52,18 @@ export const features = [
     desc: "Builds concise prompts from retrieved context, computed facts, source metadata, and strict rules that prevent unsupported portfolio claims.",
   },
   {
+    icon: <RouteIcon />,
+    title: "Source-Aware Navigation",
+    shortTitle: "Sources",
+    desc: "Maps verified RAG citations back into the portfolio through project routes, experience pages, research pages, section anchors, and the resume modal.",
+  },
+  {
+    icon: <KeyIcon />,
+    title: "Protected Chat Boundary",
+    shortTitle: "Security",
+    desc: "Uses a same-origin Vercel proxy and API-key protected Express endpoint so the browser keeps a simple chat contract without exposing backend credentials.",
+  },
+  {
     icon: <FunctionsIcon />,
     title: "Deterministic Experience Math",
     shortTitle: "Experience",
@@ -129,6 +141,102 @@ export const systemNodes = {
     description: "Maps returned knowledge source files to portfolio destinations: project detail routes, experience pages, research pages, home-section anchors, or the resume modal.",
     role: "Turns RAG citations into clickable website navigation so answers are not isolated from the portfolio experience.",
   },
+};
+
+export const ragFlowNodes = {
+  markdown: {
+    lane: "ingestion",
+    title: "Markdown files in knowledge/",
+    shortTitle: "Markdown",
+    icon: <ArticleIcon />,
+    description: "Curated portfolio knowledge lives as markdown files for projects, experiences, research, profile data, and resume context.",
+    detail: "This keeps the knowledge base easy to edit while separating authored source material from the runtime chat path.",
+  },
+  ingest: {
+    lane: "ingestion",
+    title: "Ingestion command",
+    shortTitle: "Ingest",
+    icon: <TuneIcon />,
+    description: "The ingestion script scans the configured knowledge directory and prepares changed documents for indexing.",
+    detail: "It compares content hashes so unchanged chunks can be skipped instead of re-embedded on every run.",
+  },
+  chunking: {
+    lane: "ingestion",
+    title: "Heading-aware chunking",
+    shortTitle: "Chunking",
+    icon: <DataObjectIcon />,
+    description: "Markdown is split into deterministic chunks while preserving title, heading, heading path, chunk index, and token estimates.",
+    detail: "The chunking target stays compact enough for retrieval while preserving the surrounding section context needed for grounded answers.",
+  },
+  embeddings: {
+    lane: "ingestion",
+    title: "Gemini embeddings",
+    shortTitle: "Embeddings",
+    icon: <MemoryIcon />,
+    description: "Changed chunks are converted into 768-dimensional Gemini embeddings.",
+    detail: "The embedding adapter isolates provider details from the rest of the ingestion and retrieval pipeline.",
+  },
+  pgvector: {
+    lane: "ingestion",
+    title: "PostgreSQL pgvector",
+    shortTitle: "pgvector",
+    icon: <StorageIcon />,
+    description: "Supabase PostgreSQL stores chunk content, metadata, hashes, and vector embeddings in the knowledge_chunks table.",
+    detail: "Chat requests retrieve from this vector store; they do not read markdown files directly.",
+  },
+  question: {
+    lane: "chat",
+    title: "User question",
+    shortTitle: "Question",
+    icon: <SmartToyIcon />,
+    description: "The React chatbot receives a visitor question and sends it to the same-origin chat proxy.",
+    detail: "The UI persists the conversation, renders loading feedback, and later displays answer sources.",
+  },
+  questionEmbedding: {
+    lane: "chat",
+    title: "Question embedding",
+    shortTitle: "Query vector",
+    icon: <MemoryIcon />,
+    description: "The backend normalizes the question and creates a Gemini embedding for semantic retrieval.",
+    detail: "Experience-duration questions also enrich the retrieval query with work timeline terms.",
+  },
+  vectorSearch: {
+    lane: "chat",
+    title: "Vector similarity search",
+    shortTitle: "Search",
+    icon: <ManageSearchIcon />,
+    description: "The retrieval service searches pgvector by cosine similarity and merges results with keyword alias matches.",
+    detail: "This hybrid path improves recall for names, project slugs, and specific portfolio terms.",
+  },
+  promptBuilder: {
+    lane: "chat",
+    title: "Prompt builder",
+    shortTitle: "Prompt",
+    icon: <PsychologyIcon />,
+    description: "Retrieved chunks are compressed, formatted with source metadata, and wrapped in strict grounding rules.",
+    detail: "Computed facts, such as experience duration, are inserted as authoritative context when relevant.",
+  },
+  generation: {
+    lane: "chat",
+    title: "Gemini generation",
+    shortTitle: "Generate",
+    icon: <AutoAwesomeIcon />,
+    description: "Gemini generates the answer from the grounded prompt using fast defaults tuned for portfolio Q&A.",
+    detail: "Retry handling covers transient provider errors, while output limits keep responses concise.",
+  },
+  answer: {
+    lane: "chat",
+    title: "Answer with sources",
+    shortTitle: "Sources",
+    icon: <HubIcon />,
+    description: "The API returns the answer plus source metadata, and the UI renders clickable verified source cards.",
+    detail: "Source paths map back into project, experience, research, section-anchor, or resume destinations.",
+  },
+};
+
+export const ragFlowColumns = {
+  ingestion: ["markdown", "ingest", "chunking", "embeddings", "pgvector"],
+  chat: ["question", "questionEmbedding", "vectorSearch", "promptBuilder", "generation", "answer"],
 };
 
 export const workflows = {

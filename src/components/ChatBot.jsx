@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -35,6 +35,7 @@ const ChatBot = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSourceClick = (route) => {
     if (!route) return;
@@ -88,6 +89,13 @@ const ChatBot = () => {
     window.addEventListener("open-chatbot", openChatbot);
     return () => window.removeEventListener("open-chatbot", openChatbot);
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (location.pathname === "/projects/asksudipta" && params.get("try") === "assistant") {
+      window.dispatchEvent(new Event("open-chatbot"));
+    }
+  }, [location.pathname, location.search]);
 
   const [messages, setMessages] = useState(() => {
     const savedMessages = sessionStorage.getItem("chat_history");

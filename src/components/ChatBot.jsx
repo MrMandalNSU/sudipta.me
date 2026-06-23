@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -23,20 +24,38 @@ import {
   ChatBubbleOutline,
   OpenInFull,
   CloseFullscreen,
+  Launch,
+  RestartAlt,
 } from "@mui/icons-material";
+import { mapSourceFileToRoute } from "../utils/sourceMapper";
+import { BOT_LOGO, SUGGESTED_QUESTIONS } from "../utils/chatbotConfig";
 
-const BOT_LOGO = "/project_logos/chatbot_logo.svg";
-
-const SUGGESTED_QUESTIONS = [
-  "How many years of experience does Sudipta have?",
-  "What is Sudipta's tech stack?",
-  "Tell me about Cargo Stream experience",
-  "Show me some of Sudipta's projects",
-];
 
 const ChatBot = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
+
+  const handleSourceClick = (route) => {
+    if (!route) return;
+    if (route.startsWith("/Resume")) {
+      window.open(route, "_blank");
+    } else {
+      setChatState("minimized");
+      navigate(route);
+    }
+  };
+
+  const handleNewChat = () => {
+    const initialMsg = {
+      id: "welcome",
+      role: "assistant",
+      content: "Hi! I'm Sudipta's AI assistant. Ask me anything about his work experience, projects, skills, or research!",
+      timestamp: new Date().toISOString(),
+      sources: [],
+    };
+    setMessages([initialMsg]);
+  };
 
   // Chat window state: 'closed' | 'open' | 'minimized'
   const [chatState, setChatState] = useState(() => {
@@ -163,20 +182,136 @@ const ChatBot = () => {
     }));
   };
 
-  const formatText = (text) => {
+  const formatText = (text, isUser) => {
     if (!text) return "";
-    return text.split("\n").map((para, i) => {
-      if (!para.trim()) return null;
-      // Parse basic markdown bold **text**
-      const parts = para.split(/(\*\*.*?\*\*)/g);
+    const lines = text.split("\n");
+    return lines.map((line, lineIdx) => {
+      let trimmed = line.trim();
+      if (!trimmed) return <Box key={lineIdx} sx={{ height: 8 }} />;
+
+      // Header detection (e.g. ### Header)
+      const isHeader = trimmed.startsWith("#");
+      let headerLevel = 0;
+      if (isHeader) {
+        while (trimmed.startsWith("#")) {
+          headerLevel++;
+          trimmed = trimmed.substring(1);
+        }
+        trimmed = trimmed.trim();
+      }
+
+      // Bullet list item detection
+      const isListItem = trimmed.startsWith("* ") || trimmed.startsWith("- ");
+      if (isListItem) {
+        trimmed = trimmed.substring(2).trim();
+      }
+
+      // Inline formatting parser (bold and links)
+      const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\))/g;
+      const parts = trimmed.split(regex);
+      const content = parts.map((part, partIdx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <strong key={partIdx}>{part.slice(2, -2)}</strong>;
+        }
+        if (part.startsWith("[") && part.includes("](")) {
+          const closeBracketIdx = part.indexOf("](");
+          const label = part.slice(1, closeBracketIdx);
+          const url = part.slice(closeBracketIdx + 2, -1);
+          return (
+            <a
+              key={partIdx}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: isUser ? "inherit" : theme.palette.primary.main,
+                fontWeight: 600,
+                textDecoration: "underline",
+                wordBreak: "break-all",
+              }}
+            >
+              {label}
+            </a>
+          );
+        }
+        return part;
+      });
+
+      if (headerLevel > 0) {
+        return (
+          <Typography
+            key={lineIdx}
+            variant="body2"
+            sx={{
+              fontWeight: 700,
+              mt: 1.5,
+              mb: 0.5,
+              fontSize: headerLevel === 1 ? "1rem" : (headerLevel === 2 ? "0.95rem" : "0.9rem"),
+              color: "text.primary",
+              textAlign: "left",
+              overflowWrap: "break-word",
+              wordBreak: "break-word",
+            }}
+          >
+            {content}
+          </Typography>
+        );
+      }
+
+      if (isListItem) {
+        return (
+          <Box
+            key={lineIdx}
+            sx={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 1,
+              mb: 0.5,
+              ml: 1,
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                lineHeight: 1.5,
+                fontSize: "0.875rem",
+                color: isUser ? "rgba(255, 255, 255, 0.7)" : "text.secondary",
+                userSelect: "none",
+              }}
+            >
+              •
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                lineHeight: 1.5,
+                textAlign: "left",
+                fontSize: "0.875rem",
+                overflowWrap: "break-word",
+                wordBreak: "break-word",
+                flex: 1,
+              }}
+            >
+              {content}
+            </Typography>
+          </Box>
+        );
+      }
+
       return (
-        <Typography key={i} variant="body2" sx={{ mb: 1, lineHeight: 1.6, textAlign: "justify", fontSize: "0.875rem" }}>
-          {parts.map((part, index) => {
-            if (part.startsWith("**") && part.endsWith("**")) {
-              return <strong key={index}>{part.slice(2, -2)}</strong>;
-            }
-            return part;
-          })}
+        <Typography
+          key={lineIdx}
+          variant="body2"
+          sx={{
+            mb: 1,
+            lineHeight: 1.6,
+            textAlign: "left",
+            fontSize: "0.875rem",
+            overflowWrap: "break-word",
+            wordBreak: "break-word",
+          }}
+        >
+          {content}
         </Typography>
       );
     });
@@ -469,9 +604,11 @@ const ChatBot = () => {
                           border: isUser
                             ? "none"
                             : "1px solid rgba(255, 255, 255, 0.05)",
+                          overflowWrap: "break-word",
+                          wordBreak: "break-word",
                         }}
                       >
-                        {formatText(msg.content)}
+                        {formatText(msg.content, isUser)}
 
                         {/* RAG Sources UI */}
                         {hasSources && (
@@ -498,26 +635,63 @@ const ChatBot = () => {
                             </Box>
                             <Collapse in={isSourcesOpen} sx={{ mt: 1 }}>
                               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
-                                {msg.sources.map((src, idx) => (
-                                  <Box
-                                    key={idx}
-                                    sx={{
-                                      p: 1,
-                                      borderRadius: 1,
-                                      backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.5)",
-                                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                                    }}
-                                  >
-                                    <Typography variant="caption" sx={{ fontWeight: 700, display: "block", color: "primary.main" }}>
-                                      {src.title}
-                                    </Typography>
-                                    {src.sourceFile && (
-                                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.6875rem", display: "block" }}>
-                                        {src.sourceFile.split("/").pop()} • Match: {Math.round(src.similarity * 100)}%
-                                      </Typography>
-                                    )}
-                                  </Box>
-                                ))}
+                                {msg.sources.map((src, idx) => {
+                                    const route = mapSourceFileToRoute(src.sourceFile);
+                                    return (
+                                      <Box
+                                        key={idx}
+                                        onClick={() => handleSourceClick(route)}
+                                        sx={{
+                                          p: 1,
+                                          borderRadius: 1,
+                                          backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.5)",
+                                          border: "1px solid rgba(255, 255, 255, 0.08)",
+                                          cursor: route ? "pointer" : "default",
+                                          transition: "all 0.2s ease-in-out",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "space-between",
+                                          gap: 1,
+                                          "&:hover": route ? {
+                                            backgroundColor: theme.palette.mode === "light"
+                                              ? "rgba(79, 70, 229, 0.08)"
+                                              : "rgba(34, 211, 238, 0.08)",
+                                            borderColor: theme.palette.primary.main,
+                                            transform: "translateY(-1px)",
+                                          } : {},
+                                        }}
+                                      >
+                                        <Box sx={{ flexGrow: 1 }}>
+                                          <Typography
+                                            variant="caption"
+                                            sx={{
+                                              fontWeight: 700,
+                                              display: "block",
+                                              color: route ? "primary.main" : "text.primary",
+                                              textAlign: "left",
+                                            }}
+                                          >
+                                            {src.title}
+                                          </Typography>
+                                          {src.sourceFile && (
+                                            <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.6875rem", display: "block", textAlign: "left" }}>
+                                              {src.sourceFile.split("/").pop()} • Match: {Math.round(src.similarity * 100)}%
+                                            </Typography>
+                                          )}
+                                        </Box>
+                                        {route && (
+                                          <Launch
+                                            sx={{
+                                              fontSize: 14,
+                                              color: "text.secondary",
+                                              opacity: 0.6,
+                                              flexShrink: 0,
+                                            }}
+                                          />
+                                        )}
+                                      </Box>
+                                    );
+                                  })}
                               </Box>
                             </Collapse>
                           </Box>
@@ -569,44 +743,70 @@ const ChatBot = () => {
                     </Box>
                   </Box>
                 )}
-                <div ref={messagesEndRef} />
-              </Box>
 
-              {/* Suggestion Chips */}
-              <Box
-                sx={{
-                  px: 2,
-                  py: 1,
-                  display: "flex",
-                  gap: 1,
-                  overflowX: "auto",
-                  whiteSpace: "nowrap",
-                  borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-                  "&::-webkit-scrollbar": { display: "none" },
-                  msOverflowStyle: "none",
-                  scrollbarWidth: "none",
-                }}
-              >
-                {SUGGESTED_QUESTIONS.map((q, idx) => (
-                  <Chip
-                    key={idx}
-                    label={q}
-                    onClick={() => handleSendMessage(q)}
-                    disabled={isLoading}
+                {/* Suggestion Chips (only shown in a new chat session) */}
+                {messages.length === 1 && (
+                  <Box
                     sx={{
-                      fontSize: "0.75rem",
-                      height: 26,
-                      background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.08)",
-                      border: `1px solid ${theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)"}`,
-                      cursor: "pointer",
-                      "&:hover": {
-                        background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)",
-                        transform: "translateY(-1px)",
-                      },
-                      transition: "all 0.2s",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
+                      alignSelf: "flex-start",
+                      maxWidth: "85%",
+                      mt: 1.5,
+                      mb: 1,
                     }}
-                  />
-                ))}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        fontWeight: 600,
+                        color: "text.secondary",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Suggested Questions
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 1,
+                      }}
+                    >
+                      {SUGGESTED_QUESTIONS.map((q, idx) => (
+                        <Chip
+                          key={idx}
+                          label={q}
+                          onClick={() => handleSendMessage(q)}
+                          disabled={isLoading}
+                          sx={{
+                            fontSize: "0.75rem",
+                            py: 1.5,
+                            background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.08)",
+                            border: `1px solid ${theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)"}`,
+                            cursor: "pointer",
+                            whiteSpace: "normal",
+                            height: "auto",
+                            "& .MuiChip-label": {
+                              display: "block",
+                              whiteSpace: "normal",
+                              px: 1.5,
+                              py: 0.5,
+                            },
+                            "&:hover": {
+                              background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)",
+                              transform: "translateY(-1px)",
+                            },
+                            transition: "all 0.2s",
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+
+                <div ref={messagesEndRef} />
               </Box>
 
               {/* Input Area */}
@@ -620,12 +820,40 @@ const ChatBot = () => {
                   p: 1.5,
                   display: "flex",
                   gap: 1,
+                  alignItems: "center",
                   background: theme.palette.mode === "light"
                     ? "rgba(255, 255, 255, 0.95)"
                     : "rgba(15, 23, 42, 0.95)",
                   borderTop: "1px solid rgba(255, 255, 255, 0.1)",
                 }}
               >
+                <Zoom in={messages.length > 1} mountOnEnter unmountOnExit>
+                  <Box sx={{ flexShrink: 0 }}>
+                      <IconButton
+                        onClick={handleNewChat}
+                        disabled={isLoading}
+                        sx={{
+                          color: "text.secondary",
+                          backgroundColor: theme.palette.mode === "light"
+                            ? "rgba(0,0,0,0.03)"
+                            : "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          "&:hover": {
+                            color: "error.main",
+                            borderColor: "error.light",
+                            backgroundColor: theme.palette.mode === "light"
+                              ? "rgba(239, 68, 68, 0.04)"
+                              : "rgba(239, 68, 68, 0.08)",
+                          },
+                          width: 40,
+                          height: 40,
+                        }}
+                        aria-label="Start new chat"
+                      >
+                        <RestartAlt sx={{ fontSize: 20 }} />
+                      </IconButton>
+                  </Box>
+                </Zoom>
                 <TextField
                   fullWidth
                   size="small"

@@ -120,6 +120,20 @@ const ChatBot = () => {
     }
   };
 
+  // Scroll to the top of a specific message
+  const scrollToMessage = (msgId, behavior = "smooth") => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      const element = container.querySelector(`#msg-${msgId}`);
+      if (element) {
+        container.scrollTo({
+          top: element.offsetTop - 12,
+          behavior,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     if (chatState === "open") {
       if (messages.length > 1) {
@@ -127,7 +141,15 @@ const ChatBot = () => {
           isFirstMount.current = false;
           scrollToBottom("instant");
         } else {
-          scrollToBottom("smooth");
+          // If the last message is from the assistant, scroll to it
+          const lastMsg = messages[messages.length - 1];
+          if (lastMsg && lastMsg.role === "assistant" && lastMsg.id !== "welcome") {
+            setTimeout(() => {
+              scrollToMessage(lastMsg.id, "smooth");
+            }, 100);
+          } else {
+            scrollToBottom("smooth");
+          }
         }
       } else {
         isFirstMount.current = false;
@@ -628,6 +650,7 @@ const ChatBot = () => {
                   return (
                     <Box
                       key={msg.id}
+                      id={`msg-${msg.id}`}
                       sx={{
                         display: "flex",
                         alignSelf: isUser ? "flex-end" : "flex-start",

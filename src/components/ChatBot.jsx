@@ -25,7 +25,7 @@ import {
   CloseFullscreen,
 } from "@mui/icons-material";
 
-const PROFILE_PHOTO = "/sudipta_dp.webp";
+const BOT_LOGO = "/project_logos/chatbot_logo.svg";
 
 const SUGGESTED_QUESTIONS = [
   "How many years of experience does Sudipta have?",
@@ -360,8 +360,8 @@ const ChatBot = () => {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
               <Avatar
-                src={PROFILE_PHOTO}
-                alt="Sudipta"
+                src={BOT_LOGO}
+                alt="AI Assistant"
                 sx={{
                   width: 36,
                   height: 36,

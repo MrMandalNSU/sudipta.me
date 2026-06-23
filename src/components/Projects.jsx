@@ -99,13 +99,26 @@ const ProjectIconBox = styled(Avatar)(({ theme }) => ({
   },
 }));
 
+const alphaHex = (hex, opacity) => {
+  if (!hex || !hex.startsWith("#") || hex.length !== 7) {
+    return `rgba(79, 70, 229, ${opacity})`;
+  }
+
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
 const Projects = ({ id }) => {
   const projects = [
     {
       title: "ValoDash",
       type: "SaaS Analytics Platform",
       logo: "/project_logos/valodash_logo.svg",
+      accentColor: "#ff4655",
       liveLink: "https://valodash.sudipta.xyz/",
+      liveLabel: "Open Dashboard",
       githubLink: "",
       detailsLink: "/projects/valodash",
       achievements: [
@@ -134,6 +147,7 @@ const Projects = ({ id }) => {
       title: "AskSudipta",
       type: "Conversational RAG Intelligence",
       logo: "/project_logos/chatbot_logo.svg",
+      accentColor: "#22D3EE",
       liveLink: "",
       githubLink: "",
       detailsLink: "/projects/asksudipta",
@@ -169,7 +183,9 @@ const Projects = ({ id }) => {
       title: "ColorCuddle",
       type: "Interactive Web Game",
       logo: "/project_logos/colorcuddle_logo.svg",
+      accentColor: "#ec4899",
       liveLink: "https://colorcuddle.sudipta.xyz/",
+      liveLabel: "Play Game",
       githubLink: "",
       detailsLink: "/projects/colorcuddle",
       achievements: [
@@ -192,7 +208,9 @@ const Projects = ({ id }) => {
       title: "Text Analyzer",
       type: "Lexical Intelligence & Utility Suite",
       logo: "/project_logos/textanalyzer_logo.svg",
+      accentColor: "#4a8bb8",
       liveLink: "https://text.sudipta.xyz/",
+      liveLabel: "Analyze Text",
       githubLink: "",
       detailsLink: "/projects/textanalyzer",
       achievements: [
@@ -216,7 +234,9 @@ const Projects = ({ id }) => {
       title: "DSE Ops",
       type: "SaaS Market Analytics & Archival System",
       logo: "/project_logos/dsescript_logo.svg",
+      accentColor: "#10b981",
       liveLink: "https://dse.sudipta.xyz",
+      liveLabel: "View Market Data",
       githubLink: "",
       detailsLink: "/projects/dseops",
       achievements: [
@@ -245,6 +265,7 @@ const Projects = ({ id }) => {
       title: "Product Pouch",
       type: "Full-Stack Web App",
       logo: "/project_logos/productpouch_logo.svg",
+      accentColor: "#f59e0b",
       liveLink: "",
       githubLink: "https://github.com/MrMandalNSU/ProductPouch",
       achievements: [
@@ -306,7 +327,20 @@ const Projects = ({ id }) => {
           {/* Project Cards */}
           <Stack spacing={3}>
             {projects.map((project, index) => (
-              <ProjectCard key={index} elevation={3}>
+              <ProjectCard
+                key={index}
+                elevation={3}
+                sx={{
+                  "@media (hover: hover)": {
+                    "&:hover": {
+                      border: `1px solid ${project.accentColor || "#4F46E5"}`,
+                    },
+                  },
+                  "&::after": {
+                    boxShadow: `inset 0 0 0 1px ${alphaHex(project.accentColor, 0.35)}, inset 0 0 32px ${alphaHex(project.accentColor, 0.14)}`,
+                  },
+                }}
+              >
                 <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
                   <Box
                     sx={{
@@ -318,7 +352,64 @@ const Projects = ({ id }) => {
                       gap: 2,
                     }}
                   >
-                    {project.liveLink ? (
+                    {project.detailsLink ? (
+                      <RouterLink
+                        to={project.detailsLink}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                            cursor: "pointer",
+                            "&:hover .project-title": {
+                              color: project.accentColor || "primary.main",
+                            },
+                          }}
+                        >
+                          <ProjectIconBox
+                            src={project.logo}
+                            alt={`${project.title} logo`}
+                            sx={{
+                              backgroundColor: project.logo
+                                ? "transparent"
+                                : "rgba(79, 70, 229, 0.1)",
+                            }}
+                          >
+                            <CodeIcon />
+                          </ProjectIconBox>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              textAlign: "left",
+                            }}
+                          >
+                            <Typography
+                              className="project-title"
+                              variant="h6"
+                              component="h3"
+                              sx={{
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                transition: "color 0.2s",
+                              }}
+                            >
+                              {project.title}
+                            </Typography>
+                            <Typography
+                              variant="subtitle2"
+                              component="p"
+                              sx={{ fontWeight: 500, color: "text.secondary" }}
+                            >
+                              {project.type}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </RouterLink>
+                    ) : project.liveLink ? (
                       <Link
                         href={project.liveLink}
                         target="_blank"
@@ -332,7 +423,9 @@ const Projects = ({ id }) => {
                             alignItems: "center",
                             gap: 1.5,
                             cursor: "pointer",
-                            "&:hover .project-title": { color: "primary.main" },
+                            "&:hover .project-title": {
+                              color: project.accentColor || "primary.main",
+                            },
                           }}
                         >
                           <ProjectIconBox
@@ -390,7 +483,9 @@ const Projects = ({ id }) => {
                             alignItems: "center",
                             gap: 1.5,
                             cursor: "pointer",
-                            "&:hover .project-title": { color: "primary.main" },
+                            "&:hover .project-title": {
+                              color: project.accentColor || "primary.main",
+                            },
                           }}
                         >
                           <ProjectIconBox
@@ -434,61 +529,6 @@ const Projects = ({ id }) => {
                           </Box>
                         </Box>
                       </Link>
-                    ) : project.detailsLink ? (
-                      <RouterLink
-                        to={project.detailsLink}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1.5,
-                            cursor: "pointer",
-                            "&:hover .project-title": { color: "primary.main" },
-                          }}
-                        >
-                          <ProjectIconBox
-                            src={project.logo}
-                            alt={`${project.title} logo`}
-                            sx={{
-                              backgroundColor: project.logo
-                                ? "transparent"
-                                : "rgba(79, 70, 229, 0.1)",
-                            }}
-                          >
-                            <CodeIcon />
-                          </ProjectIconBox>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "flex-start",
-                              textAlign: "left",
-                            }}
-                          >
-                            <Typography
-                              className="project-title"
-                              variant="h6"
-                              component="h3"
-                              sx={{
-                                fontWeight: 700,
-                                lineHeight: 1.2,
-                                transition: "color 0.2s",
-                              }}
-                            >
-                              {project.title}
-                            </Typography>
-                            <Typography
-                              variant="subtitle2"
-                              component="p"
-                              sx={{ fontWeight: 500, color: "text.secondary" }}
-                            >
-                              {project.type}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </RouterLink>
                     ) : (
                       <Box
                         sx={{ display: "flex", alignItems: "center", gap: 1.5 }}
@@ -549,11 +589,11 @@ const Projects = ({ id }) => {
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: "rgba(129, 140, 248, 0.1)",
-                              color: "primary.main",
-                              border: "1px solid rgba(129, 140, 248, 0.3)",
+                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              color: project.accentColor || "primary.main",
+                              border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: "rgba(129, 140, 248, 0.2)",
+                                backgroundColor: alphaHex(project.accentColor, 0.2),
                               },
                             }}
                           />
@@ -568,16 +608,16 @@ const Projects = ({ id }) => {
                         >
                           <Chip
                             icon={<LanguageIcon fontSize="small" />}
-                            label="Live Link"
+                            label={project.liveLabel || "Live Link"}
                             size="small"
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: "rgba(16, 185, 129, 0.1)",
-                              color: "#10b981",
-                              border: "1px solid rgba(16, 185, 129, 0.3)",
+                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              color: project.accentColor || "#10b981",
+                              border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: "rgba(16, 185, 129, 0.2)",
+                                backgroundColor: alphaHex(project.accentColor, 0.2),
                               },
                             }}
                           />
@@ -597,11 +637,11 @@ const Projects = ({ id }) => {
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: "rgba(255, 255, 255, 0.1)",
-                              color: "text.primary",
-                              border: "1px solid rgba(255, 255, 255, 0.2)",
+                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              color: project.accentColor || "text.primary",
+                              border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                                backgroundColor: alphaHex(project.accentColor, 0.2),
                               },
                             }}
                           />
@@ -618,11 +658,11 @@ const Projects = ({ id }) => {
                           sx={{
                             cursor: "pointer",
                             fontWeight: 600,
-                            backgroundColor: "rgba(6, 182, 212, 0.1)",
-                            color: "#06b6d4",
-                            border: "1px solid rgba(6, 182, 212, 0.3)",
+                            backgroundColor: alphaHex(project.accentColor, 0.1),
+                            color: project.accentColor || "#06b6d4",
+                            border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                             "&:hover": {
-                              backgroundColor: "rgba(6, 182, 212, 0.2)",
+                              backgroundColor: alphaHex(project.accentColor, 0.2),
                             },
                           }}
                         />
@@ -643,7 +683,11 @@ const Projects = ({ id }) => {
                         >
                           <Typography
                             variant="body2"
-                            sx={{ color: "primary.main", mr: 1, mt: 0.25 }}
+                            sx={{
+                              color: project.accentColor || "primary.main",
+                              mr: 1,
+                              mt: 0.25,
+                            }}
                           >
                             ✦
                           </Typography>
@@ -671,11 +715,11 @@ const Projects = ({ id }) => {
                           fontSize: "0.75rem",
                           fontWeight: 500,
                           borderRadius: 1,
-                          backgroundColor: "rgba(79, 70, 229, 0.1)",
-                          color: "primary.main",
+                          backgroundColor: alphaHex(project.accentColor, 0.1),
+                          color: project.accentColor || "primary.main",
                           border: "none",
                           "&:hover": {
-                            backgroundColor: "rgba(79, 70, 229, 0.2)",
+                            backgroundColor: alphaHex(project.accentColor, 0.2),
                           },
                         }}
                       />

@@ -79,7 +79,7 @@ const Intro = ({ id }) => {
         position: "relative",
         zIndex: 0,
         isolation: "isolate",
-        mt: 16,
+        mt: { xs: 7, sm: 16 },
         pb: { xs: 0, sm: 4 },
         display: "flex",
         alignItems: "center",
@@ -176,7 +176,7 @@ const Intro = ({ id }) => {
                 order: { xs: 1, md: 2 },
                 zIndex: 2,
                 position: "relative",
-                mt: { xs: -8, md: -5 }, // Down-shifted slightly to align social buttons with left buttons perfectly
+                mt: { xs: 0, md: -5 }, // Align profile section on desktop, keep natural flow on mobile
                 mb: { xs: 4, md: 0 },
               }}
             >

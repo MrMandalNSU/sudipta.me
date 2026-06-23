@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   AppBar,
@@ -44,6 +44,16 @@ const Navbar = () => {
   const { mode, toggleColorMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const handleOpenResume = () => {
+      setResumeModalOpen(true);
+    };
+    window.addEventListener("open-resume-modal", handleOpenResume);
+    return () => {
+      window.removeEventListener("open-resume-modal", handleOpenResume);
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({

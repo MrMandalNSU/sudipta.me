@@ -27,7 +27,7 @@ import {
   Launch,
   RestartAlt,
 } from "@mui/icons-material";
-import { mapSourceFileToRoute } from "../utils/sourceMapper";
+import { mapSourceFileToRoute, mapSourceFileToName } from "../utils/sourceMapper";
 import { BOT_LOGO, SUGGESTED_QUESTIONS } from "../utils/chatbotConfig";
 
 
@@ -38,8 +38,9 @@ const ChatBot = () => {
 
   const handleSourceClick = (route) => {
     if (!route) return;
-    if (route.startsWith("/Resume")) {
-      window.open(route, "_blank");
+    if (route.startsWith("/Resume") || route.includes("Resume_Sudipta_Mandal.pdf")) {
+      setChatState("minimized");
+      window.dispatchEvent(new Event("open-resume-modal"));
     } else {
       setChatState("minimized");
       navigate(route);
@@ -206,9 +207,10 @@ const ChatBot = () => {
         trimmed = trimmed.substring(2).trim();
       }
 
-      // Inline formatting parser (bold and links)
-      const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\))/g;
-      const parts = trimmed.split(regex);
+      // Inline formatting parser (bold, links, and knowledge source file paths)
+      const normalizedLine = trimmed.replace(/\\/g, "/");
+      const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\)|knowledge\/[a-zA-Z0-9_\-\/]+\.md)/g;
+      const parts = normalizedLine.split(regex);
       const content = parts.map((part, partIdx) => {
         if (part.startsWith("**") && part.endsWith("**")) {
           return <strong key={partIdx}>{part.slice(2, -2)}</strong>;
@@ -233,6 +235,32 @@ const ChatBot = () => {
               {label}
             </a>
           );
+        }
+        if (part.startsWith("knowledge/") && part.endsWith(".md")) {
+          const route = mapSourceFileToRoute(part);
+          const displayName = mapSourceFileToName(part);
+          if (route) {
+            return (
+              <a
+                key={partIdx}
+                href={route}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSourceClick(route);
+                }}
+                style={{
+                  color: isUser ? "inherit" : theme.palette.primary.main,
+                  fontWeight: 600,
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                {displayName}
+              </a>
+            );
+          } else {
+            return <span key={partIdx} style={{ fontStyle: "italic" }}>{displayName}</span>;
+          }
         }
         return part;
       });
@@ -675,7 +703,7 @@ const ChatBot = () => {
                                           </Typography>
                                           {src.sourceFile && (
                                             <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.6875rem", display: "block", textAlign: "left" }}>
-                                              {src.sourceFile.split("/").pop()} • Match: {Math.round(src.similarity * 100)}%
+                                              {mapSourceFileToName(src.sourceFile)} • Match: {Math.round(src.similarity * 100)}%
                                             </Typography>
                                           )}
                                         </Box>

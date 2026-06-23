@@ -16,18 +16,28 @@ const mobileNodes = Object.keys(vectorNodes);
 const VectorStoreSection = ({ theme, activeVectorNode, setActiveVectorNode, primaryColor }) => {
   const activeData = vectorNodes[activeVectorNode];
   const diagramNodes = [
-    { id: "upsert_knowledge_chunk", x: 45, y: 55, w: 190, h: 92, label: "Upsert RPC", sub: "changed chunks" },
-    { id: "delete_stale_chunks", x: 45, y: 255, w: 190, h: 92, label: "Cleanup RPCs", sub: "stale sources" },
-    { id: "knowledge_chunks", x: 345, y: 120, w: 250, h: 170, label: "knowledge_chunks", sub: "content + vector(768)" },
-    { id: "match_knowledge_chunks", x: 715, y: 55, w: 205, h: 92, label: "Vector Match RPC", sub: "cosine similarity" },
-    { id: "keyword_search", x: 715, y: 255, w: 205, h: 92, label: "Keyword Search", sub: "alias scoring" },
+    { id: "upsert_knowledge_chunk", x: 40, y: 95, w: 185, h: 84, label: "Upsert RPC", sub: "changed chunks" },
+    { id: "delete_stale_chunks", x: 40, y: 275, w: 185, h: 84, label: "Cleanup RPCs", sub: "stale sources" },
+    { id: "embedding_vector", x: 315, y: 25, w: 205, h: 84, label: "Embedding Vector", sub: "vector(768)" },
+    { id: "knowledge_chunks", x: 310, y: 165, w: 220, h: 112, label: "knowledge_chunks", sub: "content + metadata" },
+    { id: "chunk_metadata", x: 315, y: 335, w: 205, h: 84, label: "Metadata JSON", sub: "heading paths" },
+    { id: "ivfflat_index", x: 620, y: 25, w: 190, h: 84, label: "IVFFlat Index", sub: "cosine ops" },
+    { id: "match_knowledge_chunks", x: 615, y: 165, w: 205, h: 84, label: "Vector Match RPC", sub: "similarity" },
+    { id: "keyword_search", x: 615, y: 335, w: 205, h: 84, label: "Keyword Search", sub: "alias scoring" },
+    { id: "hybrid_merge", x: 905, y: 220, w: 205, h: 96, label: "Hybrid Merge", sub: "top-k ranking" },
   ];
   const relations = [
-    { from: "upsert_knowledge_chunk", to: "knowledge_chunks", path: "M 235 101 L 345 170" },
-    { from: "delete_stale_chunks", to: "knowledge_chunks", path: "M 235 301 L 345 240" },
-    { from: "knowledge_chunks", to: "match_knowledge_chunks", path: "M 595 170 L 715 101" },
-    { from: "knowledge_chunks", to: "keyword_search", path: "M 595 240 L 715 301" },
-    { from: "match_knowledge_chunks", to: "keyword_search", path: "M 820 147 L 820 255", dashed: true },
+    { from: "upsert_knowledge_chunk", to: "knowledge_chunks", path: "M 225 137 C 260 137, 260 205, 310 205" },
+    { from: "delete_stale_chunks", to: "knowledge_chunks", path: "M 225 317 C 260 317, 260 238, 310 238" },
+    { from: "knowledge_chunks", to: "embedding_vector", path: "M 420 165 L 420 109", dashed: true },
+    { from: "knowledge_chunks", to: "chunk_metadata", path: "M 420 277 L 420 335", dashed: true },
+    { from: "embedding_vector", to: "ivfflat_index", path: "M 520 67 L 620 67" },
+    { from: "ivfflat_index", to: "match_knowledge_chunks", path: "M 715 109 L 715 165" },
+    { from: "knowledge_chunks", to: "match_knowledge_chunks", path: "M 530 205 L 615 205" },
+    { from: "knowledge_chunks", to: "keyword_search", path: "M 530 238 C 570 238, 570 377, 615 377" },
+    { from: "match_knowledge_chunks", to: "hybrid_merge", path: "M 820 207 C 850 207, 865 248, 905 248" },
+    { from: "keyword_search", to: "hybrid_merge", path: "M 820 377 C 860 377, 860 288, 905 288" },
+    { from: "chunk_metadata", to: "hybrid_merge", path: "M 520 377 C 690 455, 845 340, 905 306", dashed: true },
   ];
 
   return (
@@ -140,7 +150,7 @@ const VectorStoreSection = ({ theme, activeVectorNode, setActiveVectorNode, prim
         <Box sx={{ order: { xs: 2, md: 1 }, mb: { xs: 0, md: 4 } }}>
           <DiagramBoard>
             <Box sx={{ display: { xs: "none", md: "block" } }}>
-              <svg width="100%" viewBox="0 0 960 400" style={{ display: "block", maxWidth: "100%", height: "auto" }}>
+              <svg width="100%" viewBox="0 0 1150 460" style={{ display: "block", maxWidth: "100%", height: "auto" }}>
                 <defs>
                   <marker id="vectorDot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
                     <circle cx="5" cy="5" r="3" fill={primaryColor} />

@@ -355,7 +355,33 @@ export const vectorNodes = {
       { name: "created_at", type: "timestamptz" },
       { name: "updated_at", type: "timestamptz" },
     ],
-    relations: ["match_knowledge_chunks", "upsert_knowledge_chunk", "keyword_search"],
+    relations: ["embedding_vector", "chunk_metadata", "match_knowledge_chunks", "upsert_knowledge_chunk", "keyword_search"],
+  },
+  embedding_vector: {
+    title: "Embedding Vector Column",
+    icon: <MemoryIcon />,
+    description: "Dense semantic representation of each chunk, stored as a pgvector column with 768 dimensions.",
+    fields: [
+      { name: "embedding", type: "vector(768)", isKey: "Column" },
+      { name: "model", type: "gemini-embedding-2" },
+      { name: "dimension", type: "768" },
+      { name: "distance", type: "cosine" },
+    ],
+    relations: ["knowledge_chunks", "ivfflat_index", "match_knowledge_chunks"],
+  },
+  chunk_metadata: {
+    title: "Chunk Metadata JSON",
+    icon: <DataObjectIcon />,
+    description: "JSONB metadata preserves source file, title, heading context, chunk index, and token estimate for citations and prompt formatting.",
+    fields: [
+      { name: "sourceFile", type: "text" },
+      { name: "title", type: "text" },
+      { name: "heading", type: "text | null" },
+      { name: "headingPath", type: "text[]" },
+      { name: "chunkIndex", type: "number" },
+      { name: "tokenEstimate", type: "number" },
+    ],
+    relations: ["knowledge_chunks", "hybrid_merge"],
   },
   match_knowledge_chunks: {
     title: "match_knowledge_chunks RPC",
@@ -367,7 +393,19 @@ export const vectorNodes = {
       { name: "similarity", type: "1 - cosine distance" },
       { name: "ivfflat.probes", type: "100" },
     ],
-    relations: ["knowledge_chunks"],
+    relations: ["embedding_vector", "ivfflat_index", "hybrid_merge"],
+  },
+  ivfflat_index: {
+    title: "IVFFlat Vector Index",
+    icon: <SpeedIcon />,
+    description: "pgvector IVFFlat index using vector_cosine_ops, with probes raised during search so the small portfolio corpus returns reliable nearest matches.",
+    fields: [
+      { name: "index", type: "ivfflat" },
+      { name: "operator", type: "vector_cosine_ops" },
+      { name: "lists", type: "100" },
+      { name: "probes", type: "100" },
+    ],
+    relations: ["embedding_vector", "match_knowledge_chunks"],
   },
   upsert_knowledge_chunk: {
     title: "upsert_knowledge_chunk RPC",
@@ -404,7 +442,20 @@ export const vectorNodes = {
       { name: "retrievalScore", type: "keyword score / 20" },
       { name: "matchType", type: "keyword | hybrid" },
     ],
-    relations: ["knowledge_chunks", "match_knowledge_chunks"],
+    relations: ["knowledge_chunks", "hybrid_merge"],
+  },
+  hybrid_merge: {
+    title: "Hybrid Merge Ranking",
+    icon: <HubIcon />,
+    description: "Retrieval merge step that deduplicates vector and keyword matches, combines scores, labels hybrid matches, and returns the top ranked chunks.",
+    fields: [
+      { name: "vectorMatches", type: "similarity score" },
+      { name: "keywordMatches", type: "alias score" },
+      { name: "matchType", type: "vector | keyword | hybrid" },
+      { name: "retrievalScore", type: "merged ranking" },
+      { name: "limit", type: "top-k" },
+    ],
+    relations: ["match_knowledge_chunks", "keyword_search", "chunk_metadata"],
   },
 };
 

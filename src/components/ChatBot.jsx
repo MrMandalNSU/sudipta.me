@@ -391,11 +391,11 @@ const ChatBot = () => {
     <Box
       sx={{
         position: "fixed",
-        bottom: 24,
-        right: 24,
+        bottom: isMobile ? 16 : 24,
+        right: isMobile ? 16 : 24,
         zIndex: 9999,
         width: chatState === "closed" ? 60 : (isMobile ? "calc(100vw - 32px)" : (isExpanded ? 500 : 340)),
-        height: chatState === "closed" ? 60 : (isMobile ? (chatState === "minimized" ? "auto" : "calc(100vh - 48px)") : (chatState === "minimized" ? "auto" : (isExpanded ? "min(680px, calc(100vh - 64px))" : 520))),
+        height: chatState === "closed" ? 60 : (isMobile ? (chatState === "minimized" ? "auto" : "calc(100dvh - 32px)") : (chatState === "minimized" ? "auto" : (isExpanded ? "min(680px, calc(100vh - 64px))" : 520))),
         pointerEvents: "none",
         "& > *": {
           pointerEvents: "auto",
@@ -535,9 +535,7 @@ const ChatBot = () => {
             width: "100%",
             height: "100%",
             maxHeight: "100%",
-            position: isMobile ? "fixed" : "relative",
-            bottom: isMobile ? 16 : 0,
-            right: isMobile ? 16 : 0,
+            position: "relative",
             borderRadius: isMobile && chatState !== "minimized" ? 3 : 4,
             overflow: "hidden",
             border: "1px solid rgba(255, 255, 255, 0.15)",

@@ -21,6 +21,8 @@ import {
   KeyboardArrowDown,
   KeyboardArrowUp,
   ChatBubbleOutline,
+  OpenInFull,
+  CloseFullscreen,
 } from "@mui/icons-material";
 
 const PROFILE_PHOTO = "/sudipta_dp.webp";
@@ -41,6 +43,20 @@ const ChatBot = () => {
     const savedState = sessionStorage.getItem("chat_window_state");
     return savedState || "closed";
   });
+
+  const [isExpanded, setIsExpanded] = useState(() => {
+    const saved = sessionStorage.getItem("chat_is_expanded");
+    return saved === "true";
+  });
+
+  const [showHint, setShowHint] = useState(() => {
+    const saved = sessionStorage.getItem("hide_chat_hint");
+    return saved !== "true";
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("chat_is_expanded", isExpanded ? "true" : "false");
+  }, [isExpanded]);
 
   const [messages, setMessages] = useState(() => {
     const savedMessages = sessionStorage.getItem("chat_history");
@@ -167,7 +183,90 @@ const ChatBot = () => {
   };
 
   return (
-    <Box sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 9999 }}>
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: 24,
+        right: 24,
+        zIndex: 9999,
+        width: chatState === "closed" ? 60 : (isMobile ? "calc(100vw - 32px)" : (isExpanded ? 500 : 340)),
+        height: chatState === "closed" ? 60 : (isMobile ? (chatState === "minimized" ? "auto" : "calc(100vh - 48px)") : (chatState === "minimized" ? "auto" : (isExpanded ? "min(680px, calc(100vh - 64px))" : 520))),
+        pointerEvents: "none",
+        "& > *": {
+          pointerEvents: "auto",
+        },
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+      }}
+    >
+      {/* Small Hint Speech Bubble */}
+      {chatState === "closed" && !isMobile && showHint && (
+        <Zoom in={chatState === "closed" && showHint}>
+          <Paper
+            elevation={6}
+            sx={{
+              position: "absolute",
+              right: 76,
+              bottom: 8,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              py: 0.75,
+              px: 1.5,
+              borderRadius: "16px 16px 4px 16px",
+              background: theme.palette.mode === "light"
+                ? "rgba(255, 255, 255, 0.95)"
+                : "rgba(30, 41, 59, 0.95)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+              },
+              animation: "floatHint 4s ease-in-out infinite",
+              "@keyframes floatHint": {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-6px)" },
+              },
+            }}
+            onClick={() => setChatState("open")}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 700,
+                color: theme.palette.mode === "light" ? "primary.main" : "secondary.main",
+                fontSize: "0.8rem",
+              }}
+            >
+              Ask my AI Assistant! 🤖
+            </Typography>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowHint(false);
+                sessionStorage.setItem("hide_chat_hint", "true");
+              }}
+              sx={{
+                p: 0.25,
+                color: "text.secondary",
+                "&:hover": { color: "text.primary" },
+              }}
+            >
+              <Close sx={{ fontSize: 12 }} />
+            </IconButton>
+          </Paper>
+        </Zoom>
+      )}
+
       {/* Floating Action Button */}
       <Zoom in={chatState === "closed"}>
         <IconButton
@@ -228,9 +327,9 @@ const ChatBot = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: isMobile ? "calc(100vw - 32px)" : 380,
-            height: isMobile ? (chatState === "minimized" ? "auto" : "calc(100vh - 48px)") : (chatState === "minimized" ? "auto" : 520),
-            maxHeight: isMobile ? "calc(100vh - 48px)" : 520,
+            width: "100%",
+            height: "100%",
+            maxHeight: "100%",
             position: isMobile ? "fixed" : "relative",
             bottom: isMobile ? 16 : 0,
             right: isMobile ? 16 : 0,
@@ -243,7 +342,7 @@ const ChatBot = () => {
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
             boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
-            transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease",
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
           {/* Header */}
@@ -291,6 +390,16 @@ const ChatBot = () => {
               </Box>
             </Box>
             <Box sx={{ display: "flex", gap: 0.5 }}>
+              {!isMobile && chatState !== "minimized" && (
+                <IconButton
+                  size="small"
+                  onClick={() => setIsExpanded((prev) => !prev)}
+                  sx={{ color: "text.secondary" }}
+                  aria-label={isExpanded ? "Collapse chat window" : "Expand chat window"}
+                >
+                  {isExpanded ? <CloseFullscreen sx={{ fontSize: 16 }} /> : <OpenInFull sx={{ fontSize: 16 }} />}
+                </IconButton>
+              )}
               {!isMobile && (
                 <IconButton
                   size="small"

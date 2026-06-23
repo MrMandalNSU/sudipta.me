@@ -20,6 +20,10 @@ import {
   Language as LanguageIcon,
   GitHub as GitHubIcon,
   SmartToy as SmartToyIcon,
+  Dashboard as DashboardIcon,
+  SportsEsports as SportsEsportsIcon,
+  TextFields as TextFieldsIcon,
+  Timeline as TimelineIcon,
 } from "@mui/icons-material";
 
 const OuterPaper = styled(Paper)(({ theme }) => ({
@@ -110,6 +114,17 @@ const alphaHex = (hex, opacity) => {
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
+const getLiveIcon = (iconKey) => {
+  const iconSx = { fontSize: 16 };
+
+  if (iconKey === "dashboard") return <DashboardIcon sx={iconSx} />;
+  if (iconKey === "game") return <SportsEsportsIcon sx={iconSx} />;
+  if (iconKey === "text") return <TextFieldsIcon sx={iconSx} />;
+  if (iconKey === "market") return <TimelineIcon sx={iconSx} />;
+
+  return <LanguageIcon sx={iconSx} />;
+};
+
 const Projects = ({ id }) => {
   const projects = [
     {
@@ -118,7 +133,8 @@ const Projects = ({ id }) => {
       logo: "/project_logos/valodash_logo.svg",
       accentColor: "#ff4655",
       liveLink: "https://valodash.sudipta.xyz/",
-      liveLabel: "Open Dashboard",
+      liveLabel: "Open Analytics",
+      liveIcon: "dashboard",
       githubLink: "",
       detailsLink: "/projects/valodash",
       achievements: [
@@ -186,6 +202,7 @@ const Projects = ({ id }) => {
       accentColor: "#ec4899",
       liveLink: "https://colorcuddle.sudipta.xyz/",
       liveLabel: "Play Game",
+      liveIcon: "game",
       githubLink: "",
       detailsLink: "/projects/colorcuddle",
       achievements: [
@@ -211,6 +228,7 @@ const Projects = ({ id }) => {
       accentColor: "#4a8bb8",
       liveLink: "https://text.sudipta.xyz/",
       liveLabel: "Analyze Text",
+      liveIcon: "text",
       githubLink: "",
       detailsLink: "/projects/textanalyzer",
       achievements: [
@@ -237,6 +255,7 @@ const Projects = ({ id }) => {
       accentColor: "#10b981",
       liveLink: "https://dse.sudipta.xyz",
       liveLabel: "View Market Data",
+      liveIcon: "market",
       githubLink: "",
       detailsLink: "/projects/dseops",
       achievements: [
@@ -589,11 +608,17 @@ const Projects = ({ id }) => {
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              backgroundColor: alphaHex(
+                                project.accentColor,
+                                0.1,
+                              ),
                               color: project.accentColor || "primary.main",
                               border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: alphaHex(project.accentColor, 0.2),
+                                backgroundColor: alphaHex(
+                                  project.accentColor,
+                                  0.2,
+                                ),
                               },
                             }}
                           />
@@ -607,17 +632,23 @@ const Projects = ({ id }) => {
                           underline="none"
                         >
                           <Chip
-                            icon={<LanguageIcon fontSize="small" />}
+                            icon={getLiveIcon(project.liveIcon)}
                             label={project.liveLabel || "Live Link"}
                             size="small"
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              backgroundColor: alphaHex(
+                                project.accentColor,
+                                0.1,
+                              ),
                               color: project.accentColor || "#10b981",
                               border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: alphaHex(project.accentColor, 0.2),
+                                backgroundColor: alphaHex(
+                                  project.accentColor,
+                                  0.2,
+                                ),
                               },
                             }}
                           />
@@ -637,11 +668,17 @@ const Projects = ({ id }) => {
                             sx={{
                               cursor: "pointer",
                               fontWeight: 600,
-                              backgroundColor: alphaHex(project.accentColor, 0.1),
+                              backgroundColor: alphaHex(
+                                project.accentColor,
+                                0.1,
+                              ),
                               color: project.accentColor || "text.primary",
                               border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                               "&:hover": {
-                                backgroundColor: alphaHex(project.accentColor, 0.2),
+                                backgroundColor: alphaHex(
+                                  project.accentColor,
+                                  0.2,
+                                ),
                               },
                             }}
                           />
@@ -662,7 +699,10 @@ const Projects = ({ id }) => {
                             color: project.accentColor || "#06b6d4",
                             border: `1px solid ${alphaHex(project.accentColor, 0.3)}`,
                             "&:hover": {
-                              backgroundColor: alphaHex(project.accentColor, 0.2),
+                              backgroundColor: alphaHex(
+                                project.accentColor,
+                                0.2,
+                              ),
                             },
                           }}
                         />

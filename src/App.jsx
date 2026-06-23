@@ -10,6 +10,7 @@ import AgenticAI from "./components/AgenticAI";
 import Research from "./components/Research";
 import Projects from "./components/Projects";
 import Footer from "./components/Footer";
+import ChatBot from "./components/ChatBot";
 
 // Lazy-loaded homepage sections
 const CompetitiveProgramming = lazy(() => import("./components/CompetitiveProgramming"));
@@ -106,6 +107,7 @@ function App() {
           </Routes>
         </Box>
       </Suspense>
+      <ChatBot />
       <Footer />
     </ThemeProvider>
   );

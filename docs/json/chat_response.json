@@ -1,0 +1,35 @@
+{
+    "answer": "Sudipta Mandal has 5 years and 9 months of total software engineering experience as of June 2026.\n\nThis total is calculated by merging overlapping or contiguous roles, including his work at Cargo Stream, Sports Fixtures, Eucaps AB, and North South University Problem Solvers. This information is based on the authoritative backend-computed duration and the \"Work Experience Timeline\" (Source 1, 2, and 4).",
+    "sources": [
+        {
+            "sourceFile": "knowledge/profile/work-experience.md",
+            "title": "Work Experience Timeline",
+            "chunkIndex": 7,
+            "similarity": 0.792796109174667
+        },
+        {
+            "sourceFile": "knowledge/profile/work-experience.md",
+            "title": "Work Experience Timeline",
+            "chunkIndex": 0,
+            "similarity": 0.760742899467289
+        },
+        {
+            "sourceFile": "knowledge/experiences/cargostream.md",
+            "title": "Cargo Stream — Architectural Document Pipeline & SWE Experience",
+            "chunkIndex": 0,
+            "similarity": 0.764790080928605
+        },
+        {
+            "sourceFile": "knowledge/profile/work-experience.md",
+            "title": "Work Experience Timeline",
+            "chunkIndex": 1,
+            "similarity": 0.756468589129804
+        },
+        {
+            "sourceFile": "knowledge/resume/resume-overview.md",
+            "title": "Resume Overview — Sudipta Mandal",
+            "chunkIndex": 0,
+            "similarity": 0.751763918294277
+        }
+    ]
+}

@@ -1,0 +1,567 @@
+import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Paper,
+  IconButton,
+  Typography,
+  Avatar,
+  TextField,
+  Chip,
+  Zoom,
+  Collapse,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import {
+  Close,
+  Remove,
+  Send,
+  SmartToy,
+  Description,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  ChatBubbleOutline,
+} from "@mui/icons-material";
+
+const PROFILE_PHOTO = "/sudipta_dp.webp";
+
+const SUGGESTED_QUESTIONS = [
+  "How many years of experience does Sudipta have?",
+  "What is Sudipta's tech stack?",
+  "Tell me about Cargo Stream experience",
+  "Show me some of Sudipta's projects",
+];
+
+const ChatBot = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Chat window state: 'closed' | 'open' | 'minimized'
+  const [chatState, setChatState] = useState(() => {
+    const savedState = sessionStorage.getItem("chat_window_state");
+    return savedState || "closed";
+  });
+
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = sessionStorage.getItem("chat_history");
+    return savedMessages
+      ? JSON.parse(savedMessages)
+      : [
+          {
+            id: "welcome",
+            role: "assistant",
+            content: "Hi! I'm Sudipta's AI assistant. Ask me anything about his work experience, projects, skills, or research!",
+            timestamp: new Date().toISOString(),
+            sources: [],
+          },
+        ];
+  });
+
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSourcesMap, setShowSourcesMap] = useState({});
+
+  const messagesEndRef = useRef(null);
+
+  // Sync state to sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem("chat_window_state", chatState);
+  }, [chatState]);
+
+  useEffect(() => {
+    sessionStorage.setItem("chat_history", JSON.stringify(messages));
+  }, [messages]);
+
+  // Scroll to bottom on new messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (chatState === "open") {
+      scrollToBottom();
+    }
+  }, [messages, chatState, isLoading]);
+
+  const handleSendMessage = async (textToSend) => {
+    const text = (textToSend || input).trim();
+    if (!text) return;
+
+    if (!textToSend) {
+      setInput("");
+    }
+
+    const userMessage = {
+      id: `user-${Date.now()}`,
+      role: "user",
+      content: text,
+      timestamp: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      const assistantMessage = {
+        id: `assistant-${Date.now()}`,
+        role: "assistant",
+        content: data.answer || "I couldn't fetch an answer right now.",
+        timestamp: new Date().toISOString(),
+        sources: data.sources || [],
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Chat API error:", error);
+      const errorMessage = {
+        id: `assistant-error-${Date.now()}`,
+        role: "assistant",
+        content: "Sorry, I ran into an error connecting to my RAG backend API. Please make sure the backend configuration is correct.",
+        timestamp: new Date().toISOString(),
+        error: true,
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleSources = (msgId) => {
+    setShowSourcesMap((prev) => ({
+      ...prev,
+      [msgId]: !prev[msgId],
+    }));
+  };
+
+  const formatText = (text) => {
+    if (!text) return "";
+    return text.split("\n").map((para, i) => {
+      if (!para.trim()) return null;
+      // Parse basic markdown bold **text**
+      const parts = para.split(/(\*\*.*?\*\*)/g);
+      return (
+        <Typography key={i} variant="body2" sx={{ mb: 1, lineHeight: 1.6, textAlign: "justify", fontSize: "0.875rem" }}>
+          {parts.map((part, index) => {
+            if (part.startsWith("**") && part.endsWith("**")) {
+              return <strong key={index}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+          })}
+        </Typography>
+      );
+    });
+  };
+
+  return (
+    <Box sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 9999 }}>
+      {/* Floating Action Button */}
+      <Zoom in={chatState === "closed"}>
+        <IconButton
+          onClick={() => setChatState("open")}
+          aria-label="Open chat assistant"
+          sx={{
+            width: 60,
+            height: 60,
+            background: theme.palette.mode === "light"
+              ? "linear-gradient(135deg, #4F46E5, #06B6D4)"
+              : "linear-gradient(135deg, #818CF8, #22D3EE)",
+            color: "white",
+            boxShadow: theme.palette.mode === "light"
+              ? "0 8px 24px rgba(79, 70, 229, 0.4)"
+              : "0 8px 24px rgba(34, 211, 238, 0.4)",
+            "&:hover": {
+              transform: "translateY(-4px) scale(1.05)",
+              boxShadow: theme.palette.mode === "light"
+                ? "0 12px 28px rgba(79, 70, 229, 0.6)"
+                : "0 12px 28px rgba(34, 211, 238, 0.6)",
+            },
+            transition: "all 0.3s ease-in-out",
+          }}
+        >
+          <ChatBubbleOutline sx={{ fontSize: 28 }} />
+          {/* Pulsing indicator */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: 14,
+              height: 14,
+              backgroundColor: "#10B981",
+              borderRadius: "50%",
+              border: `2px solid ${theme.palette.background.paper}`,
+              animation: "pulse 2s infinite",
+              "@keyframes pulse": {
+                "0%": {
+                  boxShadow: "0 0 0 0 rgba(16, 185, 129, 0.7)",
+                },
+                "70%": {
+                  boxShadow: "0 0 0 8px rgba(16, 185, 129, 0)",
+                },
+                "100%": {
+                  boxShadow: "0 0 0 0 rgba(16, 185, 129, 0)",
+                },
+              },
+            }}
+          />
+        </IconButton>
+      </Zoom>
+
+      {/* Chat Window */}
+      <Zoom in={chatState !== "closed"}>
+        <Paper
+          elevation={12}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: isMobile ? "calc(100vw - 32px)" : 380,
+            height: isMobile ? (chatState === "minimized" ? "auto" : "calc(100vh - 48px)") : (chatState === "minimized" ? "auto" : 520),
+            maxHeight: isMobile ? "calc(100vh - 48px)" : 520,
+            position: isMobile ? "fixed" : "relative",
+            bottom: isMobile ? 16 : 0,
+            right: isMobile ? 16 : 0,
+            borderRadius: isMobile && chatState !== "minimized" ? 3 : 4,
+            overflow: "hidden",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            background: theme.palette.mode === "light"
+              ? "rgba(255, 255, 255, 0.9)"
+              : "rgba(15, 23, 42, 0.9)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
+            transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease",
+          }}
+        >
+          {/* Header */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              p: 2,
+              background: theme.palette.mode === "light"
+                ? "linear-gradient(90deg, #F3F4F6, #E5E7EB)"
+                : "linear-gradient(90deg, #1E293B, #0F172A)",
+              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Avatar
+                src={PROFILE_PHOTO}
+                alt="Sudipta"
+                sx={{
+                  width: 36,
+                  height: 36,
+                  border: `2px solid ${theme.palette.primary.main}`,
+                }}
+              >
+                <SmartToy />
+              </Avatar>
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                  Sudipta's Assistant
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                  <Box
+                    sx={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      backgroundColor: "#10B981",
+                    }}
+                  />
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.75rem" }}>
+                    RAG Assistant Online
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+              {!isMobile && (
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    setChatState((prev) => (prev === "minimized" ? "open" : "minimized"))
+                  }
+                  sx={{ color: "text.secondary" }}
+                >
+                  <Remove />
+                </IconButton>
+              )}
+              <IconButton
+                size="small"
+                onClick={() => setChatState("closed")}
+                sx={{ color: "text.secondary" }}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+          </Box>
+
+          {/* Minimize toggle for mobile viewports or header clicks */}
+          {chatState !== "minimized" && (
+            <>
+              {/* Messages Area */}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  overflowY: "auto",
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1.5,
+                  maxHeight: "100%",
+                }}
+              >
+                {messages.map((msg) => {
+                  const isUser = msg.role === "user";
+                  const hasSources = msg.sources && msg.sources.length > 0;
+                  const isSourcesOpen = showSourcesMap[msg.id];
+
+                  return (
+                    <Box
+                      key={msg.id}
+                      sx={{
+                        display: "flex",
+                        alignSelf: isUser ? "flex-end" : "flex-start",
+                        flexDirection: "column",
+                        maxWidth: "85%",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          p: 1.5,
+                          borderRadius: isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+                          background: isUser
+                            ? (theme.palette.mode === "light"
+                                ? "linear-gradient(135deg, #4F46E5, #3B82F6)"
+                                : "linear-gradient(135deg, #6366F1, #3B82F6)")
+                            : (theme.palette.mode === "light"
+                                ? "rgba(243, 244, 246, 0.9)"
+                                : "rgba(30, 41, 59, 0.9)"),
+                          color: isUser
+                            ? "white"
+                            : "text.primary",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                          border: isUser
+                            ? "none"
+                            : "1px solid rgba(255, 255, 255, 0.05)",
+                        }}
+                      >
+                        {formatText(msg.content)}
+
+                        {/* RAG Sources UI */}
+                        {hasSources && (
+                          <Box sx={{ mt: 1, borderTop: `1px solid ${theme.palette.divider}`, pt: 1 }}>
+                            <Box
+                              onClick={() => toggleSources(msg.id)}
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                cursor: "pointer",
+                                opacity: 0.8,
+                                "&:hover": { opacity: 1 },
+                              }}
+                            >
+                              <Typography variant="caption" sx={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 0.5 }}>
+                                <Description sx={{ fontSize: 14 }} /> Verified Sources ({msg.sources.length})
+                              </Typography>
+                              {isSourcesOpen ? (
+                                <KeyboardArrowUp sx={{ fontSize: 16 }} />
+                              ) : (
+                                <KeyboardArrowDown sx={{ fontSize: 16 }} />
+                              )}
+                            </Box>
+                            <Collapse in={isSourcesOpen} sx={{ mt: 1 }}>
+                              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+                                {msg.sources.map((src, idx) => (
+                                  <Box
+                                    key={idx}
+                                    sx={{
+                                      p: 1,
+                                      borderRadius: 1,
+                                      backgroundColor: theme.palette.mode === "light" ? "rgba(255,255,255,0.7)" : "rgba(15,23,42,0.5)",
+                                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                                    }}
+                                  >
+                                    <Typography variant="caption" sx={{ fontWeight: 700, display: "block", color: "primary.main" }}>
+                                      {src.title}
+                                    </Typography>
+                                    {src.sourceFile && (
+                                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.6875rem", display: "block" }}>
+                                        {src.sourceFile.split("/").pop()} • Match: {Math.round(src.similarity * 100)}%
+                                      </Typography>
+                                    )}
+                                  </Box>
+                                ))}
+                              </Box>
+                            </Collapse>
+                          </Box>
+                        )}
+                      </Box>
+                    </Box>
+                  );
+                })}
+
+                {/* Loading state bubble */}
+                {isLoading && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignSelf: "flex-start",
+                      p: 1.5,
+                      borderRadius: "16px 16px 16px 4px",
+                      background: theme.palette.mode === "light"
+                        ? "rgba(243, 244, 246, 0.9)"
+                        : "rgba(30, 41, 59, 0.9)",
+                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                      width: "60px",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 0.5,
+                        "& div": {
+                          width: 8,
+                          height: 8,
+                          backgroundColor: theme.palette.text.secondary,
+                          borderRadius: "50%",
+                          animation: "bounce 1.4s infinite ease-in-out both",
+                        },
+                        "& div:nth-of-type(1)": { animationDelay: "-0.32s" },
+                        "& div:nth-of-type(2)": { animationDelay: "-0.16s" },
+                        "@keyframes bounce": {
+                          "0%, 80%, 100%": { transform: "scale(0)" },
+                          "40%": { transform: "scale(1.0)" },
+                        },
+                      }}
+                    >
+                      <div />
+                      <div />
+                      <div />
+                    </Box>
+                  </Box>
+                )}
+                <div ref={messagesEndRef} />
+              </Box>
+
+              {/* Suggestion Chips */}
+              <Box
+                sx={{
+                  px: 2,
+                  py: 1,
+                  display: "flex",
+                  gap: 1,
+                  overflowX: "auto",
+                  whiteSpace: "nowrap",
+                  borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+                  "&::-webkit-scrollbar": { display: "none" },
+                  msOverflowStyle: "none",
+                  scrollbarWidth: "none",
+                }}
+              >
+                {SUGGESTED_QUESTIONS.map((q, idx) => (
+                  <Chip
+                    key={idx}
+                    label={q}
+                    onClick={() => handleSendMessage(q)}
+                    disabled={isLoading}
+                    sx={{
+                      fontSize: "0.75rem",
+                      height: 26,
+                      background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.08)" : "rgba(129, 140, 248, 0.08)",
+                      border: `1px solid ${theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)"}`,
+                      cursor: "pointer",
+                      "&:hover": {
+                        background: theme.palette.mode === "light" ? "rgba(79, 70, 229, 0.15)" : "rgba(129, 140, 248, 0.15)",
+                        transform: "translateY(-1px)",
+                      },
+                      transition: "all 0.2s",
+                    }}
+                  />
+                ))}
+              </Box>
+
+              {/* Input Area */}
+              <Box
+                component="form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSendMessage();
+                }}
+                sx={{
+                  p: 1.5,
+                  display: "flex",
+                  gap: 1,
+                  background: theme.palette.mode === "light"
+                    ? "rgba(255, 255, 255, 0.95)"
+                    : "rgba(15, 23, 42, 0.95)",
+                  borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="Ask me a question..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={isLoading}
+                  slotProps={{
+                    input: {
+                      sx: {
+                        borderRadius: 3,
+                        fontSize: "0.875rem",
+                        backgroundColor: theme.palette.mode === "light" ? "rgba(243, 244, 246, 0.8)" : "rgba(30, 41, 59, 0.8)",
+                      }
+                    }
+                  }}
+                />
+                <IconButton
+                  type="submit"
+                  disabled={isLoading || !input.trim()}
+                  color="primary"
+                  sx={{
+                    background: theme.palette.primary.main,
+                    color: "white",
+                    "&:hover": {
+                      background: theme.palette.primary.dark,
+                    },
+                    "&.Mui-disabled": {
+                      background: theme.palette.mode === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)",
+                      color: "text.disabled",
+                    },
+                    borderRadius: "50%",
+                    width: 40,
+                    height: 40,
+                  }}
+                >
+                  <Send sx={{ fontSize: 18 }} />
+                </IconButton>
+              </Box>
+            </>
+          )}
+        </Paper>
+      </Zoom>
+    </Box>
+  );
+};
+
+export default ChatBot;

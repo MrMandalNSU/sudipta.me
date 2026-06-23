@@ -97,7 +97,8 @@ const ChatBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSourcesMap, setShowSourcesMap] = useState({});
 
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const isFirstMount = useRef(true);
 
   // Sync state to sessionStorage
   useEffect(() => {
@@ -109,13 +110,32 @@ const ChatBot = () => {
   }, [messages]);
 
   // Scroll to bottom on new messages
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (behavior = "smooth") => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior,
+      });
+    }
   };
 
   useEffect(() => {
     if (chatState === "open") {
-      scrollToBottom();
+      if (messages.length > 1) {
+        if (isFirstMount.current) {
+          isFirstMount.current = false;
+          scrollToBottom("instant");
+        } else {
+          scrollToBottom("smooth");
+        }
+      } else {
+        isFirstMount.current = false;
+        const container = messagesContainerRef.current;
+        if (container) {
+          container.scrollTop = 0;
+        }
+      }
     }
   }, [messages, chatState, isLoading]);
 
@@ -589,6 +609,7 @@ const ChatBot = () => {
             <>
               {/* Messages Area */}
               <Box
+                ref={messagesContainerRef}
                 sx={{
                   flexGrow: 1,
                   overflowY: "auto",
@@ -834,7 +855,6 @@ const ChatBot = () => {
                   </Box>
                 )}
 
-                <div ref={messagesEndRef} />
               </Box>
 
               {/* Input Area */}

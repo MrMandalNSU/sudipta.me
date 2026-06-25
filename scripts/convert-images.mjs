@@ -6,7 +6,14 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const GALLERY_DIR = join(__dirname, "..", "public", "temp");
+const GALLERY_DIR = join(
+  __dirname,
+  "..",
+  "public",
+  "screenshots",
+  "projects",
+  "desops",
+);
 
 const MAX_WIDTH = 1200;
 const QUALITY = 80;
@@ -14,7 +21,7 @@ const QUALITY = 80;
 async function convert() {
   const files = await readdir(GALLERY_DIR);
   const imageFiles = files.filter((f) =>
-    [".jpg", ".jpeg", ".png"].includes(extname(f).toLowerCase())
+    [".jpg", ".jpeg", ".png"].includes(extname(f).toLowerCase()),
   );
 
   console.log(`Found ${imageFiles.length} images to convert:\n`);
@@ -37,9 +44,7 @@ async function convert() {
       const outputMeta = await sharp(outputPath).metadata();
       const newKB = Math.round(outputMeta.size / 1024) || "?";
 
-      console.log(
-        `✓ ${file} (${originalKB} KB) → ${outputName} (${newKB} KB)`
-      );
+      console.log(`✓ ${file} (${originalKB} KB) → ${outputName} (${newKB} KB)`);
     } catch (err) {
       console.error(`✗ Failed to convert ${file}:`, err.message);
     }

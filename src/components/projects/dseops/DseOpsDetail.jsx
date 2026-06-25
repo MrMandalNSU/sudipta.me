@@ -38,7 +38,7 @@ const DseOpsDetail = () => {
   /* ── SEO Meta updates ── */
   useEffect(() => {
     // 1. Update Document Title
-    document.title = "DSE Ops - DSE SME Market Scraping & Archiving Platform | Sudipta Mandal";
+    document.title = "DSE Ops - Secure DSE SME Analytics & Ticker History Platform | Sudipta Mandal";
 
     // 2. Update Meta Description
     let descriptionMeta = document.querySelector('meta[name="description"]');
@@ -48,7 +48,7 @@ const DseOpsDetail = () => {
       document.head.appendChild(descriptionMeta);
     }
     const originalDesc = descriptionMeta.getAttribute('content');
-    descriptionMeta.setAttribute('content', 'Detailed breakdown of DSE Ops: A decentralized monorepo scraper portal for Dhaka Stock Exchange SME boards featuring automated cron webhooks, Supabase PostgreSQL, S3 archives, and glassmorphic listings.');
+    descriptionMeta.setAttribute('content', 'Detailed breakdown of DSE Ops: a secure DSE SME analytics platform featuring ticker history charts, NodeCache-backed reads, Next.js API proxying, cron scrapes, Supabase PostgreSQL, S3 archives, and CSV exports.');
 
     // 3. Update Canonical Link
     let canonicalLink = document.querySelector('link[rel="canonical"]');

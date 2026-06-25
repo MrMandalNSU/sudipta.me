@@ -8,7 +8,7 @@ This document outlines the **architectural blueprint, data flows, core workflows
 
 ## 🏛️ System Architecture & Workflow
 
-DSE Ops uses a decoupled, full-stack monorepo system containing a scraping Node.js/Express service, a relational Supabase PostgreSQL database, a Supabase Storage bucket, and a modern Next.js client interface.
+DSE Ops uses a decoupled, full-stack monorepo system containing a scraping Node.js/Express service, an in-process NodeCache read layer, a relational Supabase PostgreSQL database, a Supabase Storage bucket, and a modern Next.js client interface protected by same-origin API proxy routes.
 
 ### 1. High-Level Process Workflow
 
@@ -19,15 +19,21 @@ flowchart TD
     %% Define Nodes
     subgraph ClientSpace [Next.js Client Space]
         User([User]) -->|1. Request Stock Data| Client[Next.js React Client]
-        Client -->|1a. Download CSV files| S3Link[Direct Storage URI]
+        Client -->|1a. Same-Origin GET /api/*| Proxy[Next.js API Proxy]
     end
 
     subgraph BackendGateway [Express.js Scraper API]
-        Client -->|2. Query Summaries & Transctions| Router[Express API Router]
-        Router -->|2a. JSON Responses| Client
+        Proxy -->|2. Private Backend URL| Router[Express API Router]
+        Router -->|2a. Cache Lookup| NodeCache[(NodeCache Runtime Cache)]
+        NodeCache -->|2b. Hit: JSON Response| Router
+        NodeCache -->|2c. Miss: Query Fallback| DB
+        DB -->|2d. Set Cache| NodeCache
+        Router -->|2e. JSON / CSV Stream| Proxy
+        Proxy -->|2f. Same-Origin Response| Client
         
         CronWebhook([Daily Cron Webhook]) -->|3. Trigger Scraping POST| Router
         Router -->|3a. Execute Scraper| Scraper[Web Scraper & HTML Parser]
+        Router -->|3b. Scrape Success Flush| NodeCache
     end
 
     subgraph TargetSource [External Stock Webpage]
@@ -39,7 +45,6 @@ flowchart TD
         Router -->|5. Insert Daily Records| DB[(PostgreSQL Database)]
         Router -->|6. Upload CSV Stream| Storage[(Supabase S3 Bucket)]
         Storage -->|Return file paths| DB
-        S3Link -.->|Fetch stream| Storage
     end
 
     %% Node Styling
@@ -48,8 +53,8 @@ flowchart TD
     classDef db fill:#10b981,stroke:#1e293b,stroke-width:2px,color:#fff;
     classDef ext fill:#7c3aed,stroke:#ece8e1,stroke-width:2px,color:#fff;
     
-    class Client,S3Link client;
-    class Router,Scraper server;
+    class Client,Proxy client;
+    class Router,Scraper,NodeCache server;
     class DB,Storage db;
     class DSESite,CronWebhook ext;
 ```
@@ -60,16 +65,26 @@ flowchart TD
 
 1. **Client Portal (Next.js / TypeScript)**:
    - Built with Next.js App Router, with structural layouts styled using pure custom CSS Modules.
-   - Provides users with interactive date filters and calendar tools to lookup daily stock transactions.
-   - Renders performance metrics, sector summaries, public listings, and block transaction spreadsheets, featuring multi-column sorting (by ticker, open, close, volume, value, change %) for analytical indexing.
-   - Streams historical stock archives directly through public Supabase Storage URIs.
+   - Provides users with interactive date filters, calendar tools, ticker-history drilldowns, and multi-metric chart inspection.
+   - Renders performance metrics, public listings, block transaction spreadsheets, range analytics, selected-date point details, and overlapping chart series.
+   - Calls same-origin Next.js API routes so backend URLs and cron secrets are not bundled into browser JavaScript.
 
-2. **Express.js API Server (Node.js)**:
+2. **Next.js API Proxy Layer**:
+   - Accepts safe public GET requests from the browser and forwards them server-side to the private Express backend URL.
+   - Preserves JSON responses, CSV download streams, content-disposition headers, and cache-control headers.
+   - Blocks public scrape mutation routes so scraping remains a backend/cron-only operation.
+
+3. **Express.js API Server (Node.js)**:
    - Houses endpoints for fetching transaction archives, lists of downloadable CSV reports, and daily market dashboards.
    - Securely listens for daily End-of-Day scraping triggers, validating authorization secrets using headers.
    - Orchestrates automated data pipelines: scraping, parsing, writing to the database, converting to CSV, and uploading to storage.
 
-3. **Scraper & Parser Engine (`parser.js`)**:
+4. **NodeCache Runtime Cache**:
+   - Caches JSON read responses for market data, ticker history, latest CSVs, and paginated CSV lists.
+   - Emits terminal logs for cache hit, miss, set, and flush events.
+   - Flushes after a successful cron scrape so the next read repopulates fresh data.
+
+5. **Scraper & Parser Engine (`parser.js`)**:
    - Fetches target HTML dynamically from `sme.dsebd.org/sme_market-statistics.php`.
    - Utilizes `node-html-parser` to navigate raw DOM trees and extract pre-formatted text segments.
    - Employs regex-driven parsers and state machines to isolate:
@@ -77,7 +92,7 @@ flowchart TD
      - Public Transactions Table (Open, High, Low, Close, percentage adjustments, trades, volume).
      - Block Transactions Table (Max Price, Min Price, trades, quantity, Value in Millions).
 
-4. **Supabase PostgreSQL & S3 Storage**:
+6. **Supabase PostgreSQL & S3 Storage**:
    - Houses the relational tables caching transactions and summaries, structured to delete older records first (cascading deletes) before re-inserting to ensure idempotency.
    - Acts as the primary store for raw daily backups, generating and serving direct CSV downloads.
 
@@ -101,6 +116,7 @@ sequenceDiagram
     Note over Server: Run parser.js state machine
     Server->>DB: Delete existing records for target date (ON DELETE CASCADE)
     Server->>DB: Batch insert Daily Summary and Transactions (Public & Block)
+    Server->>Server: Flush NodeCache after successful DB/S3 writes
     DB-->>Server: Ingest Success Callback
 ```
 
@@ -129,11 +145,18 @@ sequenceDiagram
     participant DB as Supabase PostgreSQL
     
     User->>Client: Select calendar date
-    Client->>Server: GET /api/market-data?date=YYYY-MM-DD
-    Server->>DB: Query daily_summaries, public_transactions & block_transactions
-    DB-->>Server: Return SQL rows
-    Server-->>Client: Respond with unified data payload (JSON)
-    Client->>Client: Render dynamic cards & spreadsheets
+    Client->>Client: Browser calls same-origin /api route
+    Client->>Server: Next API proxy forwards GET to private backend URL
+    Server->>Server: Check NodeCache key and log hit/miss
+    alt Cache hit
+        Server-->>Client: Return cached JSON payload
+    else Cache miss
+        Server->>DB: Query daily_summaries, public_transactions, sblock_transactions, or ticker history
+        DB-->>Server: Return SQL rows
+        Server->>Server: Set NodeCache key
+        Server-->>Client: Respond with unified data payload (JSON)
+    end
+    Client->>Client: Render dynamic cards, ticker charts, selected-date metrics & spreadsheets
 ```
 
 ---

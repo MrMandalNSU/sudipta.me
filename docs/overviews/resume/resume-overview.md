@@ -138,7 +138,8 @@
 ### DSE Ops — Analytics Platform
 
 - Engineered a **Node.js** scraper to reliably extract daily SME company data from the Dhaka Stock Exchange.
-- Parsed raw HTML tables into structured CSV files, automating data transformation for downstream analysis.
+- Parsed raw HTML tables into structured SQL rows and CSV archives, automating data transformation for downstream analysis.
+- Added ticker-history analytics, multi-metric chart inspection, secure Next.js API proxying, and NodeCache-backed read caching with cron-triggered cache refresh.
 
 ---
 

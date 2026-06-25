@@ -7,19 +7,22 @@ import {
   Terminal as TerminalIcon,
   Language as LanguageIcon,
   Dns as DnsIcon,
-  Build as BuildIcon,
   SettingsSuggest as SettingsSuggestIcon,
-  TrendingUp as TrendingUpIcon,
   TableChart as TableChartIcon,
+  Cached as CachedIcon,
+  Security as SecurityIcon,
+  QueryStats as QueryStatsIcon,
 } from "@mui/icons-material";
 
 export const features = [
   { icon: <SyncIcon />, title: "Daily Auto Scraping", shortTitle: "Scraping", desc: "Automated daily scripts scrape End-of-Day (EOD) market statistics from Dhaka Stock Exchange (DSE) SME boards." },
   { icon: <StorageIcon />, title: "Supabase Database", shortTitle: "Database", desc: "Structured relational tables in Supabase PostgreSQL storing detailed transaction outputs and daily indicators." },
   { icon: <CloudUploadIcon />, title: "CSV Archival Storage", shortTitle: "Archival", desc: "Direct file upload streams that package historical daily statistics into CSV reports hosted on Cloud S3 buckets." },
-  { icon: <SearchIcon />, title: "Interactive Ticker Tables", shortTitle: "Ticker Sorting", desc: "Interactive date calendars, ticker search filters, and multi-column sorting (by price, volume, change %, trades) to query records." },
-  { icon: <TerminalIcon />, title: "Idempotent Syncs", shortTitle: "Idempotency", desc: "Engineered cascading database deletion guards to prevent duplicate listings on repeated scrapes." },
-  { icon: <LanguageIcon />, title: "Premium Visual Portal", shortTitle: "Portal", desc: "Modern Next.js interface styled with custom CSS variables, glassmorphic layout assets, and HSL palettes." },
+  { icon: <QueryStatsIcon />, title: "Ticker History Analytics", shortTitle: "Ticker History", desc: "Ticker drilldowns combine public and block history, date ranges, range analytics, period returns, and total value cards for individual instruments." },
+  { icon: <TableChartIcon />, title: "Interactive Chart Inspection", shortTitle: "Chart Points", desc: "Multi-metric Recharts views let users overlap public and block series, hover exact date points, and inspect selected-date values." },
+  { icon: <CachedIcon />, title: "NodeCache Read Cache", shortTitle: "NodeCache", desc: "In-process NodeCache stores JSON read responses with terminal hit/miss/set logs and flushes after successful cron scrapes." },
+  { icon: <SecurityIcon />, title: "Server-Side API Proxy", shortTitle: "API Proxy", desc: "The browser talks to same-origin Next.js API routes while backend URLs and cron secrets remain server-only." },
+  { icon: <TerminalIcon />, title: "Idempotent Syncs", shortTitle: "Idempotency", desc: "Engineered cascading database deletion guards and scrape-success cache flushes to prevent stale or duplicate listings." },
 ];
 
 export const systemNodes = {
@@ -27,15 +30,29 @@ export const systemNodes = {
     title: "Client Portal (Next.js / React)",
     shortTitle: "Frontend",
     icon: <LanguageIcon />,
-    description: "Responsive Next.js React frontend utilizing pure Vanilla CSS. Displays daily market boards, sector performances, block trades, and calendars to filter, sort, and query records.",
-    role: "Fetches structured summaries and downloads CSV spreadsheets through public storage endpoints.",
+    description: "Responsive Next.js React frontend using pure Vanilla CSS. Displays daily boards, ticker history pages, multi-metric charts, selected-date inspection, and CSV archives.",
+    role: "Calls same-origin Next API routes instead of exposing backend origins or cron secrets to browser JavaScript.",
+  },
+  next_proxy: {
+    title: "Next.js API Proxy Layer",
+    shortTitle: "API Proxy",
+    icon: <SecurityIcon />,
+    description: "Server-side Next route handlers forward safe public GET requests to the backend while blocking scrape mutation routes from the public UI.",
+    role: "Keeps BACKEND_API_URL server-only and centralizes browser-to-backend access behind same-origin /api routes.",
   },
   api: {
     title: "Express Backend API (Node.js)",
     shortTitle: "Backend",
     icon: <SettingsSuggestIcon />,
-    description: "Node.js Express API server coordinating client queries, automated scrape requests, CSV format builders, and direct S3 uploads.",
-    role: "Validates incoming webhook signatures and manages transactions with Supabase services.",
+    description: "Node.js Express API server coordinating cached read queries, automated scrape requests, CSV format builders, and direct S3 uploads.",
+    role: "Serves JSON endpoints, validates cron webhook signatures, and manages transactions with Supabase services.",
+  },
+  nodecache: {
+    title: "NodeCache Runtime Cache",
+    shortTitle: "NodeCache",
+    icon: <CachedIcon />,
+    description: "In-process cache layer for JSON read responses such as market data, ticker history, and CSV lists. Logs cache hit, miss, set, and flush events in the backend terminal.",
+    role: "Returns hot API responses quickly, falls back to Supabase on misses, and flushes after successful cron-triggered scrapes.",
   },
   scraper: {
     title: "Web Scraper & HTML Parser",
@@ -143,17 +160,18 @@ export const workflows = {
     title: "Daily Scraping Pipeline",
     shortTitle: "Scraping",
     icon: <SyncIcon />,
-    description: "Cron-job triggered scraper fetching daily statistics from DSE SME boards.",
+    description: "Cron-job triggered scraper fetching daily statistics from DSE SME boards, writing durable data, and refreshing runtime cache state.",
     steps: [
       { label: "Cron Ping", text: "cron-job.org fires a daily POST webhook call to backend endpoint with secret header authentication." },
       { label: "HTML Fetch", text: "Scraper script fetches the live stats HTML markup page from sme.dsebd.org." },
       { label: "Parse text data", text: "Utilizes node-html-parser to crawl lines, identifying dates, summaries, listings, and block trade details." },
       { label: "Clean Records", text: "Runs cascading deletions on Supabase PostgreSQL for the date (ON DELETE CASCADE) to guarantee idempotency." },
       { label: "Insert Records", type: "SQL", text: "Inserts cleaned summary records and batch saves public/block transaction data rows." },
+      { label: "Flush Runtime Cache", text: "After DB and CSV writes succeed, the backend flushes NodeCache so the next read repopulates fresh market data." },
     ],
     payload: {
       action: "scrape_cron_trigger",
-      x_cron_secret: "dse_sme_secure_secret_token",
+      x_cron_secret: "<server_only_secret>",
       dateRange: "TODAY",
     },
     responsePayload: {
@@ -164,6 +182,7 @@ export const workflows = {
         publicTransactions: 14,
         blockTransactions: 4,
       },
+      cache: "FLUSHED",
     },
   },
   download: {
@@ -190,22 +209,25 @@ export const workflows = {
     },
   },
   query: {
-    title: "Frontend Query & Search Flow",
+    title: "Secure Query & Analytics Flow",
     shortTitle: "Client Query",
     icon: <SearchIcon />,
-    description: "Responsive queries pulling historical stocks or fetching downloadable report listings.",
+    description: "Same-origin frontend queries pulling dashboard, ticker-history, and CSV list data through the Next proxy and NodeCache-backed backend.",
     steps: [
       { label: "Select Date", text: "User chooses a target trading date via calendar widgets on the Next.js frontend." },
-      { label: "GET Request", text: "Sends an API lookup call request: GET /api/market-data?date=YYYY-MM-DD." },
-      { label: "SQL Fetch", text: "Express API queries PostgreSQL database tables for summaries and transactions matching the date." },
-      { label: "Dashboard Render", text: "Next.js renders dynamic card statistics, populates public/block spreadsheets with interactive column-sorting filters, and displays CSV downloads." },
+      { label: "Same-Origin Request", text: "Browser sends GET /api/market-data, /api/tickers/:ticker/history, or /api/csv-list to the Next.js proxy." },
+      { label: "Server Proxy", text: "Next route handlers forward safe GET requests to the private backend URL without exposing backend env vars." },
+      { label: "Cache Lookup", text: "Express checks NodeCache and logs hit or miss. Cache hits return immediately." },
+      { label: "SQL Fallback", text: "On cache miss, Express queries Supabase PostgreSQL, formats the response, and sets the cache key." },
+      { label: "Analytics Render", text: "The UI renders cards, sortable tables, ticker history charts, selected-date metrics, and CSV downloads." },
     ],
     payload: {
       clientAction: "fetch_daily_stats",
-      queryDate: "2026-06-20",
+      route: "/api/tickers/ACHIASF/history",
     },
     responsePayload: {
       status: "SUCCESS",
+      cache: "HIT_OR_SET",
       dataExists: true,
       data: {
         summary: { date: "2026-06-20", total_trades: 423, total_volume: 890123 },
@@ -219,4 +241,6 @@ export const workflows = {
 export const snapshotsList = [
   { type: "desktop", src: "/screenshots/projects/desops/do (2).webp", title: "SME Analytics Dashboard" },
   { type: "desktop", src: "/screenshots/projects/desops/do (1).webp", title: "CSV Export & Historical Data Portal" },
+  { type: "desktop", src: "/screenshots/projects/desops/do (3).webp", title: "Ticker History Analytics" },
+  { type: "desktop", src: "/screenshots/projects/desops/do (4).webp", title: "Multi-Metric Chart Inspection" },
 ];

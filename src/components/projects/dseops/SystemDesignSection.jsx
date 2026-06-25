@@ -6,10 +6,11 @@ import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
 const userFlowSteps = [
   { key: "client", label: "User Request", sub: "Client Page" },
-  { key: "api", label: "Express API", sub: "GET /api/market-data" },
-  { key: "supabase_db", label: "Query DB Cache", sub: "Supabase PostgreSQL" },
-  { key: "supabase_storage", label: "Storage Link", sub: "Supabase S3 Bucket" },
-  { key: "client", label: "Render View", sub: "Summaries & CSV URIs" },
+  { key: "next_proxy", label: "Next API Proxy", sub: "Same-origin /api" },
+  { key: "api", label: "Express API", sub: "Private Backend" },
+  { key: "nodecache", label: "NodeCache", sub: "Hit / Miss / Set" },
+  { key: "supabase_db", label: "DB Fallback", sub: "Supabase PostgreSQL" },
+  { key: "client", label: "Render View", sub: "Charts & CSV URIs" },
 ];
 
 const syncFlowSteps = [
@@ -18,6 +19,7 @@ const syncFlowSteps = [
   { key: "scraper", label: "HTML Scraper", sub: "Parse Stock Lists" },
   { key: "supabase_db", label: "SQL Archive", sub: "Cascading Refresh" },
   { key: "supabase_storage", label: "S3 Archival", sub: "Direct CSV Upload" },
+  { key: "nodecache", label: "Cache Flush", sub: "Refresh Next Read" },
 ];
 
 const SystemDesignSection = ({
@@ -37,6 +39,7 @@ const SystemDesignSection = ({
       setActiveMobileFlow("sync");
     } else if (
       activeSystemNode === "client" ||
+      activeSystemNode === "next_proxy" ||
       activeSystemNode === "api" ||
       activeSystemNode === "supabase_storage"
     ) {
@@ -141,7 +144,7 @@ const SystemDesignSection = ({
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 920 360"
+            viewBox="0 0 1040 390"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -162,21 +165,25 @@ const SystemDesignSection = ({
 
             {/* Connection Lines */}
             {[
-              { from: "client", to: "api", path: "M 100 90 L 100 155 L 220 155" },
-              { from: "api", to: "scraper", path: "M 285 130 L 285 65 L 400 65" },
-              { from: "scraper", to: "dse", path: "M 530 65 L 580 65" },
-              { from: "scraper", to: "supabase_db", path: "M 465 90 L 465 110 L 760 110 L 760 140 L 790 140" },
-              { from: "scraper", to: "supabase_storage", path: "M 465 90 L 465 110 L 740 110 L 740 255 L 790 255" },
-              { from: "api", to: "supabase_db", path: "M 350 155 L 790 155" },
-              { from: "api", to: "supabase_storage", path: "M 285 180 L 285 275 L 790 275" },
-              { from: "cron", to: "api", path: "M 100 240 L 100 205 L 250 205 L 250 180" },
-              { from: "supabase_db", to: "client", path: "M 845 200 L 845 220 L 780 220 M 780 220 L 780 320 M 780 320 L 100 320 L 100 290" },
+              { from: "client", to: "next_proxy", path: "M 160 75 L 210 75" },
+              { from: "next_proxy", to: "api", path: "M 340 75 L 390 75 L 390 150 L 410 150" },
+              { from: "api", to: "nodecache", path: "M 540 150 L 590 150" },
+              { from: "nodecache", to: "supabase_db", path: "M 720 150 L 835 150" },
+              { from: "supabase_db", to: "nodecache", path: "M 835 185 L 755 185 L 755 175 L 720 175" },
+              { from: "nodecache", to: "client", path: "M 655 125 L 655 105 L 500 105 L 500 340 L 100 340 L 100 290" },
+              { from: "api", to: "scraper", path: "M 475 125 L 475 80" },
+              { from: "scraper", to: "dse", path: "M 540 55 L 590 55" },
+              { from: "scraper", to: "supabase_db", path: "M 540 65 L 790 65 L 790 135 L 835 135" },
+              { from: "scraper", to: "supabase_storage", path: "M 475 80 L 475 285 L 835 285" },
+              { from: "api", to: "supabase_storage", path: "M 475 185 L 475 305 L 835 305" },
+              { from: "cron", to: "api", path: "M 160 275 L 250 275 L 250 175 L 410 175" },
+              { from: "api", to: "nodecache", path: "M 455 185 L 455 225 L 655 225 L 655 185", cacheRefresh: true },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
               const strokeWidth = isActive ? 2.5 : 1.5;
               const marker = isActive ? "url(#arrowHead)" : "url(#arrowHeadMuted)";
-              const dashStyle = line.from === "cron" || line.to === "cron" ? "5,3" : undefined;
+              const dashStyle = line.from === "cron" || line.to === "cron" || line.cacheRefresh ? "5,3" : undefined;
               return (
                 <path
                   key={lIdx}
@@ -195,13 +202,15 @@ const SystemDesignSection = ({
 
             {/* Nodes */}
             {[
-              { key: "client", type: "start", x: 40, y: 40, w: 120, h: 50, rx: 25, cx: 100, cy: 65, label: "Next.js Dashboard", sub: "Client View" },
-              { key: "api", type: "process", x: 220, y: 130, w: 130, h: 50, rx: 8, cx: 285, cy: 155, label: "Express API Router", sub: "Auth & Gateways" },
-              { key: "scraper", type: "process", x: 400, y: 40, w: 130, h: 50, rx: 8, cx: 465, cy: 65, label: "HTML Scraper", sub: "Web Parser" },
-              { key: "dse", type: "process", x: 580, y: 40, w: 130, h: 50, rx: 8, cx: 645, cy: 65, label: "sme.dsebd.org", sub: "External Source" },
-              { key: "supabase_db", type: "cylinder", x: 790, y: 120, w: 110, h: 70, cx: 845, cy: 155, label: "Supabase DB", sub: "PostgreSQL" },
-              { key: "supabase_storage", type: "cylinder", x: 790, y: 240, w: 110, h: 70, cx: 845, cy: 275, label: "S3 Storage", sub: "CSV Files" },
-              { key: "cron", type: "process", x: 40, y: 240, w: 120, h: 50, rx: 8, cx: 100, cy: 265, label: "cron-job.org", sub: "Daily trigger" },
+              { key: "client", type: "start", x: 40, y: 50, w: 120, h: 50, rx: 25, cx: 100, cy: 75, label: "Next.js UI", sub: "Client View" },
+              { key: "next_proxy", type: "process", x: 210, y: 50, w: 130, h: 50, rx: 8, cx: 275, cy: 75, label: "Next API Proxy", sub: "Server route" },
+              { key: "api", type: "process", x: 410, y: 125, w: 130, h: 60, rx: 8, cx: 475, cy: 155, label: "Express API", sub: "Private backend" },
+              { key: "nodecache", type: "process", x: 590, y: 125, w: 130, h: 60, rx: 8, cx: 655, cy: 155, label: "NodeCache", sub: "Hit/Miss/Flush" },
+              { key: "scraper", type: "process", x: 410, y: 30, w: 130, h: 50, rx: 8, cx: 475, cy: 55, label: "HTML Scraper", sub: "Web Parser" },
+              { key: "dse", type: "process", x: 590, y: 30, w: 130, h: 50, rx: 8, cx: 655, cy: 55, label: "sme.dsebd.org", sub: "External Source" },
+              { key: "supabase_db", type: "cylinder", x: 835, y: 115, w: 120, h: 80, cx: 895, cy: 155, label: "Supabase DB", sub: "PostgreSQL" },
+              { key: "supabase_storage", type: "cylinder", x: 835, y: 255, w: 120, h: 80, cx: 895, cy: 295, label: "S3 Storage", sub: "CSV Files" },
+              { key: "cron", type: "process", x: 40, y: 250, w: 120, h: 50, rx: 8, cx: 100, cy: 275, label: "cron-job.org", sub: "Daily trigger" },
             ].map((node, nIdx) => {
               const isActive = activeSystemNode === node.key;
               const fillBg = isActive
@@ -268,9 +277,16 @@ const SystemDesignSection = ({
               );
             })}
 
+            <text x="735" y="145" fontSize="9.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+              cache miss
+            </text>
+            <text x="505" y="218" fontSize="9.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+              scrape-success flush
+            </text>
+
             {/* Legend */}
-            <text x="20" y="340" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
-              ── Direct Data Flow  ╌╌ Webhook Ping  Click nodes to highlight execution pathways
+            <text x="20" y="370" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+              Direct lines: query/data flow  Dashed lines: cron webhook or scrape-success cache flush  Click nodes to highlight pathways
             </text>
           </svg>
         </Box>

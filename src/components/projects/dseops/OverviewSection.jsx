@@ -118,7 +118,7 @@ const OverviewSection = ({ theme }) => {
               </Box>
 
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.75, mb: 3 }}>
-                A modern full-stack web archiving portal built to scrape, persist, and visualize Dhaka Stock Exchange (DSE) SME market data. Featuring automated daily HTML table parser webhooks, relational database transaction storage in Supabase PostgreSQL, direct S3 CSV downloads, and a fast, premium glassmorphism analytics dashboard.
+                A modern full-stack web archiving portal built to scrape, persist, and visualize Dhaka Stock Exchange (DSE) SME market data. Featuring ticker-level historical drilldowns, multi-metric chart inspection, secured same-origin API proxying, NodeCache-backed reads, relational storage in Supabase PostgreSQL, direct S3 CSV downloads, and a fast glassmorphism analytics dashboard.
               </Typography>
             </Box>
 
@@ -205,7 +205,7 @@ const OverviewSection = ({ theme }) => {
                 {
                   category: "Backend & Parser",
                   icon: <DnsIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
-                  items: ["Node.js", "Express.js", "node-html-parser"],
+                  items: ["Node.js", "Express.js", "node-html-parser", "NodeCache"],
                   color: "primary.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.06)" : "rgba(129,140,248,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.12)" : "rgba(129,140,248,0.15)",
@@ -221,7 +221,7 @@ const OverviewSection = ({ theme }) => {
                 {
                   category: "Frontend UI",
                   icon: <HubIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
-                  items: ["Next.js (TS, React 19)", "Lucide React", "Pure Vanilla CSS"],
+                  items: ["Next.js (TS, React 19)", "Next API Routes", "Recharts", "Pure Vanilla CSS"],
                   color: "warning.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(245,158,11,0.06)" : "rgba(251,191,36,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(245,158,11,0.12)" : "rgba(251,191,36,0.15)",
@@ -295,7 +295,7 @@ const OverviewSection = ({ theme }) => {
               The Dhaka Stock Exchange (DSE) SME board publishes daily market statistics on its website, but does not provide historical databases, REST APIs, or structured CSV downloads. Investors and financial researchers are forced to manually copy and parse raw text tables from their website on a day-to-day basis.
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2, lineHeight: 1.8 }}>
-              To automate this, the system needs to scrape daily listings at market close. The scraping backend must reliably parse unstructured HTML structures, handle potential changes in column indexing, manage S3 storage streams synchronously, and provide an idempotent database layout to avoid duplicate rows during repeated runs.
+              To automate this, the system needs to scrape daily listings at market close while serving historical analytics quickly. The backend must parse unstructured HTML, handle column changes, stream S3 archives, avoid duplicate rows during repeated runs, keep read-heavy endpoints responsive, and prevent cron secrets or backend origins from leaking into the browser.
             </Typography>
           </GlassCard>
         </Grid>
@@ -314,6 +314,8 @@ const OverviewSection = ({ theme }) => {
               {[
                 { title: "Automated Scraping Webhooks", desc: "A daily cron schedule fires secure webhook triggers to boot up HTML scrapers and parser modules at market close." },
                 { title: "Supabase Relational Archive", desc: "Stores daily summaries, public trade boards, and block transaction statistics in SQL, optimized with indices." },
+                { title: "Ticker Analytics Workspace", desc: "Provides ticker-history pages with range analytics, overlapping chart metrics, hover tooltips, and selected-date inspection cards." },
+                { title: "Secure Cached API Boundary", desc: "Routes browser reads through same-origin Next API handlers and uses NodeCache on the backend, flushing cache after cron scrape success." },
                 { title: "Direct CSV S3 uploads", desc: "Streams structured stock lists into downloadable CSV files directly on Supabase buckets for archival storage." },
               ].map((item, i) => (
                 <Stack key={i} direction="row" spacing={1.5} alignItems="flex-start">

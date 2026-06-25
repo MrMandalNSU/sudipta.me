@@ -17,6 +17,15 @@ const mobileTablesList = [
     ]
   },
   {
+    id: "AuthSession",
+    fields: [
+      { n: "id", k: "PK" },
+      { n: "userId", k: "FK" },
+      { n: "refreshTokenHash", k: "UK" },
+      { n: "expiresAt", k: "" }
+    ]
+  },
+  {
     id: "SyncMetadata",
     fields: [
       { n: "id", k: "PK" },
@@ -264,7 +273,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
             <Box sx={{ display: { xs: "none", md: "block" } }}>
               <svg
                 width="100%"
-                viewBox="0 0 960 480"
+                viewBox="0 0 960 600"
                 style={{ display: "block", maxWidth: "100%", height: "auto" }}
               >
                 <defs>
@@ -287,6 +296,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                 {[
                   { from: "User", to: "Team", path: "M 240 100 L 340 100" },
                   { from: "User", to: "ManualSyncLog", path: "M 140 170 L 140 330" },
+                  { from: "User", to: "AuthSession", path: "M 240 145 C 270 145, 270 500, 300 500" },
                   { from: "Player", to: "User", path: "M 340 395 C 270 395, 270 150, 240 150" },
                   { from: "Team", to: "TeamPlayer", path: "M 440 150 L 440 190" },
                   { from: "Player", to: "TeamPlayer", path: "M 440 330 L 440 300" },
@@ -318,6 +328,10 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                   {
                     id: "User", x: 40, y: 30, w: 200, h: 140,
                     fields: [{ n: "id", k: "PK" }, { n: "email", k: "UK" }, { n: "name", k: "" }, { n: "discordId", k: "UK" }, { n: "playerId", k: "FK" }]
+                  },
+                  {
+                    id: "AuthSession", x: 300, y: 480, w: 220, h: 100,
+                    fields: [{ n: "id", k: "PK" }, { n: "userId", k: "FK" }, { n: "refreshTokenHash", k: "UK" }]
                   },
                   {
                     id: "SyncMetadata", x: 40, y: 200, w: 200, h: 100,

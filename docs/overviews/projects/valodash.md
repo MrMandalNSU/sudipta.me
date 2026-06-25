@@ -8,7 +8,7 @@ This document outlines the **architectural blueprint, system design concepts, da
 
 ## 🏛️ System Architecture & Workflow
 
-ValoDash is built on a decoupled, cache-centric Client-Server architecture designed to resolve API rate limitations and deliver sub-second data query response times.
+ValoDash is built on a decoupled, cache-centric architecture with a same-origin Next.js backend-for-frontend (BFF) in front of an Express API. The BFF keeps backend tokens out of browser JavaScript, enforces CSRF checks on mutations, and still preserves sub-second cached analytics reads.
 
 ### 1. High-Level Process Workflow
 
@@ -20,11 +20,14 @@ flowchart TD
     subgraph ClientSpace [Client Frontend Space]
         User([User]) -->|1. Interact / Query Stats| Client[Next.js React Client]
         Client -->|1a. Authenticate| DiscordGate[Discord OAuth Portal]
+        Client -->|2. Same-origin /api request + CSRF| BFF[Next.js BFF Route Handlers]
     end
 
     subgraph GatewayCompute [Express.js Backend API]
-        Client -->|2. GET/POST Requests + JWT| Router[Express API Router]
-        Router -->|2a. Zod & JWT validation| AuthGuard{Auth Valid?}
+        BFF -->|2a. Attach server-held access token| Router[Express API Router]
+        BFF -->|2b. Refresh expired access cookie| Refresh[Refresh Session Route]
+        Refresh -->|Validate hashed refresh token| DB
+        Router -->|2c. Zod, JWT, role validation| AuthGuard{Auth Valid?}
         
         AuthGuard -->|No| Reject[401 Unauthorized]
         AuthGuard -->|Yes| CacheCheck{Is data in local DB?}
@@ -57,7 +60,7 @@ flowchart TD
     classDef db fill:#00f5a0,stroke:#17222d,stroke-width:2px,color:#17222d;
     classDef ext fill:#76807c,stroke:#ece8e1,stroke-width:2px,color:#fff;
     
-    class Client,DiscordGate client;
+    class Client,DiscordGate,BFF client;
     class Router,AuthGuard,CacheCheck,Ingestion,Reject server;
     class DB db;
     class DiscordAPI,RiotAPI,GitHub,StaggerSync ext;
@@ -69,15 +72,16 @@ flowchart TD
 
 1. **Client Frontend (React / Next.js)**:
    - Built with Next.js App Router, styling is handled through Vanilla CSS Modules.
-   - Manages authorization and active configurations via unified client contexts (`AuthContext` and `TeamContext`).
-   - Requests telemetry metrics, custom MVPs, Aim Kings, and competitive progression charts.
+   - Routes browser API traffic through same-origin route handlers instead of exposing the Express host.
+   - Stores access and refresh tokens only in HttpOnly cookies while React state uses sanitized user/team API responses.
 
 2. **Express.js API Server (TypeScript)**:
-   - Orchestrates JWT token verification, checks user access scopes (`USER` vs `SUPERADMIN`), and enforces schema runtime safety with Zod validation.
+   - Orchestrates short-lived access JWT verification, checks user access scopes (`USER` vs `SUPERADMIN`), and enforces schema runtime safety with Zod validation.
+   - Issues revocable refresh sessions backed by hashed opaque refresh tokens in PostgreSQL.
    - Computes statistical averages (K/D, ACS, headshot % accuracy) and runs the leaderboard sorting algorithms on-the-fly from PostgreSQL data.
 
 3. **PostgreSQL Cache (Prisma)**:
-   - Houses user sessions, custom team configurations, historical match details, and rank-fluctuation histories.
+   - Houses revocable auth sessions, custom team configurations, historical match details, and rank-fluctuation histories.
    - Isolates players per-team so players can exist across multiple rosters without data leaking.
 
 4. **Scheduled Sync Worker (GitHub Actions Webhook)**:
@@ -93,22 +97,29 @@ flowchart TD
 sequenceDiagram
     autonumber
     actor User
-    participant Client as React SPA
+    participant Client as React Client
+    participant BFF as Next.js BFF
     participant Server as Express API
     participant Discord as Discord OAuth
     participant DB as PostgreSQL
 
     User->>Client: Click "Sign in with Discord"
-    Client->>Discord: Redirect to Discord Auth Consent Screen
+    Client->>BFF: GET /api/auth/discord/start
+    BFF->>Client: Set short-lived OAuth state cookie
+    BFF->>Discord: Redirect to Discord Auth Consent Screen
     User->>Discord: Approve Permissions
-    Discord-->>Client: Redirect back with Auth Code
-    Client->>Server: Send Auth Code (GET /auth/discord/callback)
+    Discord-->>Client: Redirect back with Auth Code and State
+    Client->>BFF: POST /api/auth/discord
+    BFF->>BFF: Validate OAuth state and CSRF
+    BFF->>Server: Forward Auth Code and trusted redirect URI
     Server->>Discord: Exchange Code for Access Token & Profile
     Discord-->>Server: Return Discord User Profile (ID, Tag, Avatar)
     Server->>DB: Query/Create User by discordId
-    DB-->>Server: Return User Record
-    Server-->>Client: Generate and return JWT Token
-    Client->>Client: Persist JWT in LocalStorage & update AuthContext
+    Server->>DB: Create AuthSession with hashed refresh token
+    DB-->>Server: Return User and Session Record
+    Server-->>BFF: Return short-lived access token and opaque refresh token
+    BFF->>Client: Set HttpOnly session and refresh cookies
+    BFF-->>Client: Return sanitized user payload with no tokens
 ```
 
 ### 2. Player Enrollment Workflow
@@ -191,6 +202,11 @@ This graphical schema maps table cardinality, primary keys, and foreign key rela
    +------------------+    1 : N    +------------------+
    |  ManualSyncLog   |<------------|       User       |
    +------------------+             +--------+---------+
+                                             | 1 : N
+                                             v
+                                      +------------------+
+                                      |   AuthSession    |
+                                      +------------------+
                                              | 1
                                              |
                                              | 0..1 (links profile)
@@ -230,6 +246,17 @@ erDiagram
         String discordTag "Nullable"
         String avatar "Nullable"
         String playerId FK "Nullable"
+    }
+
+    AuthSession {
+        String id PK
+        String userId FK
+        String refreshTokenHash UK
+        String userAgent "Nullable"
+        String ipAddress "Nullable"
+        DateTime expiresAt
+        DateTime revokedAt "Nullable"
+        DateTime lastUsedAt "Nullable"
     }
     
     Team {
@@ -321,6 +348,7 @@ erDiagram
     User |o--o| Player : "links profile (SET NULL)"
     User ||--o{ Team : "creates (CASCADE)"
     User ||--o{ ManualSyncLog : "requests (CASCADE)"
+    User ||--o{ AuthSession : "owns refresh sessions (CASCADE)"
     Team ||--o{ TeamPlayer : "owns roster (CASCADE)"
     Player ||--o{ TeamPlayer : "joins team (CASCADE)"
     Player ||--o{ PlayerMatchStats : "earns (CASCADE)"
@@ -337,6 +365,7 @@ erDiagram
 | **User → Player** | `User.playerId` | `1 : 0..1` | `ON DELETE SET NULL` | Links an authenticated user to a single Valorant player profile. Removing the player does not delete the user account. |
 | **User → Team** | `Team.creatorId` | `1 : N` | `ON DELETE CASCADE` | Associates teams with their owners. Standard users can create up to `2` teams. Deleting a user purges all owned teams. |
 | **User → ManualSyncLog** | `ManualSyncLog.userId` | `1 : N` | `ON DELETE CASCADE` | Logs rate-limiting quotas for manual synchronizations triggered by users. |
+| **User → AuthSession** | `AuthSession.userId` | `1 : N` | `ON DELETE CASCADE` | Stores hashed refresh-token sessions so logout and session expiry can revoke future access-token renewal. |
 | **Team → TeamPlayer** | `TeamPlayer.teamId` | `1 : N` | `ON DELETE CASCADE` | Maps team memberships. Deleting a team purges all association records. |
 | **Player → TeamPlayer** | `TeamPlayer.playerId` | `1 : N` | `ON DELETE CASCADE` | Isolates players on rosters (maximum `10` players per team). Players can exist across multiple teams. |
 | **Player → PlayerMatchStats**| `PlayerMatchStats.playerId` | `1 : N` | `ON DELETE CASCADE` | Relates match-by-match metrics to players. Deleting a player removes all telemetry. |

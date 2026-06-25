@@ -48,7 +48,7 @@ const ValoDashDetail = () => {
       document.head.appendChild(descriptionMeta);
     }
     const originalDesc = descriptionMeta.getAttribute('content');
-    descriptionMeta.setAttribute('content', 'Detailed breakdown of ValoDash: A high-density SaaS analytics platform for Valorant rosters featuring scheduled cron syncs, Riot API rate limit queues, Winston logs, and JWT/Discord OAuth.');
+    descriptionMeta.setAttribute('content', 'Detailed breakdown of ValoDash: A high-density Valorant analytics platform featuring Next.js BFF API routes, HttpOnly refresh sessions, CSRF-protected mutations, scheduled syncs, and Riot API rate-limit queues.');
 
     // 3. Update Canonical Link
     let canonicalLink = document.querySelector('link[rel="canonical"]');

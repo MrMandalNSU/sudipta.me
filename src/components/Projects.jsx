@@ -140,9 +140,9 @@ const Projects = ({ id }) => {
       achievements: [
         "Developed a SaaS Analytics Platform for custom Valorant teams, using Node.js, TypeScript, Next.js, Zod, Prisma, and PostgreSQL. Integrated Riot Games APIs to collect and process player profiles and historical match data, powering team leaderboards, comparative analytics, graphical analysis, and performance insights.",
         "Engineered a cron scheduler and background worker service that executes staggered data ingestion updates to handle third-party API rate limits and refresh telemetry cache.",
-        "Integrated Discord OAuth2 authentication and architected a PostgreSQL database with relational tables via Prisma ORM, utilizing cascading integrity constraints and team-scoped roster isolation to ensure total data privacy.",
+        "Hardened authentication with same-origin Next.js API route proxying, HttpOnly access/refresh cookies, CSRF checks, Discord OAuth state validation, and revocable PostgreSQL-backed refresh sessions.",
         "Designed a multi-tiered leaderboard sorting algorithm (evaluating competitive MMR, ACS, and K/D ratios) and built a responsive UI optimized with micro-animations and touchscreen swiping for image previews.",
-        "The platform is adoped by more than 50 individual valorant players and 10 teams. Valodash currently helping valorant teams to understand and organize their match data and analytics. To see how I designed the project and visualized the use cases, click on the System Design button above.",
+        "The platform is adopted by more than 50 individual valorant players and 10 teams. Valodash currently helping valorant teams to understand and organize their match data and analytics. To see how I designed the project and visualized the use cases, click on the System Design button above.",
       ],
       technologies: [
         "Node.js",
@@ -151,6 +151,10 @@ const Projects = ({ id }) => {
         "Zod",
         "Prisma",
         "PostgreSQL",
+        "Next.js API Routes",
+        "HttpOnly Cookies",
+        "CSRF Protection",
+        "Refresh Tokens",
         "Riot Games API",
         "Cron Jobs",
         "Rate Limit",

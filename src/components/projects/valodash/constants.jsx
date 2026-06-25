@@ -17,24 +17,24 @@ export const features = [
   { icon: <AnalyticsIcon />, title: "Player Analytics", shortTitle: "Analytics", desc: "Per-player KDA, headshot %, win rate, and agent-specific performance breakdowns with trend lines." },
   { icon: <HistoryIcon />, title: "Match History", shortTitle: "History", desc: "Detailed round-by-round match breakdowns with map data, score timelines, and agent selections." },
   { icon: <TrendingUpIcon />, title: "Rank Tracking", shortTitle: "Tracking", desc: "Historical MMR progression charts showing rank fluctuations across competitive seasons." },
-  { icon: <SecurityIcon />, title: "Discord Login", shortTitle: "Login", desc: "OAuth2-based authentication flow linking Discord profiles directly to Valorant game tags." },
+  { icon: <SecurityIcon />, title: "Secure Sessions", shortTitle: "Sessions", desc: "Same-origin BFF auth with Discord OAuth state validation, CSRF checks, and HttpOnly access/refresh cookies." },
   { icon: <SyncIcon />, title: "Auto Sync", shortTitle: "Sync", desc: "Scheduled cron workers pull match data hourly from Riot APIs without impacting frontend responsiveness." },
 ];
 
 export const systemNodes = {
   client: {
-    title: "Client Frontend (React / Next.js)",
+    title: "Next.js Frontend & BFF",
     shortTitle: "Frontend",
     icon: <TimelineIcon />,
-    description: "Responsive browser dashboard built with React and custom Vanilla CSS. Renders Valorant profiles, historical match analytics, dynamic leaderboards, and custom player stats tracking.",
-    role: "Sends HTTP REST requests to the Backend, handles Discord login callbacks, and visualizes analytical insights.",
+    description: "Responsive Next.js dashboard with same-origin API route handlers. Browser code calls /api routes only while the BFF attaches server-held tokens to backend requests.",
+    role: "Renders analytics, handles Discord callbacks, validates CSRF on mutations, and keeps access/refresh tokens out of browser JavaScript.",
   },
   api: {
     title: "Backend API (Express.js / TypeScript)",
     shortTitle: "Backend",
     icon: <SettingsSuggestIcon />,
-    description: "Express.js server structured in TypeScript. Implements rate-limiting middleware to prevent API abuse, validates request payloads with Zod schemas, manages authorization via JSON Web Tokens, and processes logging telemetry via Winston.",
-    role: "Core application router coordinating Postgres client requests, scheduled background triggers, and user authentication mapping.",
+    description: "Express.js server structured in TypeScript. Implements rate limiting, Zod validation, role checks, short-lived access JWT verification, and revocable refresh-session issuance.",
+    role: "Core application router coordinating BFF-proxied requests, Postgres reads, scheduled sync triggers, and final authorization checks.",
   },
   postgres: {
     title: "PostgreSQL Database",
@@ -47,8 +47,8 @@ export const systemNodes = {
     title: "Discord OAuth Integration",
     shortTitle: "OAuth",
     icon: <SecurityIcon />,
-    description: "Integrates Discord OAuth for secure profile creation. Associates the logged-in Discord profile directly with their Valorant game tags.",
-    role: "Resolves Discord avatar and account email, returning authorized secure user tokens.",
+    description: "Integrates Discord OAuth for secure profile creation with frontend-generated state validation before backend token exchange.",
+    role: "Resolves Discord avatar and account email, then participates in a BFF session flow that stores tokens in HttpOnly cookies.",
   },
   riot: {
     title: "Riot Games API",
@@ -80,7 +80,21 @@ export const schemaTables = {
       { name: "avatar", type: "String?" },
       { name: "playerId", type: "String?", isKey: "FK" },
     ],
-    relations: ["Player", "Team", "ManualSyncLog"],
+    relations: ["Player", "Team", "ManualSyncLog", "AuthSession"],
+  },
+  AuthSession: {
+    description: "Revocable refresh-token session records used to renew short-lived access tokens without exposing credentials to browser JavaScript.",
+    fields: [
+      { name: "id", type: "String (UUID)", isKey: "PK" },
+      { name: "userId", type: "String", isKey: "FK" },
+      { name: "refreshTokenHash", type: "String", isKey: "Unique" },
+      { name: "userAgent", type: "String?" },
+      { name: "ipAddress", type: "String?" },
+      { name: "expiresAt", type: "DateTime" },
+      { name: "revokedAt", type: "DateTime?" },
+      { name: "lastUsedAt", type: "DateTime?" },
+    ],
+    relations: ["User"],
   },
   Team: {
     description: "Custom groups defined by users to perform team-wide stats aggregation.",
@@ -195,31 +209,27 @@ export const schemaTables = {
 
 export const workflows = {
   auth: {
-    title: "User Authentication Flow",
+    title: "BFF Authentication Flow",
     shortTitle: "Auth",
     icon: <SecurityIcon />,
-    description: "Secures client sessions and maps Discord users to game metrics.",
+    description: "Secures client sessions without exposing backend tokens to browser JavaScript.",
     steps: [
-      { label: "OAuth Redirect", text: "The user clicks 'Sign in with Discord' on the client, redirecting them to Discord's official OAuth authorization page." },
-      { label: "Callback Exchange", text: "Upon user consent, Discord redirects back to the frontend SPA callback with an authorization code. The client sends this code to the backend server." },
-      { label: "Token Handshake", text: "The backend exchanges the auth code with Discord APIs for an access token to retrieve the user's username, avatar, and unique Discord ID." },
-      { label: "Session Issue", text: "The backend maps the Discord ID to a local User model in PostgreSQL. It then generates a secure JWT token containing the user profile." },
-      { label: "Context Storage", text: "The frontend SPA stores the JWT token in LocalStorage and updates the global AuthContext, granting access to private team management panels." }
+      { label: "OAuth Start", text: "The Next.js BFF generates a short-lived OAuth state cookie and redirects the user to Discord's official consent screen." },
+      { label: "State Validation", text: "After Discord redirects back, the BFF verifies the returned state before forwarding the authorization code to Express." },
+      { label: "Token Exchange", text: "The backend exchanges the code with Discord APIs, resolves the Discord user profile, and maps it to a local User record." },
+      { label: "Session Persistence", text: "Express creates an AuthSession row with a hashed opaque refresh token and returns a short-lived access token plus refresh token to the BFF." },
+      { label: "HttpOnly Cookies", text: "The BFF stores valodash_session and valodash_refresh as HttpOnly cookies, strips tokens from JSON responses, and sends CSRF headers for mutations." },
+      { label: "Silent Renewal", text: "When the access cookie expires, the BFF refreshes through the backend, renews cookies, and retries the original API request once." }
     ],
     payload: {
-      discordId: "3829104859013058",
-      jwtSession: {
-        role: "ROSTER_ADMIN",
-        name: "Sudipta Mandal",
-        ign: "BayBeeNooby",
-        rank: "Ascendent 2",
-        exp: 1718449600
-      }
+      code: "discord_auth_code",
+      state: "validated_oauth_state",
+      csrfHeader: "X-Valodash-CSRF"
     },
     responsePayload: {
       status: "SUCCESS",
-      userId: "usr_91",
-      playerId: "plyr_73"
+      cookies: ["valodash_session", "valodash_refresh", "valodash_csrf"],
+      tokensExposedToBrowser: false
     }
   },
   enrollment: {

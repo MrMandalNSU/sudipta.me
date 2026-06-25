@@ -120,8 +120,8 @@ const OverviewSection = ({ theme }) => {
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.75, mb: 3 }}>
                 A high-performance browser dashboard and scheduler framework built to aggregate custom match histories,
                 track leaderboard standings, and monitor competitive player progression. Designed as an analytics suite
-                for custom Valorant lobbies, it bypass-caches third-party APIs to deliver near-zero latency telemetry
-                under tight token rate limits.
+                for custom Valorant lobbies, it combines same-origin BFF request routing, secure HttpOnly sessions, and
+                bypass-cached third-party API telemetry to deliver near-zero latency insights under tight token rate limits.
               </Typography>
             </Box>
 
@@ -227,9 +227,9 @@ const OverviewSection = ({ theme }) => {
                   borderColor: theme.palette.mode === "light" ? "rgba(79,70,229,0.12)" : "rgba(129,140,248,0.15)",
                 },
                 {
-                  category: "Database & ORM",
+                  category: "BFF & Security",
                   icon: <StorageIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
-                  items: ["PostgreSQL", "Prisma ORM"],
+                  items: ["Next.js API Routes", "HttpOnly Cookies", "CSRF"],
                   color: "secondary.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(6,182,212,0.06)" : "rgba(34,211,238,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(6,182,212,0.12)" : "rgba(34,211,238,0.15)",
@@ -237,15 +237,15 @@ const OverviewSection = ({ theme }) => {
                 {
                   category: "Integrations",
                   icon: <HubIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
-                  items: ["Riot Games API", "Discord OAuth"],
+                  items: ["Riot Games API", "Discord OAuth", "OAuth State"],
                   color: "warning.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(245,158,11,0.06)" : "rgba(251,191,36,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(245,158,11,0.12)" : "rgba(251,191,36,0.15)",
                 },
                 {
-                  category: "Operations & Dev",
+                  category: "Data & Operations",
                   icon: <BuildIcon sx={{ fontSize: { xs: 11, sm: 13 } }} />,
-                  items: ["Cron Jobs", "GitHub Actions", "Zod Validation"],
+                  items: ["PostgreSQL", "Prisma ORM", "Cron Jobs"],
                   color: "success.main",
                   bgColor: theme.palette.mode === "light" ? "rgba(16,185,129,0.06)" : "rgba(52,211,153,0.08)",
                   borderColor: theme.palette.mode === "light" ? "rgba(16,185,129,0.12)" : "rgba(52,211,153,0.15)",
@@ -336,9 +336,9 @@ const OverviewSection = ({ theme }) => {
             </Typography>
             <Stack spacing={2.5}>
               {[
-                { title: "Asynchronous Cron Sync", desc: "Background workers pull match logs hourly from Riot Games API, processing telemetry without impacting frontend view times." },
+                { title: "Same-Origin BFF Proxy", desc: "Next.js API routes keep backend hosts and bearer tokens server-side while forwarding browser requests through one origin." },
                 { title: "PostgreSQL Cache Layer", desc: "A secure schema caches player standings, overall KDA, maps won, and rank fluctuations for sub-second queries." },
-                { title: "Discord Auth Binding", desc: "Users sign in with Discord and securely claim their Valorant profiles, linking stats instantly." },
+                { title: "Revocable HttpOnly Sessions", desc: "Discord login issues short access cookies and hashed refresh sessions with CSRF protection for mutations." },
               ].map((item, i) => (
                 <Stack key={i} direction="row" spacing={1.5} alignItems="flex-start">
                   <CheckCircleIcon color="primary" sx={{ mt: 0.3, fontSize: 18 }} />

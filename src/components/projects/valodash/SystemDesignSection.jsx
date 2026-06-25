@@ -6,7 +6,8 @@ import { GlassCard, SectionHeading, DiagramBoard } from "./styles";
 
 const userFlowSteps = [
   { key: "client", label: "User Request", sub: "Client" },
-  { key: "api", label: "Express Router", sub: "Rate & Auth Check" },
+  { key: "client", label: "Next BFF Proxy", sub: "Same-Origin / CSRF" },
+  { key: "api", label: "Express Router", sub: "Auth & Role Check" },
   { key: "api", label: "Cache Check", sub: "Local DB Check" },
   { key: "postgres", label: "Query Cache", sub: "Postgres / Prisma" },
   { key: "postgres", label: "PostgreSQL DB", sub: "Persistent Cache" },
@@ -198,7 +199,8 @@ const SystemDesignSection = ({
               { key: "discord", type: "process", x: 220, y: 40, w: 130, h: 50, rx: 8, cx: 285, cy: 65, label: "Discord Portal", sub: "OAuth2 Login" },
               { key: "api", type: "decision", d: "M 450 25 L 510 65 L 450 105 L 390 65 Z", cx: 450, cy: 65, label: "Cached?", sub: "Local DB Check" },
               { key: "postgres", type: "process", x: 580, y: 40, w: 130, h: 50, rx: 8, cx: 645, cy: 65, label: "Query Cache", sub: "Postgres / Prisma" },
-              { key: "api", type: "process", x: 220, y: 130, w: 130, h: 50, rx: 8, cx: 285, cy: 155, label: "Express Router", sub: "Rate & Auth Check" },
+              { key: "client", type: "process", x: 40, y: 130, w: 130, h: 50, rx: 8, cx: 105, cy: 155, label: "Next BFF", sub: "Cookie + CSRF" },
+              { key: "api", type: "process", x: 220, y: 130, w: 130, h: 50, rx: 8, cx: 285, cy: 155, label: "Express Router", sub: "Auth & Role Check" },
               { key: "postgres", type: "cylinder", x: 790, y: 120, w: 100, h: 70, cx: 840, cy: 155, label: "PostgreSQL DB", sub: "Postgres Cache" },
               { key: "sync", type: "process", x: 40, y: 240, w: 120, h: 50, rx: 8, cx: 100, cy: 265, label: "GitHub Actions", sub: "Cron Trigger (12h)" },
               { key: "sync", type: "process", x: 200, y: 240, w: 120, h: 50, rx: 8, cx: 260, cy: 265, label: "Staggered Sync", sub: "2000ms Delay" },

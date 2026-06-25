@@ -294,14 +294,14 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
 
                 {/* Relations / Connector Lines */}
                 {[
-                  { from: "User", to: "Team", path: "M 240 100 L 340 100" },
+                  { from: "User", to: "Team", path: "M 240 100 L 360 100" },
                   { from: "User", to: "ManualSyncLog", path: "M 140 170 L 140 330" },
-                  { from: "User", to: "AuthSession", path: "M 240 145 C 270 145, 270 500, 300 500" },
-                  { from: "Player", to: "User", path: "M 340 395 C 270 395, 270 150, 240 150" },
-                  { from: "Team", to: "TeamPlayer", path: "M 440 150 L 440 190" },
-                  { from: "Player", to: "TeamPlayer", path: "M 440 330 L 440 300" },
-                  { from: "Player", to: "RankHistory", path: "M 540 395 C 600 395, 620 425, 680 425" },
-                  { from: "Player", to: "PlayerMatchStats", path: "M 540 365 C 600 365, 620 275, 680 275" },
+                  { from: "User", to: "AuthSession", path: "M 240 145 C 300 145, 300 512, 360 512" },
+                  { from: "Player", to: "User", path: "M 360 395 C 300 395, 300 150, 240 150" },
+                  { from: "Team", to: "TeamPlayer", path: "M 460 150 L 460 190" },
+                  { from: "Player", to: "TeamPlayer", path: "M 460 330 L 460 300" },
+                  { from: "Player", to: "RankHistory", path: "M 560 395 C 610 395, 630 425, 680 425" },
+                  { from: "Player", to: "PlayerMatchStats", path: "M 560 365 C 610 365, 630 275, 680 275" },
                   { from: "Match", to: "PlayerMatchStats", path: "M 790 150 L 790 200" },
                 ].map((rel, idx) => {
                   const isRelated = activeTable === rel.from || activeTable === rel.to;
@@ -330,7 +330,7 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                     fields: [{ n: "id", k: "PK" }, { n: "email", k: "UK" }, { n: "name", k: "" }, { n: "discordId", k: "UK" }, { n: "playerId", k: "FK" }]
                   },
                   {
-                    id: "AuthSession", x: 300, y: 480, w: 220, h: 100,
+                    id: "AuthSession", x: 360, y: 490, w: 200, h: 100,
                     fields: [{ n: "id", k: "PK" }, { n: "userId", k: "FK" }, { n: "refreshTokenHash", k: "UK" }]
                   },
                   {
@@ -342,15 +342,15 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                     fields: [{ n: "id", k: "PK" }, { n: "userId", k: "FK" }, { n: "createdAt", k: "" }]
                   },
                   {
-                    id: "Team", x: 340, y: 30, w: 200, h: 120,
+                    id: "Team", x: 360, y: 30, w: 200, h: 120,
                     fields: [{ n: "id", k: "PK" }, { n: "name", k: "" }, { n: "creatorId", k: "FK" }, { n: "isFeatured", k: "" }]
                   },
                   {
-                    id: "TeamPlayer", x: 340, y: 190, w: 200, h: 110,
+                    id: "TeamPlayer", x: 360, y: 190, w: 200, h: 110,
                     fields: [{ n: "teamId", k: "PK/FK" }, { n: "playerId", k: "PK/FK" }, { n: "joinedAt", k: "" }]
                   },
                   {
-                    id: "Player", x: 340, y: 330, w: 200, h: 130,
+                    id: "Player", x: 360, y: 330, w: 200, h: 130,
                     fields: [{ n: "id", k: "PK" }, { n: "puuid", k: "UK" }, { n: "name", k: "" }, { n: "tag", k: "" }]
                   },
                   {

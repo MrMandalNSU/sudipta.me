@@ -138,7 +138,7 @@ const SystemDesignSection = ({
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 920 360"
+            viewBox="0 0 1060 400"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -159,54 +159,82 @@ const SystemDesignSection = ({
 
             {/* Connection Lines */}
             {[
-              { from: "client", to: "api", path: "M 100 90 L 100 155 L 220 155" },
-              { from: "client", to: "discord", path: "M 160 65 L 220 65" },
-              { from: "discord", to: "api", path: "M 285 90 L 285 130" },
-              { from: "api", to: "api", path: "M 350 155 L 370 155 L 370 65 L 390 65" },
-              { from: "api", to: "postgres", path: "M 510 65 L 580 65" },
-              { from: "postgres", to: "postgres", path: "M 710 65 L 750 65 L 750 135 L 790 135" },
-              { from: "api", to: "sync", path: "M 450 105 L 450 215 L 260 215 L 260 240" },
-              { from: "sync", to: "api", path: "M 100 240 L 100 205 L 250 205 L 250 180" },
-              { from: "sync", to: "riot", path: "M 320 265 L 380 265" },
-              { from: "riot", to: "riot", path: "M 500 265 L 560 265" },
-              { from: "riot", to: "postgres", path: "M 680 265 L 750 265 L 750 170 L 790 170" },
-              { from: "postgres", to: "client", path: "M 840 202 L 840 240" },
+              { from: "client", to: "client", path: "M 100 88 L 100 145", label: "request", labelX: 148, labelY: 114, labelWidth: 58 },
+              { from: "client", to: "discord", path: "M 160 63 L 240 63" },
+              { from: "client", to: "api", path: "M 170 172 L 300 172", label: "cookies + CSRF", labelX: 235, labelY: 154, labelWidth: 98 },
+              { from: "discord", to: "api", path: "M 305 88 L 305 130 L 365 130 L 365 145", label: "OAuth callback", labelX: 365, labelY: 116, labelWidth: 92 },
+              { from: "api", to: "api", path: "M 430 172 L 460 172 L 460 63 L 500 63", label: "auth OK", labelX: 468, labelY: 120, labelWidth: 58 },
+              { from: "api", to: "postgres", path: "M 620 63 L 760 63", label: "cache hit", labelX: 690, labelY: 48, labelWidth: 66 },
+              { from: "postgres", to: "postgres", path: "M 890 63 L 910 63 L 910 150 L 930 150", label: "Prisma read", labelX: 928, labelY: 106, vertical: true, labelWidth: 70 },
+              { from: "api", to: "sync", path: "M 560 103 L 560 232 L 280 232 L 280 255" },
+              { from: "sync", to: "api", path: "M 100 255 L 100 220 L 365 220 L 365 197", label: "cron webhook", labelX: 235, labelY: 207, labelWidth: 92 },
+              { from: "sync", to: "riot", path: "M 340 280 L 430 280", label: "stagger 2s", labelX: 385, labelY: 265, labelWidth: 78 },
+              { from: "riot", to: "riot", path: "M 550 280 L 650 280", label: "within limit", labelX: 600, labelY: 265, labelWidth: 82 },
+              { from: "riot", to: "postgres", path: "M 770 280 L 910 280 L 910 188 L 930 188", label: "upsert cache", labelX: 850, labelY: 262, labelWidth: 88 },
+              { from: "postgres", to: "client", path: "M 980 218 L 980 289", label: "stats payload", labelX: 980, labelY: 253, labelWidth: 88 },
             ].map((line, lIdx) => {
               const isActive = activeSystemNode === line.from || activeSystemNode === line.to;
               const strokeColor = isActive ? primaryColor : (theme.palette.mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)");
               const strokeWidth = isActive ? 2.5 : 1.5;
               const marker = isActive ? "url(#arrowHead)" : "url(#arrowHeadMuted)";
               const dashStyle = line.from === "sync" || line.to === "sync" ? "5,3" : undefined;
+              const labelWidth = line.labelWidth || 84;
               return (
-                <path
-                  key={lIdx}
-                  d={line.path}
-                  stroke={strokeColor}
-                  strokeWidth={strokeWidth}
-                  fill="none"
-                  markerEnd={marker}
-                  strokeDasharray={dashStyle}
-                  style={{
-                    transition: "all 0.3s ease",
-                  }}
-                />
+                <g key={lIdx}>
+                  <path
+                    d={line.path}
+                    stroke={strokeColor}
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                    markerEnd={marker}
+                    strokeDasharray={dashStyle}
+                    style={{
+                      transition: "all 0.3s ease",
+                    }}
+                  />
+                  {line.label && (
+                    <g transform={line.vertical ? `rotate(-90 ${line.labelX} ${line.labelY})` : undefined}>
+                      <rect
+                        x={line.labelX - (labelWidth / 2)}
+                        y={line.labelY - 11}
+                        width={labelWidth}
+                        height={17}
+                        rx={4}
+                        fill={theme.palette.mode === "light" ? "rgba(255,255,255,0.76)" : "rgba(15,23,42,0.74)"}
+                        stroke={theme.palette.mode === "light" ? "rgba(79,70,229,0.12)" : "rgba(129,140,248,0.16)"}
+                        strokeWidth="0.8"
+                      />
+                      <text
+                        x={line.labelX}
+                        y={line.labelY}
+                        textAnchor="middle"
+                        fontSize="8.5"
+                        fontWeight="700"
+                        fill={isActive ? primaryColor : theme.palette.text.secondary}
+                        fontFamily="Inter, sans-serif"
+                      >
+                        {line.label}
+                      </text>
+                    </g>
+                  )}
+                </g>
               );
             })}
 
             {/* Nodes */}
             {[
-              { key: "client", type: "start", x: 40, y: 40, w: 120, h: 50, rx: 25, cx: 100, cy: 65, label: "User Request", sub: "Client" },
-              { key: "discord", type: "process", x: 220, y: 40, w: 130, h: 50, rx: 8, cx: 285, cy: 65, label: "Discord Portal", sub: "OAuth2 Login" },
-              { key: "api", type: "decision", d: "M 450 25 L 510 65 L 450 105 L 390 65 Z", cx: 450, cy: 65, label: "Cached?", sub: "Local DB Check" },
-              { key: "postgres", type: "process", x: 580, y: 40, w: 130, h: 50, rx: 8, cx: 645, cy: 65, label: "Query Cache", sub: "Postgres / Prisma" },
-              { key: "client", type: "process", x: 40, y: 130, w: 130, h: 50, rx: 8, cx: 105, cy: 155, label: "Next BFF", sub: "Cookie + CSRF" },
-              { key: "api", type: "process", x: 220, y: 130, w: 130, h: 50, rx: 8, cx: 285, cy: 155, label: "Express Router", sub: "Auth & Role Check" },
-              { key: "postgres", type: "cylinder", x: 790, y: 120, w: 100, h: 70, cx: 840, cy: 155, label: "PostgreSQL DB", sub: "Postgres Cache" },
-              { key: "sync", type: "process", x: 40, y: 240, w: 120, h: 50, rx: 8, cx: 100, cy: 265, label: "GitHub Actions", sub: "Cron Trigger (12h)" },
-              { key: "sync", type: "process", x: 200, y: 240, w: 120, h: 50, rx: 8, cx: 260, cy: 265, label: "Staggered Sync", sub: "2000ms Delay" },
-              { key: "riot", type: "decision", d: "M 440 225 L 500 265 L 440 305 L 380 265 Z", cx: 440, cy: 265, label: "Rate Limit?", sub: "Riot API Limit" },
-              { key: "riot", type: "process", x: 560, y: 240, w: 120, h: 50, rx: 8, cx: 620, cy: 265, label: "Ingest & Parse", sub: "Riot API" },
-              { key: "client", type: "process", x: 780, y: 240, w: 120, h: 50, rx: 8, cx: 840, cy: 265, label: "Render Stats", sub: "Update UI" },
+              { key: "client", type: "start", x: 40, y: 38, w: 120, h: 50, rx: 25, cx: 100, cy: 63, label: "User Request", sub: "Client" },
+              { key: "discord", type: "process", x: 240, y: 38, w: 130, h: 50, rx: 8, cx: 305, cy: 63, label: "Discord Portal", sub: "OAuth2 Login" },
+              { key: "api", type: "decision", d: "M 560 23 L 620 63 L 560 103 L 500 63 Z", cx: 560, cy: 63, label: "Cached?", sub: "Local DB Check" },
+              { key: "postgres", type: "process", x: 760, y: 38, w: 130, h: 50, rx: 8, cx: 825, cy: 63, label: "Query Cache", sub: "Postgres / Prisma" },
+              { key: "client", type: "process", x: 40, y: 145, w: 130, h: 50, rx: 8, cx: 105, cy: 170, label: "Next BFF", sub: "Cookie + CSRF" },
+              { key: "api", type: "process", x: 300, y: 145, w: 130, h: 50, rx: 8, cx: 365, cy: 170, label: "Express Router", sub: "Auth & Role Check" },
+              { key: "postgres", type: "cylinder", x: 930, y: 138, w: 100, h: 70, cx: 980, cy: 173, label: "PostgreSQL DB", sub: "Postgres Cache" },
+              { key: "sync", type: "process", x: 40, y: 255, w: 120, h: 50, rx: 8, cx: 100, cy: 280, label: "GitHub Actions", sub: "Cron Trigger (12h)" },
+              { key: "sync", type: "process", x: 220, y: 255, w: 120, h: 50, rx: 8, cx: 280, cy: 280, label: "Staggered Sync", sub: "2000ms Delay" },
+              { key: "riot", type: "decision", d: "M 490 240 L 550 280 L 490 320 L 430 280 Z", cx: 490, cy: 280, label: "Rate Limit?", sub: "Riot API Limit" },
+              { key: "riot", type: "process", x: 650, y: 255, w: 120, h: 50, rx: 8, cx: 710, cy: 280, label: "Ingest & Parse", sub: "Riot API" },
+              { key: "client", type: "process", x: 930, y: 295, w: 100, h: 50, rx: 8, cx: 980, cy: 320, label: "Render Stats", sub: "Update UI" },
             ].map((node, nIdx) => {
               const isActive = activeSystemNode === node.key;
               const fillBg = isActive
@@ -277,8 +305,8 @@ const SystemDesignSection = ({
             })}
 
             {/* Legend */}
-            <text x="20" y="340" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
-              ── Process Flow  ╌╌ Async/Cron Trigger  Click nodes to highlight execution pathways
+            <text x="20" y="375" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+              -- Process Flow   - - Async/Cron Trigger   Click nodes to highlight execution pathways
             </text>
           </svg>
         </Box>

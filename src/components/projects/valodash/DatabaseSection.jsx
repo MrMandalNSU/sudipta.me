@@ -296,8 +296,8 @@ const DatabaseSection = ({ theme, activeTable, setActiveTable }) => {
                 {[
                   { from: "User", to: "Team", path: "M 240 100 L 360 100" },
                   { from: "User", to: "ManualSyncLog", path: "M 140 170 L 140 330" },
-                  { from: "User", to: "AuthSession", path: "M 240 145 C 300 145, 300 512, 360 512" },
-                  { from: "Player", to: "User", path: "M 360 395 C 300 395, 300 150, 240 150" },
+                  { from: "User", to: "AuthSession", path: "M 240 150 C 350 170, 305 500, 360 520" },
+                  { from: "Player", to: "User", path: "M 360 395 C 285 380, 295 210, 240 150" },
                   { from: "Team", to: "TeamPlayer", path: "M 460 150 L 460 190" },
                   { from: "Player", to: "TeamPlayer", path: "M 460 330 L 460 300" },
                   { from: "Player", to: "RankHistory", path: "M 560 395 C 610 395, 630 425, 680 425" },

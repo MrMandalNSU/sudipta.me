@@ -138,7 +138,7 @@ const SystemDesignSection = ({
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <svg
             width="100%"
-            viewBox="0 0 1060 400"
+            viewBox="40 10 995 372"
             style={{ display: "block", maxWidth: "100%", height: "auto" }}
           >
             <defs>
@@ -305,7 +305,7 @@ const SystemDesignSection = ({
             })}
 
             {/* Legend */}
-            <text x="20" y="375" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
+            <text x="40" y="375" fontSize="10.5" fill={theme.palette.text.secondary} fontFamily="Inter, sans-serif">
               -- Process Flow   - - Async/Cron Trigger   Click nodes to highlight execution pathways
             </text>
           </svg>

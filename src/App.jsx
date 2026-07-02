@@ -11,6 +11,7 @@ import Research from "./components/Research";
 import Projects from "./components/Projects";
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
+import SEOManager from "./seo/SEOManager";
 
 // Lazy-loaded homepage sections
 const CompetitiveProgramming = lazy(() => import("./components/CompetitiveProgramming"));
@@ -91,6 +92,7 @@ function App() {
   return (
     <ThemeProvider>
       <Navbar />
+      <SEOManager />
       <ScrollHandler />
       <Suspense fallback={null}>
         <Box component="main">
